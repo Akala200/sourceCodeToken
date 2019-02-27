@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  e-wallet:
+    image: e-wallet:1.0.0
+    build: .
+    container_name: "e-wallet"
+    command: pm2-runtime index.js --name app
+    ports:
+      - 3000:3000
+    environment: 
+      - NODE_ENV=development
+    networks:
+      - node
+
+networks:
+  node:
+    driver: "bridge"
