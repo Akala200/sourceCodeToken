@@ -16,7 +16,9 @@ mongoose.connect(`mongodb://${user}:${password}@${server}/${database}`, { useNew
 
 const transactionSchema = mongoose.Schema({
   userPhoneNumber: { type: String, required: false },
-  amount: { type: String, required: true }
+  amount: { type: String, required: true },
+  createdAt: { type: Date, required: true, default: Date.now }
+
 })
 
 const History = mongoose.model('History', transactionSchema)

@@ -19,7 +19,7 @@ router.post('/credit', function (req, res) {
               return;
           }
           else {
-            users[0].accountBalance = parseInt(users[0].accountBalance) - parseInt(req.body.amount);
+            users[0].accountBalance = parseInt(users[0].accountBalance) + parseInt(req.body.amount);
               console.log(users)
               users[0].save(function(err) {
                 if(err) {

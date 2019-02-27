@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   userPhoneNumber: { type: String, required: true },
-  accountBalance: { type: Number, required: false },
+  accountBalance: { type: String, required: false },
   createdAt: { type: Date, required: true, default: Date.now }
 })
 
