@@ -1,0 +1,40 @@
+{
+  "name": "server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "config": "^2.0.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^6.1.0",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "mongoose": "^5.3.10",
+    "morgan": "~1.9.0",
+    "agenda": "^2.0.2",
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "coupon-code": "^0.4.5",
+    "joi": "^13.4.0",
+    "jsonwebtoken": "^8.3.0",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.8",
+    "monk": "^6.0.6",
+    "node-cron": "^2.0.3",
+    "nodemon": "^1.18.4",
+    "volleyball": "^1.5.1",
+    "winston": "^3.1.0",
+    "winston-mongodb": "^4.0.3"
+  },
+  "author": "Tunji",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  }
+}

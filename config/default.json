@@ -1,0 +1,11 @@
+{
+    "env": "development",
+    "serverPort": "3000",
+    "db": {
+      "host": "ds143953.mlab.com",
+      "port": "43953",
+      "name": "heroku_80cgw6rm",
+      "user": "heroku_80cgw6rm",
+      "pass": "d7rv82mu7ft0vu3msqi2d3fq32"
+    }
+  }
