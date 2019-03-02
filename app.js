@@ -1,72 +1,54 @@
-const express = require('express');
-const volleyball = require('volleyball');
-// const cors = require('cors');
-var MongoDB = require('winston-mongodb').MongoDB;
-const winston = require('winston');
-require('dotenv').config();
-const cookieParser = require('cookie-parser');
-
-const middlewares = require('./auth/middlewares');
-
-// this is your stuff
-const users = require('./api/users');
-const wallet = require('./api/wallet')
-const accountCreation = require('./auth/account-create')
-const routePath = require('./routes/routePath');
+import express from 'express';
+import mongoose from 'mongoose';
+import config from './server/config/index';
+import cors from 'cors';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import { notFound, errorHandler } from './server/middlewares/errorhandlers';
+import traceLogger from './server/logger/traceLogger';
+import routes from './server/routes';
 
 
-const { notFound, errorHandler} = require('./middlewares')
-
+//initialize express
 const app = express();
 
-app.use(volleyball); //Logs every single incoming request
+//for request
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(logger('dev'));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  if (req.method === "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
+// connect to mongodb
+const mongoURL = process.env.NODE_ENV === 'test' ? config.DB_TEST : process.env.NODE_ENV === 'production' ? config.DB_URL_PROD : config.MONGODB_DATABASE;
+mongoose.connect(mongoURL, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+}, () => {
+  process.stdout.write('connected to mongodb');
 });
 
-const db = process.env.LOG_DB
-const host = process.env.LOG_HOST
-const username = process.env.LOG_USERNAME
-const password = process.env.LOG_PASSWORD
-
-
-
-
-
-
-app.use(express.json());
-
-app.use(middlewares.checkTokenSetUser);
-
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-// routes
-app.get('/', (req, res) => {
-  res.json({
-    message: 'cms auth headers! 🌈✨🦄',
-    user: req.user,
-  });
+app.get('/api', (req, res) => {
+  res.json({massage: 'Welcome to Naija Lottery Api'});
 });
-// create customer route
-app.use(routePath.walletPath,  middlewares.isLoggedIn, wallet);
-// 
 
-app.use(routePath.userPath, middlewares.isLoggedIn, users);
-app.use(routePath.authAdminPath, accountCreation);
+// Routes
+app.use('/api', routes);
 
-// catch 404 and forward to error handler
-app.use(notFound);
+app.use('*', notFound);
 app.use(errorHandler);
 
-module.exports = app;
+process.on('unhandledRejection', (reason) => {
+  traceLogger(reason);
+});
+
+process.on('uncaughtException', (reason) => {
+  traceLogger(reason);
+});
+
+const PORT = process.env.PORT || 5678
+app.listen(PORT, () => {
+ process.stdout.write(`app is listening on port ${PORT}`);
+});
+
+export default app;
