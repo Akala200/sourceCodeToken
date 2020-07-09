@@ -7,7 +7,6 @@ const router = Router();
 const { newWallet } = WalletController;
 const { numberChecker } = verifyNumber;
 
-//Routes
 router.post('/createwallet', numberChecker, newWallet);
 
 export default router;

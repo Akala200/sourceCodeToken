@@ -1,25 +1,25 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import config from './server/config/index';
 import cors from 'cors';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import { notFound, errorHandler } from './server/middlewares/errorhandlers';
-import traceLogger from './server/logger/traceLogger';
+import traceLogger from './server/logger/tracelogger';
 import routes from './server/routes';
+import config from './server/config/index';
 
 
-//initialize express
+// initialize express
 const app = express();
 
-//for request
+// for request
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(logger('dev'));
 
 // connect to mongodb
-const mongoURL = process.env.NODE_ENV === 'test' ? config.DB_TEST : process.env.NODE_ENV === 'production' ? config.DB_URL_PROD : config.MONGODB_DATABASE;
+const mongoURL = 'mongodb+srv://coin:1234567890@cluster0.y5nwu.mongodb.net/coins?retryWrites=true&w=majority';
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -29,7 +29,7 @@ mongoose.connect(mongoURL, {
 });
 
 app.get('/api', (req, res) => {
-  res.json({massage: 'Welcome to Naija Lottery Api'});
+  res.json({ massage: 'Welcome to Coin Api' });
 });
 
 // Routes
@@ -46,9 +46,9 @@ process.on('uncaughtException', (reason) => {
   traceLogger(reason);
 });
 
-const PORT = process.env.PORT || 5678
+const PORT = process.env.PORT || 5678;
 app.listen(PORT, () => {
- process.stdout.write(`app is listening on port ${PORT}`);
+  process.stdout.write(`app is listening on port ${PORT}`);
 });
 
 export default app;
