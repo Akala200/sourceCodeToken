@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable require-jsdoc */
 import bcrypt from 'bcrypt';
 import User from '../models/Users';
@@ -46,11 +48,26 @@ class UserController {
           password,
         };
         const createdUser = await User.create(userObject);
+
+        const TokenData = {
+          id: createdUser._id,
+          email: createdUser.email,
+        };
+        //  Generate Token
+        const token = await signToken(TokenData);
+
+        const userData = {
+          first_name: createdUser.first_name,
+          last_name: createdUser.last_name,
+          phone: createdUser.phone,
+          email: createdUser.email,
+          id: createdUser._id,
+          token,
+        };
+
         return res
           .status(201)
-          .json(
-            responses.success(201, 'User created successfully', createdUser)
-          );
+          .json(responses.success(201, 'User created successfully', userData));
       }
     } catch (error) {
       tracelogger(error);
