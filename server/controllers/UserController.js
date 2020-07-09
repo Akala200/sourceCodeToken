@@ -27,7 +27,7 @@ class UserController {
    */
   static async newUser(req, res) {
     const {
-      email, phone, country, password
+      email, phone, first_name, last_name, password
     } = req.body;
     try {
       const user = await User.findOne({ email });
@@ -39,9 +39,10 @@ class UserController {
       }
       if (!user) {
         const userObject = {
+          first_name,
+          last_name,
           email,
           phone,
-          country,
           password,
         };
         const createdUser = await User.create(userObject);
