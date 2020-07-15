@@ -7,6 +7,7 @@ import Token from '../models/Token';
 import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
+import randomstring from 'randomstring';
 const sgMail = require('@sendgrid/mail');
 
 sgMail.setApiKey('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');
