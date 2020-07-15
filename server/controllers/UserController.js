@@ -184,7 +184,7 @@ class UserController {
       return res.json(error);
     }
 
-    if (!token) {
+    if (!tokenUser) {
       return res.json(verifyresponce);
     }
 
