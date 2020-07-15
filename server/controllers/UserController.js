@@ -179,11 +179,11 @@ class UserController {
     let tokenUser;
     let saveChanges;
     try {
-     tokenUser = await Token.findOne({ code });
+     tokenUser = await Token.findOne({ token: code });
     } catch (error) {
       return res.json(error);
     }
-
+  console.log(tokenUser)
     if (!tokenUser) {
       return res.json(verifyresponce);
     }
