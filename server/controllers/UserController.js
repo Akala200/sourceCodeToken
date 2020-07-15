@@ -176,9 +176,10 @@ class UserController {
   static async verify(req, res) {
 
     const { code } = req.body;
-
+    let tokenUser;
+    let saveChanges;
     try {
-    const token = await Token.findOne({ code });
+     tokenUser = await Token.findOne({ code });
     } catch (error) {
       return res.json(error);
     }
@@ -187,11 +188,11 @@ class UserController {
       return res.json(verifyresponce);
     }
 
-    let id = token.user;
+    const tokenId = tokenUser.user;
     
     try {
-      const saveChanges =  await User.findOneAndUpdate(
-        { _id: id },
+       saveChanges =  await User.findOneAndUpdate(
+        { _id: tokenId },
         {
           $set: {
             regstatus: true,
