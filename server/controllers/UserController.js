@@ -183,18 +183,17 @@ class UserController {
     } catch (error) {
       return res.json(error);
     }
-  console.log(tokenUser)
+  console.log(tokenUser.user)
     if (!tokenUser) {
       return res
       .status(404)
       .json(responses.error(404, 'Account verification Failed, Invalid token'));
     }
 
-    const tokenId = tokenUser.user;
     
     try {
        saveChanges =  await User.findOneAndUpdate(
-        { email: tokenId },
+        { email: tokenUser.user },
         {
           $set: {
             regstatus: true,
@@ -206,6 +205,9 @@ class UserController {
     } catch (error) {
       return res.json(error);
     }
+
+    console.log(saveChanges)
+
 
     if (!saveChanges) {
       return res
