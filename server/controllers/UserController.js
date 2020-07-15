@@ -44,7 +44,7 @@ class UserController {
       email, phone, first_name, last_name, password
     } = req.body;
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email: email });
 
       if (user) {
         return res
@@ -84,7 +84,7 @@ class UserController {
           token: code,
           user: createdUser. _d,
         };
-        console.log(tokenObject)
+        console.log(createdUser)
 
         const tokenRegistration = await Token.create(tokenObject);
 
