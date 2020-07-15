@@ -223,9 +223,8 @@ class UserController {
 
     try {
         await Token.findOneAndDelete({ token: code }).then((toks => {
-          return res
-          .status(200)
-          .json(userData)
+          
+          return res.json(userData);
         }))
      } catch (error) {
        return res.json(error);
