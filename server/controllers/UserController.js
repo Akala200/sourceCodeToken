@@ -178,6 +178,7 @@ class UserController {
     const { code } = req.body;
     let tokenUser;
     let saveChanges;
+    let user;
     try {
      tokenUser = await Token.findOne({ token: code });
     } catch (error) {
@@ -190,45 +191,46 @@ class UserController {
       .json(responses.error(404, 'Account verification Failed, Invalid token'));
     }
 
-    
-    try {
-       saveChanges =  await User.findOneAndUpdate(
-        { email: tokenUser.user },
-        {
-          $set: {
-            regstatus: true,
+   user = await  User.find({email: tokenUser.user}).then((user) => {
+        user.regstatus == true;
+        user.save().then((saveData) => {
+          if(!save) { 
+            return res
+            .status(500)
+            .json(responses.error(500, 'User not activated'));
+          } else {
+            return saveData
           }
-        },
-        options
-      );
-    
-    } catch (error) {
-      return res.json(error);
-    }
+        }).catch((err)  => {
+          return res
+              .status(500)
+              .json(responses.error(500, err));
+        })
+      }).catch((err)  => {
+        return res
+            .status(500)
+            .json(responses.error(500, err));
+      })
 
     console.log(saveChanges)
 
 
-    if (!saveChanges) {
-      return res
-      .status(500)
-      .json(responses.error(500, 'User not active'));
-    }
+   
 
     const TokenData = {
-      id: saveChanges._id,
-      email: saveChanges.email,
+      id: user._id,
+      email: user.email,
     };
     //  Generate Token
     const tokenize = await signToken(TokenData);
 
     
     const userData = {
-      first_name: saveChanges.first_name,
-      last_name: saveChanges.last_name,
-      phone: saveChanges.phone,
-      email: saveChanges.email,
-      id: saveChanges._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone: user.phone,
+      email: user.email,
+      id: user._id,
       tokenize,
     };
 
