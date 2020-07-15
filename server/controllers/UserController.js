@@ -185,7 +185,9 @@ class UserController {
     }
   console.log(tokenUser)
     if (!tokenUser) {
-      return res.json(verifyresponce);
+      return res
+      .status(404)
+      .json(responses.error(404, 'Account verification Failed, Invalid token'));
     }
 
     const tokenId = tokenUser.user;
@@ -206,7 +208,9 @@ class UserController {
     }
 
     if (!saveChanges) {
-      return res.json({msg:'User not active'});
+      return res
+      .status(500)
+      .json(responses.error(500, 'User not active'));
     }
 
     const TokenData = {
