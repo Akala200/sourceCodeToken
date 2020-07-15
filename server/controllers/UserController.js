@@ -91,7 +91,7 @@ class UserController {
 
         sgMail.send(msg);
 
-        if(smMail) {
+        if(tokenRegistration) {
           return res
           .status(201)
           .json(responses.success(201, 'Email sent successfully'));
