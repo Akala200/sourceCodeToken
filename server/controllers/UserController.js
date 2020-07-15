@@ -225,9 +225,18 @@ class UserController {
       id: user._id,
       tokenize,
     };
-    return res
-    .status(200)
-    .json(responses.success(200, 'Account verified successfully', userData));
+
+    try {
+        await Token.remove({ token: code }).then((toks => {
+          return res
+          .status(200)
+          .json(responses.success(200, 'Account verified successfully', userData));
+        }))
+     } catch (error) {
+       return res.json(error);
+     }
+
+    
   }
 }
 
