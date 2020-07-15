@@ -191,32 +191,19 @@ class UserController {
       .json(responses.error(404, 'Account verification Failed, Invalid token'));
     }
 
-   user = await  User.find({email: tokenUser.user}).then((user) => {
-        user.regstatus == true;
-        user.save().then((saveData) => {
-          if(!save) { 
-            return res
-            .status(500)
-            .json(responses.error(500, 'User not activated'));
-          } else {
-            return saveData
-          }
-        }).catch((err)  => {
-          return res
-              .status(500)
-              .json(responses.error(500, err));
-        })
-      }).catch((err)  => {
-        return res
-            .status(500)
-            .json(responses.error(500, err));
-      })
+  try {
 
-    console.log(saveChanges)
+    const user = await User.findOne({ email: tokenUser.user  });
+    if(user) {
+      await  User.findOneAndUpdate({email: tokenUser.user }, { $set: {"regstatus": true }}, {new: true}, (err, doc) => {
+        if (err) {
+            console.log("Something wrong when updating data!");
+        }
+    
+        console.log(doc);
+    });
 
-
-   
-
+    
     const TokenData = {
       id: user._id,
       email: user.email,
@@ -244,7 +231,18 @@ class UserController {
        return res.json(error);
      }
 
-    
+
+    }
+
+
+   
+  } catch (error) {
+    return res.json(error);
+  }
+
+
+
+    //MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
   }
 }
 
