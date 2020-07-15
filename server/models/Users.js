@@ -27,6 +27,10 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    regstatus: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
