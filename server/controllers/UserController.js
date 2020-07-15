@@ -231,7 +231,7 @@ class UserController {
     };
 
     try {
-        await Token.findByIdAndDelete({ token: code }).then((toks => {
+        await Token.findOneAndDelete({ token: code }).then((toks => {
           return res
           .status(200)
           .json(responses.success(200, 'Account verified successfully', userData));
