@@ -82,9 +82,8 @@ class UserController {
 
         const tokenObject = {
           token: code,
-          user: createdUser. _d,
+          user: createdUser.email,
         };
-        console.log(createdUser._id)
 
         const tokenRegistration = await Token.create(tokenObject);
 
@@ -195,7 +194,7 @@ class UserController {
     
     try {
        saveChanges =  await User.findOneAndUpdate(
-        { _id: tokenId },
+        { email: tokenId },
         {
           $set: {
             regstatus: true,
@@ -215,19 +214,19 @@ class UserController {
     }
 
     const TokenData = {
-      id: user._id,
-      email: user.email,
+      id: saveChanges._id,
+      email: saveChanges.email,
     };
     //  Generate Token
     const tokenize = await signToken(TokenData);
 
     
     const userData = {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      phone: user.phone,
-      email: user.email,
-      id: user._id,
+      first_name: saveChanges.first_name,
+      last_name: saveChanges.last_name,
+      phone: saveChanges.phone,
+      email: saveChanges.email,
+      id: saveChanges._id,
       tokenize,
     };
 
