@@ -84,6 +84,7 @@ class UserController {
           token: code,
           user: createdUser. _d,
         };
+        console.log(tokenObject)
 
         const tokenRegistration = await Token.create(tokenObject);
 
