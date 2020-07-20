@@ -9,6 +9,7 @@ import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
 import randomstring from 'randomstring';
 const sgMail = require('@sendgrid/mail');
+var rp = require("request-promise");
 
 sgMail.setApiKey('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');
 
@@ -40,24 +41,20 @@ class UserController {
    *@memberof UsersController
    */
   static async newUser(req, res) {
-    const {
-      email, phone, first_name, last_name, password
-    } = req.body;
+    const { email, phone, first_name, last_name, password } = req.body;
     try {
       const user = await User.findOne({ email: email });
 
       if (user) {
         return res
           .status(400)
-          .json(responses.error(400, 'Sorry, this user already exist'));
+          .json(responses.error(400, "Sorry, this user already exist"));
       }
       if (!user) {
-
-    const code =  randomstring.generate({
+        const code = randomstring.generate({
           length: 7,
-          charset: 'numeric'
+          charset: "numeric",
         });
-
 
         const userObject = {
           first_name,
@@ -67,18 +64,14 @@ class UserController {
           password,
         };
 
-
-        
-  
         const createdUser = await User.create(userObject);
 
         const msg = {
           to: createdUser.email,
-          from: 'support@ningotv.com',
-          subject: 'Email Verification',
+          from: "support@ningotv.com",
+          subject: "Email Verification",
           text: `Kindly use this ${code} to verify your account`,
         };
-
 
         const tokenObject = {
           token: code,
@@ -87,27 +80,59 @@ class UserController {
 
         const tokenRegistration = await Token.create(tokenObject);
 
-
-
         sgMail.send(msg);
 
-        if(tokenRegistration) {
+        if (tokenRegistration) {
           return res
-          .status(201)
-          .json(responses.success(201, 'Email sent successfully'));
+            .status(201)
+            .json(responses.success(201, "Email sent successfully"));
         } else {
-          return res
-          .status(500)
-          .json(responses.success(500, 'Email not sent'));
+          return res.status(500).json(responses.success(500, "Email not sent"));
         }
-       
       }
     } catch (error) {
       tracelogger(error);
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getlist(req, res) {
+    console.log("here");
+    try {
+      const requestOptions = {
+        method: "GET",
+        uri:"https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        qs: {
+          start: "1",
+          limit: "10",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
 
+      rp(requestOptions)
+        .then((response) => {
+          return res.json(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
 
   /**
@@ -133,7 +158,7 @@ class UserController {
       return res.json(erroresponse);
     }
     if (user.regstatus == false) {
-      return res.json({msg: 'Kindly verify your account'});
+      return res.json({ msg: "Kindly verify your account" });
     }
 
     const valid = await bcrypt.compare(password, user.password);
@@ -162,8 +187,6 @@ class UserController {
     return res.json(userData);
   }
 
-
-  
   /**
    *@description Creates user user
    *@static
@@ -174,72 +197,67 @@ class UserController {
    */
 
   static async verify(req, res) {
-
     const { code } = req.body;
     let tokenUser;
     let saveChanges;
     let user;
     try {
-     tokenUser = await Token.findOne({ token: code });
+      tokenUser = await Token.findOne({ token: code });
     } catch (error) {
       return res.json(error);
     }
-  console.log(tokenUser.user)
+    console.log(tokenUser.user);
     if (!tokenUser) {
       return res
-      .status(404)
-      .json(responses.error(404, 'Account verification Failed, Invalid token'));
+        .status(404)
+        .json(
+          responses.error(404, "Account verification Failed, Invalid token")
+        );
     }
-
-  try {
-
-    const user = await User.findOne({ email: tokenUser.user  });
-    if(user) {
-      await  User.findOneAndUpdate({email: tokenUser.user }, { $set: {"regstatus": true }}, {new: true}, (err, doc) => {
-        if (err) {
-            console.log("Something wrong when updating data!");
-        }
-    
-        console.log(doc);
-    });
-
-    
-    const TokenData = {
-      id: user._id,
-      email: user.email,
-    };
-    //  Generate Token
-    const tokenize = await signToken(TokenData);
-
-    
-    const userData = {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      phone: user.phone,
-      email: user.email,
-      id: user._id,
-      tokenize,
-    };
 
     try {
-        await Token.findOneAndDelete({ token: code }).then((toks => {
-          
-          return res.json(userData);
-        }))
-     } catch (error) {
-       return res.json(error);
-     }
+      const user = await User.findOne({ email: tokenUser.user });
+      if (user) {
+        await User.findOneAndUpdate(
+          { email: tokenUser.user },
+          { $set: { regstatus: true } },
+          { new: true },
+          (err, doc) => {
+            if (err) {
+              console.log("Something wrong when updating data!");
+            }
 
+            console.log(doc);
+          }
+        );
 
+        const TokenData = {
+          id: user._id,
+          email: user.email,
+        };
+        //  Generate Token
+        const tokenize = await signToken(TokenData);
+
+        const userData = {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          phone: user.phone,
+          email: user.email,
+          id: user._id,
+          tokenize,
+        };
+
+        try {
+          await Token.findOneAndDelete({ token: code }).then((toks) => {
+            return res.json(userData);
+          });
+        } catch (error) {
+          return res.json(error);
+        }
+      }
+    } catch (error) {
+      return res.json(error);
     }
-
-
-   
-  } catch (error) {
-    return res.json(error);
-  }
-
-
 
     //MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
   }
