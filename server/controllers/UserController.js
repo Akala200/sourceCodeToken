@@ -123,6 +123,7 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
+          console.log("API call response:", response);
           return res.json(response);
         })
         .catch((err) => {
