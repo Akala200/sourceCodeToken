@@ -136,7 +136,46 @@ class UserController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async shortlist(req, res) {
+    console.log("here");
+    try {
+      const requestOptions = {
+        method: "GET",
+        uri:
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        qs: {
+          start: "1",
+          limit: "4",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
 
+      rp(requestOptions)
+        .then((response) => {
+          console.log("API call response:", response);
+          return res.json(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
