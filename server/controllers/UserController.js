@@ -103,12 +103,56 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async bitcoin(req, res) {
+    console.log("here");
+    try {
+      const requestOptions = {
+        method: "GET",
+        uri:
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        qs: {
+          start: "1",
+          limit: "1",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
+
+      rp(requestOptions)
+        .then((response) => {
+          console.log("API call response:", response);
+          return res.json(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async getlist(req, res) {
     console.log("here");
     try {
       const requestOptions = {
         method: "GET",
-        uri:"https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        uri:
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
         qs: {
           start: "1",
           limit: "10",
@@ -135,7 +179,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates user user
    *@static
@@ -156,20 +199,18 @@ class UserController {
     }
 
     if (!user) {
-       return res.status(401).json(responses.error(422, erroresponse));
+      return res.status(401).json(responses.error(422, erroresponse));
     }
     if (user.regstatus == false) {
-              return res
-                .status(422)
-                .json(
-                  responses.error(422, { msg: "Kindly verify your account" })
-                );
+      return res
+        .status(422)
+        .json(responses.error(422, { msg: "Kindly verify your account" }));
     }
 
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-        return res.status(401).json(responses.error(401, erroresponse));
+      return res.status(401).json(responses.error(401, erroresponse));
     }
 
     const TokenData = {
