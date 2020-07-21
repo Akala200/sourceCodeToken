@@ -156,7 +156,7 @@ class UserController {
     }
 
     if (!user) {
-      return res.json(erroresponse);
+       return res.status(401).json(responses.error(422, erroresponse));
     }
     if (user.regstatus == false) {
               return res
