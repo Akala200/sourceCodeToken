@@ -159,13 +159,17 @@ class UserController {
       return res.json(erroresponse);
     }
     if (user.regstatus == false) {
-      return res.json({ msg: "Kindly verify your account" });
+              return res
+                .status(422)
+                .json(
+                  responses.error(422, { msg: "Kindly verify your account" })
+                );
     }
 
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-      return res.json(erroresponse);
+        return res.status(401).json(responses.error(401, erroresponse));
     }
 
     const TokenData = {
