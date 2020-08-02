@@ -157,7 +157,7 @@ class WalletController {
                   walletId: user._id,
                   status: 'successful',
                 };
-                const amountNew = response.data.quote.BTC.price + user.coin;
+                const amountNew = response.data.quote.BTC.price + user.balance;
                 console.log('amount', amountNew);
                 Wallet.findOneAndUpdate(
                   { email },
