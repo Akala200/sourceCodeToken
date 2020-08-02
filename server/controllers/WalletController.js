@@ -151,7 +151,7 @@ class WalletController {
                   type: 'credit',
                   mode: 'Card',
                   lastFour: event.data.authorization.last4,
-                  cardType: event.data.authorization.last4,
+                  cardType: event.data.authorization.card_type,
                   email: user.email,
                   ref: event.data.reference,
                   walletId: user._id,
