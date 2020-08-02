@@ -141,6 +141,7 @@ class WalletController {
               gzip: true,
             };
 
+
             rp(requestOptions)
               .then((response) => {
                 console.log('API call response:', response);
@@ -149,6 +150,8 @@ class WalletController {
                   coins: response.data.quote.BTC.price,
                   type: 'credit',
                   mode: 'Card',
+                  lastFour: event.data.authorization.last4,
+                  cardType: event.data.authorization.last4,
                   email: user.email,
                   ref: event.data.reference,
                   walletId: user._id,
@@ -157,11 +160,9 @@ class WalletController {
                 Wallet.findOneAndUpdate(
                   { email },
                   {
-                    $set: {
-                      balance: event.data.amount / 100,
-                      coin: response.data.quote.BTC.price,
-                    },
+                    $set: { balance: event.data.amount / 100, coin: response.data.quote.BTC.price }
                   },
+                  { multi: true },
                   { new: true },
                   (err, doc) => {
                     if (err) {

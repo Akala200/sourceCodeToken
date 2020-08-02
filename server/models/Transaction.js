@@ -7,6 +7,8 @@ const transactionSchema = mongoose.Schema({
   type: { type: String, enum: ['credit', 'debit'], required: true },
   mode: { type: String, required: true },
   email: { type: String, required: true },
+  cardType: { type: String },
+  lastFour: { type: String },
   ref: { type: String, required: true },
   walletId: { type: mongoose.Schema.ObjectId, ref: 'Wallet' },
   status: {
