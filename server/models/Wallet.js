@@ -3,10 +3,11 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const walletSchema = new Schema({
-  userPhoneNumber: { type: String },
-  amount: { type: Number },
+  email: { type: String },
+  phone: { type: String },
+  balance: { type: Number, default: 0 },
+  coin: { type: Number },
   createdAt: { type: Date, default: Date.now },
-  coins: { type: Number },
 });
 
 const Wallet = mongoose.model('Wallet', walletSchema);

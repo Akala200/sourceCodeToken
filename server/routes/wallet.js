@@ -4,9 +4,12 @@ import verifyNumber from '../middlewares/verifyNumber';
 
 const router = Router();
 
-const { newWallet } = WalletController;
+const { initiate, webhook, transactionHistory } = WalletController;
 const { numberChecker } = verifyNumber;
 
-router.post('/createwallet', numberChecker, newWallet);
+router.post('/credit', numberChecker, initiate);
+router.post('/webhook', numberChecker, webhook);
+router.get('/history', transactionHistory);
+
 
 export default router;
