@@ -157,7 +157,7 @@ class WalletController {
                   walletId: user._id,
                   status: 'successful',
                 };
-                const amountNew = event.data.amount / 100 + user.balance;
+                const amountNew = response.data.quote.BTC.price + user.coin;
                 console.log('amount', amountNew);
                 Wallet.findOneAndUpdate(
                   { email },

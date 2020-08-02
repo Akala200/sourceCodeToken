@@ -6,7 +6,6 @@ const walletSchema = new Schema({
   email: { type: String },
   phone: { type: String },
   balance: { type: Number, default: 0 },
-  coin: { type: Number },
   createdAt: { type: Date, default: Date.now },
 });
 
