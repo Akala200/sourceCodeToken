@@ -47,7 +47,7 @@ class WalletController {
           email: user.email,
           channel: 'card',
           metadata: {
-            user_id: user._id,
+            email: user.email,
           },
         };
 
@@ -112,7 +112,7 @@ class WalletController {
       const currency = 'NGN';
       console.log(req.body);
       const event = req.body;
-      const email = event.data.metadata;
+      const { email } = event.data.metadata;
       try {
         const user = await Wallet.findOne({
           email,
