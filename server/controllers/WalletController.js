@@ -110,7 +110,7 @@ class WalletController {
 
     if (hash === req.headers['x-paystack-signature']) {
       const currency = 'NGN';
-
+      console.log(req.body);
       const event = req.body;
       const email = event.data.metadata;
       try {
