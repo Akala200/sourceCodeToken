@@ -163,7 +163,6 @@ class WalletController {
                     $set: { balance: event.data.amount / 100, coin: response.data.quote.BTC.price }
                   },
                   { multi: true },
-                  { new: true },
                   (err, doc) => {
                     if (err) {
                       console.log('Something wrong when updating data!');
