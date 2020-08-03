@@ -95,7 +95,7 @@ class WalletController {
           .json(responses.error(404, 'User does not exist'));
       }
 
-      return res.status(200).json(responses.success({ status: 200, data: transaction }));
+      return res.json(transaction);
     } catch (error) {
       tracelogger(error);
     }
