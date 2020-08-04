@@ -71,7 +71,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -99,6 +98,31 @@ class WalletController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async balance(req, res) {
+    try {
+      const { email } = req.query;
+
+      const balance = await Wallet.findOne({ email });
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+
+      return res.json(balance);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
   static async webhook(req, res) {
     const hash = crypto
@@ -126,7 +150,7 @@ class WalletController {
             const requestOptions = {
               method: 'GET',
               uri:
-                 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+                'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
               qs: {
                 amount: event.data.amount,
                 id: '2819',
@@ -138,7 +162,6 @@ class WalletController {
               json: true,
               gzip: true,
             };
-
 
             rp(requestOptions)
               .then((response) => {
