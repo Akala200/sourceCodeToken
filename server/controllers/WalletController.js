@@ -85,7 +85,7 @@ class WalletController {
     try {
       const {
         email
-      } = req.body;
+      } = req.query.email;
 
       const transaction = await Transaction.find({ email });
 
