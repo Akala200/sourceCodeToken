@@ -84,7 +84,7 @@ class WalletController {
     try {
       const { email } = req.query;
 
-      const transaction = await Transaction.find({ email });
+      const transaction = await Transaction.find({ email }).limit(5);
 
       if (!transaction) {
         return res
@@ -123,6 +123,48 @@ class WalletController {
       tracelogger(error);
     }
   }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async nairaBalance(req, res) {
+    try {
+      const { email } = req.query;
+
+      const balance = await Wallet.findOne({ email });
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+      const requestOptions = {
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+        qs: {
+          amount: balance.balance,
+          id: '1',
+          convert: 'NGN',
+        },
+        headers: {
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+        },
+        json: true,
+        gzip: true,
+      };
+
+      rp(requestOptions)
+        .then(response => res.json(response.data.quote.NGN));
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
 
   static async webhook(req, res) {
     const hash = crypto
