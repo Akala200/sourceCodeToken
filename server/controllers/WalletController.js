@@ -83,9 +83,7 @@ class WalletController {
   static async transactionHistory(req, res) {
     console.log('here');
     try {
-      const {
-        email
-      } = req.query.email;
+      const { email } = req.query;
 
       const transaction = await Transaction.find({ email });
 
