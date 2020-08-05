@@ -185,7 +185,62 @@ class UserController {
       tracelogger(error);
     }
   }
-  // https://pro-api.coinmarketcap.com/v1/tools/price-conversion
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async updateUser(req, res) {
+    try {
+      const oldEmail = req.query.email;
+      const user = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        phone: req.body.phone,
+        email: req.body.email,
+      };
+      const updatedUser = await User.findOneAndUpdate(
+        { email: oldEmail },
+        user,
+        { new: true }
+      );
+      if (updatedUser) {
+        return res.send({ message: 'Success', data: updatedUser });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getUser(req, res) {
+    try {
+      const oldEmail = req.query.email;
+      const updatedUser = await User.findOne({ email: oldEmail }).select([
+        '-password',
+      ]);
+      if (updatedUser) {
+        return res.send({ message: 'Success', data: updatedUser });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
