@@ -10,12 +10,14 @@ const {
   transactionHistory,
   balance,
   nairaBalance,
+  transactionHistoryAll,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
 router.post('/credit', numberChecker, initiate);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
+router.get('/history/all', transactionHistoryAll);
 router.get('/balance/coin', balance);
 router.get('/balance/naira', nairaBalance);
 

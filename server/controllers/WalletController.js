@@ -106,6 +106,33 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async transactionHistoryAll(req, res) {
+    console.log('here');
+    try {
+      const { email } = req.query;
+
+      const transaction = await Transaction.find({ email });
+
+      if (!transaction) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+
+      return res.json(transaction);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async balance(req, res) {
     try {
       const { email } = req.query;
@@ -158,13 +185,11 @@ class WalletController {
         gzip: true,
       };
 
-      rp(requestOptions)
-        .then(response => res.json(response.data.quote.NGN));
+      rp(requestOptions).then(response => res.json(response.data.quote.NGN));
     } catch (error) {
       tracelogger(error);
     }
   }
-
 
   static async webhook(req, res) {
     const hash = crypto
