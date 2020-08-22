@@ -28,7 +28,7 @@ mongoose.connect(mongoURL, {
   process.stdout.write('connected to mongodb');
 });
 
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.json({ massage: 'Welcome to Coin Api' });
 });
 
