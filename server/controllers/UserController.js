@@ -432,7 +432,7 @@ class UserController {
           };
 
           try {
-            await Wallet.create(walletData);
+            await Wallet.create(walletData).then(toks => console.log(toks));
             await Token.findOneAndDelete({ token: code }).then(toks => res.json(userData));
           } catch (error) {
             return res.json(error);
