@@ -372,6 +372,19 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: tokenUser.user });
+      const TokenData = {
+        id: user._id,
+        email: user.email,
+      };
+
+      const walletData = {
+        phone: user.phone,
+        email: user.email,
+      };
+      console.log(TokenData, 'first cool');
+      console.log(walletData, 'cool');
+      //  Generate Token
+      const tokenize = await signToken(TokenData);
 
       if (user) {
         try {
@@ -410,19 +423,6 @@ class UserController {
             }
           );
 
-          const TokenData = {
-            id: user._id,
-            email: user.email,
-          };
-
-          const walletData = {
-            phone: user.phone,
-            email: user.email,
-          };
-          console.log(TokenData, 'first cool');
-          console.log(walletData, 'cool');
-          //  Generate Token
-          const tokenize = await signToken(TokenData);
 
           const userData = {
             first_name: user.first_name,
