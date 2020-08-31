@@ -372,7 +372,6 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: tokenUser.user });
-      console.log(user);
       const TokenData = {
         id: user._id,
         email: user.email,
@@ -382,8 +381,7 @@ class UserController {
         phone: user.phone,
         email: user.email,
       };
-      console.log(TokenData, 'first cool');
-      console.log(walletData, 'cool');
+
       //  Generate Token
       const tokenize = await signToken(TokenData);
 
