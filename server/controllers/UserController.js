@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -15,6 +16,9 @@ import Wallet from '../models/Wallet';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
+const axios = require('axios').default;
+
+const { MyWallet } = require('blockchain.info');
 
 sgMail.setApiKey(
   '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'
@@ -64,6 +68,7 @@ class UserController {
           length: 7,
           charset: 'numeric',
         });
+
 
         const userObject = {
           first_name,
@@ -367,11 +372,40 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: tokenUser.user });
+      let guid;
+      let address;
+      let label;
       if (user) {
+        axios
+          .post('/https://cosuss.herokuapp.com/api/v2/create', {
+            api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+            password: '12345678900987654321',
+            hd: true,
+          })
+          .then((response) => {
+            console.log(response);
+            guid = response.guid;
+            address = response.address;
+            label = response.label;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        const user = {
+          guid,
+          address,
+          label,
+          regstatus: true,
+        };
+
+
         await User.findOneAndUpdate(
           { email: tokenUser.user },
-          { $set: { regstatus: true } },
-          { new: true },
+          user,
+          {
+            new: true,
+          },
           (err, doc) => {
             if (err) {
               console.log('Something wrong when updating data!');

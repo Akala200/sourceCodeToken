@@ -23,6 +23,15 @@ const UserSchema = new Schema(
     password: {
       type: String,
     },
+    guid: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    label: {
+      type: String,
+    },
     status: {
       type: Boolean,
       default: true,
