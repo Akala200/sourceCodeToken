@@ -372,14 +372,15 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: tokenUser.user });
+      console.log(user);
       const TokenData = {
-        id: tokenUser._id,
-        email: tokenUser.email,
+        id: user._id,
+        email: user.email,
       };
 
       const walletData = {
-        phone: tokenUser.phone,
-        email: tokenUser.email,
+        phone: user.phone,
+        email: user.email,
       };
       console.log(TokenData, 'first cool');
       console.log(walletData, 'cool');
