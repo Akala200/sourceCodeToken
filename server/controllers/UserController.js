@@ -426,12 +426,11 @@ class UserController {
             tokenize,
           };
 
-          const walletData = {
-            phone: user.phone,
-            email: user.email,
-          };
-
           try {
+            const walletData = {
+              phone: user.phone,
+              email: user.email,
+            };
             await Wallet.create(walletData).then(toks => console.log(toks));
             await Token.findOneAndDelete({ token: code }).then(toks => res.json(userData));
           } catch (error) {
