@@ -377,7 +377,7 @@ class UserController {
       let label;
       if (user) {
         axios
-          .post('/https://cosuss.herokuapp.com/api/v2/create', {
+          .post('https://cosuss.herokuapp.com/api/v2/create', {
             api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
             password: '12345678900987654321',
             hd: true,
