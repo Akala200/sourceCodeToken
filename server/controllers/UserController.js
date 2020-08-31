@@ -372,75 +372,73 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: tokenUser.user });
-      let guid;
-      let address;
-      let label;
+
       if (user) {
-        axios
-          .post('https://cosuss.herokuapp.com/api/v2/create', {
-            api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-            password: '12345678900987654321',
-            hd: true,
-          })
-          .then((response) => {
-            console.log(response);
-            guid = response.guid;
-            address = response.address;
-            label = response.label;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-
-        const user = {
-          guid,
-          address,
-          label,
-          regstatus: true,
-        };
-
-
-        await User.findOneAndUpdate(
-          { email: tokenUser.user },
-          user,
-          {
-            new: true,
-          },
-          (err, doc) => {
-            if (err) {
-              console.log('Something wrong when updating data!');
-            }
-
-            console.log(doc);
-          }
-        );
-
-        const TokenData = {
-          id: user._id,
-          email: user.email,
-        };
-        //  Generate Token
-        const tokenize = await signToken(TokenData);
-
-        const userData = {
-          first_name: user.first_name,
-          last_name: user.last_name,
-          phone: user.phone,
-          email: user.email,
-          id: user._id,
-          tokenize,
-        };
-
-        const walletData = {
-          phone: user.phone,
-          email: user.email,
-        };
-
         try {
-          await Wallet.create(walletData);
-          await Token.findOneAndDelete({ token: code }).then(toks => res.json(userData));
+          const response = await axios.post(
+            'https://cosuss.herokuapp.com/api/v2/create',
+            {
+              api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+              password: '12345678900987654321',
+              hd: true,
+            }
+          );
+          console.log(response.data);
+          const guid = response.data.guid;
+          const address = response.data.address;
+          const label = response.data.label;
+
+          const user = {
+            guid,
+            address,
+            label,
+            regstatus: true,
+          };
+
+          await User.findOneAndUpdate(
+            { email: tokenUser.user },
+            user,
+            {
+              new: true,
+            },
+            (err, doc) => {
+              if (err) {
+                console.log('Something wrong when updating data!');
+              }
+
+              console.log(doc);
+            }
+          );
+
+          const TokenData = {
+            id: user._id,
+            email: user.email,
+          };
+          //  Generate Token
+          const tokenize = await signToken(TokenData);
+
+          const userData = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            phone: user.phone,
+            email: user.email,
+            id: user._id,
+            tokenize,
+          };
+
+          const walletData = {
+            phone: user.phone,
+            email: user.email,
+          };
+
+          try {
+            await Wallet.create(walletData);
+            await Token.findOneAndDelete({ token: code }).then(toks => res.json(userData));
+          } catch (error) {
+            return res.json(error);
+          }
         } catch (error) {
-          return res.json(error);
+          console.error(error);
         }
       }
     } catch (error) {
