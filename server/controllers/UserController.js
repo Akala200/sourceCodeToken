@@ -411,24 +411,25 @@ class UserController {
           );
 
           const TokenData = {
-            id: tokenUser._id,
-            email: tokenUser.email,
+            id: user._id,
+            email: user.email,
           };
 
           const walletData = {
-            phone: tokenUser.phone,
-            email: tokenUser.email,
+            phone: user.phone,
+            email: user.email,
           };
-          console.log(walletData);
+          console.log(TokenData, 'first cool');
+          console.log(walletData, 'cool');
           //  Generate Token
           const tokenize = await signToken(TokenData);
 
           const userData = {
-            first_name: tokenUser.first_name,
-            last_name: tokenUser.last_name,
-            phone: tokenUser.phone,
-            email: tokenUser.email,
-            id: tokenUser._id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            phone: user.phone,
+            email: user.email,
+            id: user._id,
             tokenize,
           };
 
