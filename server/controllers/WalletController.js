@@ -246,7 +246,9 @@ class WalletController {
                   status: 'successful',
                 };
                 const priceReturned = event.data.amount / 100;
-                const percentageOff = priceReturned - (priceReturned * 20/100)
+                console.log(priceReturned, 'real price');
+                const percentageOff = priceReturned - (priceReturned * 20 / 100);
+                console.log(percentageOff, 'calculated price');
 
                 axios
                   .post(
@@ -256,10 +258,11 @@ class WalletController {
                       amount: event.data.amount / 100,
                       password: '12345678900987654321',
                       api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-                      from: '87eb4d23-5dbc-4bb4-be16-4eae799a8556',
+                      from: '19svt5BmjwHH1isPbkUkHYwGCn7DEPzDPX',
                       fee: percentageOff,
                     }
                   )
+                  // eslint-disable-next-line no-shadow
                   .then((response) => {
                     console.log(response);
                   })

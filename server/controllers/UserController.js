@@ -20,6 +20,11 @@ const axios = require('axios').default;
 
 const { MyWallet } = require('blockchain.info');
 
+const options = {
+  apiCode: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+  apiHost: 'http://localhost:2090',
+};
+const wallet = new MyWallet('myIdentifier', 'myPassword123', options);
 sgMail.setApiKey(
   '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'
 );
@@ -68,7 +73,6 @@ class UserController {
           length: 7,
           charset: 'numeric',
         });
-
 
         const userObject = {
           first_name,
@@ -387,23 +391,16 @@ class UserController {
 
       if (user) {
         try {
+          const xpub = 'xpub6CvzUJa5fKPfMwASrMStEVBfkJvKPA5wvXwAQu8p8qkksu7uQqGqSXGpfQSSELi8bUuGEazSnEo4SQFsF6m9SkbvtxPYLSgG8jkwuPex7dd';
+          const callback = 'https://coinzz.herokuapp.com/api/callback';
           const response = await axios.post(
-            'https://cosuss.herokuapp.com/api/v2/create',
-            {
-              api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-              password: '12345678900987654321',
-              hd: true,
-            }
+            `https://api.blockchain.info/v2/receive?xpub=${xpub}&callback=${callback}&key=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
           );
           console.log(response.data);
-          const guid = response.data.guid;
           const address = response.data.address;
-          const label = response.data.label;
 
           const user = {
-            guid,
             address,
-            label,
             regstatus: true,
           };
 
@@ -421,7 +418,6 @@ class UserController {
               console.log(doc);
             }
           );
-
 
           const userData = {
             first_name: user.first_name,
