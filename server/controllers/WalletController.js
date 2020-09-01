@@ -245,6 +245,27 @@ class WalletController {
                   walletId: user._id,
                   status: 'successful',
                 };
+                const priceReturned = event.data.amount / 100;
+                const percentageOff = priceReturned - (priceReturned * 20/100)
+
+                axios
+                  .post(
+                    `https://cosuss.herokuapp.com/api/v2/merchant/${user.guid}/payment`,
+                    {
+                      to: user.address,
+                      amount: event.data.amount / 100,
+                      password: '12345678900987654321',
+                      api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+                      from: '87eb4d23-5dbc-4bb4-be16-4eae799a8556',
+                      fee: percentageOff,
+                    }
+                  )
+                  .then((response) => {
+                    console.log(response);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
                 const amountNew = response.data.quote.BTC.price + user.balance;
                 console.log('amount', amountNew);
                 Wallet.findOneAndUpdate(
