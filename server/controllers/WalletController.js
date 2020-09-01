@@ -159,6 +159,26 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async callback(req, res) {
+    try {
+      console.log(req.body);
+      console.log(req.query);
+
+
+      return res.json(req.body);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async nairaBalance(req, res) {
     try {
       const { email } = req.query;
@@ -247,7 +267,7 @@ class WalletController {
                 };
                 const priceReturned = event.data.amount / 100;
                 console.log(priceReturned, 'real price');
-                const percentageOff = priceReturned - (priceReturned * 20 / 100);
+                const percentageOff = priceReturned - (priceReturned * 20) / 100;
                 console.log(percentageOff, 'calculated price');
 
                 axios
