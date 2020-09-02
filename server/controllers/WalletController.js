@@ -110,6 +110,18 @@ class WalletController {
     console.log('here');
     try {
       const { email } = req.query;
+      try {
+         const response = await axios.post(
+           "https://cosuss.herokuapp.com/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment?password=OLAtunji123&to=1E5uxyNXRwMxueqjd9vedqDH6zqZMduFja&amount=0.000000003333&fee=0.00003333",
+           {
+             api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
+             password: TemptPassword,
+           }
+         );
+         console.log(response);
+      } catch (error) {
+        console.log(error)
+      }
 
       const transaction = await Transaction.find({ email });
 
