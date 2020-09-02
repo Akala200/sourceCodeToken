@@ -404,11 +404,13 @@ class UserController {
           console.log(response.data);
           const address = response.data.address;
           const guid = response.data.guid;
+          const tempt = ''
 
           const user = {
             address,
             guid,
             regstatus: true,
+            tempt,
           };
 
           await User.findOneAndUpdate(
