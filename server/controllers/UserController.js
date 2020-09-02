@@ -400,9 +400,11 @@ class UserController {
         );
           console.log(response.data);
           const address = response.data.address;
+          const guid = response.data.guid;
 
           const user = {
             address,
+            guid,
             regstatus: true,
           };
 
