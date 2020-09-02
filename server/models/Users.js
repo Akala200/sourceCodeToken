@@ -29,6 +29,9 @@ const UserSchema = new Schema(
     address: {
       type: String,
     },
+    tempt: {
+      type: String,
+    },
     label: {
       type: String,
     },

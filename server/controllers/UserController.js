@@ -80,6 +80,7 @@ class UserController {
           email,
           phone,
           password,
+          tempt: password,
         };
 
         const createdUser = await User.create(userObject);
@@ -386,6 +387,8 @@ class UserController {
         email: user.email,
       };
 
+      const TemptPassword = user.tempt;
+
       //  Generate Token
       const tokenize = await signToken(TokenData);
 
@@ -395,7 +398,7 @@ class UserController {
           "https://cosuss.herokuapp.com/api/v2/create",
           {
             api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
-            password: "12345678900987654321",
+            password: TemptPassword,
           }
         );
           console.log(response.data);
