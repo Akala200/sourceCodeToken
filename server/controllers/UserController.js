@@ -391,11 +391,13 @@ class UserController {
 
       if (user) {
         try {
-          const xpub = 'xpub6CvzUJa5fKPfMwASrMStEVBfkJvKPA5wvXwAQu8p8qkksu7uQqGqSXGpfQSSELi8bUuGEazSnEo4SQFsF6m9SkbvtxPYLSgG8jkwuPex7dd';
-          const callback = 'https://coinzz.herokuapp.com/api/callback';
-          const response = await axios.post(
-            `https://api.blockchain.info/v2/receive?xpub=${xpub}&callback=${callback}&key=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
-          );
+        const response = await axios.post(
+          "https://cosuss.herokuapp.com/api/v2/create",
+          {
+            api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
+            password: "12345678900987654321",
+          }
+        );
           console.log(response.data);
           const address = response.data.address;
 
