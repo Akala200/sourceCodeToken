@@ -386,6 +386,15 @@ class UserController {
         phone: user.phone,
         email: user.email,
       };
+      
+      const userData = {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone: user.phone,
+        email: user.email,
+        id: user._id,
+        tokenize,
+      };
 
       const TemptPassword = user.tempt;
 
@@ -428,14 +437,6 @@ class UserController {
             }
           );
 
-          const userData = {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            phone: user.phone,
-            email: user.email,
-            id: user._id,
-            tokenize,
-          };
 
           try {
             const willet = await Wallet.create(walletData);
