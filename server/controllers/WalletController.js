@@ -110,18 +110,6 @@ class WalletController {
     console.log('here');
     try {
       const { email } = req.query;
-      try {
-         const response = await axios.post(
-           "https://cosuss.herokuapp.com/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment?password=OLAtunji123&to=1E5uxyNXRwMxueqjd9vedqDH6zqZMduFja&amount=0.000000003333&fee=0.00003333",
-           {
-             api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
-             password: TemptPassword,
-           }
-         );
-         console.log(response);
-      } catch (error) {
-        console.log(error)
-      }
 
       const transaction = await Transaction.find({ email });
 
@@ -148,8 +136,21 @@ class WalletController {
   static async balance(req, res) {
     try {
       const { email } = req.query;
+      let response;
+      try {
+      const  user = await User.findOne({ email });
+       response = await axios.post(
+          `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`);
+        console.log(response.data.balance);
+     } catch (error) {
+       console.log(error)
+     }
 
-      const balance = await Wallet.findOne({ email });
+      const balance = await Wallet.findOneAndUpdate(
+        { email: email },
+       {balance: response.data.balance},
+        { new: true }
+      )
 
       if (!balance) {
         return res

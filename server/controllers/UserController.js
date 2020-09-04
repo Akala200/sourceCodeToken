@@ -22,9 +22,9 @@ const { MyWallet } = require('blockchain.info');
 
 const options = {
   apiCode: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-  apiHost: 'https://cosuss.herokuapp.com',
+  apiHost: 'http://localhost:2090',
 };
-
+const wallet = new MyWallet('myIdentifier', 'myPassword123', options);
 sgMail.setApiKey(
   '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'
 );
@@ -386,7 +386,6 @@ class UserController {
         phone: user.phone,
         email: user.email,
       };
-
       const userData = {
         first_name: user.first_name,
         last_name: user.last_name,
@@ -402,20 +401,22 @@ class UserController {
       const tokenize = await signToken(TokenData);
 
       if (user) {
-        const password3 = TemptPassword;
-        const apiCode = '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9'
         try {
-        const response = MyWallet.create(password3, apiCode, options);
-          console.log(response);
+        const response = await axios.post(
+          "https://cosuss.herokuapp.com/api/v2/create",
+          {
+            api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
+            password: TemptPassword,
+          }
+        );
+          console.log(response.data);
           const address = response.data.address;
           const guid = response.data.guid;
-          const tempt = ''
 
           const user = {
             address,
             guid,
             regstatus: true,
-            tempt,
           };
 
           await User.findOneAndUpdate(
