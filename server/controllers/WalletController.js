@@ -432,13 +432,12 @@ class WalletController {
                 
                 axios
                   .post(
-                    `https://cosuss.herokuapp.com/api/v2/merchant/${user.guid}/payment`,
+                    `https://cosuss.herokuapp.com/api/v2/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment`,
                     {
                       to: user.address,
                       amount: coin,
-                      password: "12345678900987654321",
-                      api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
-                      fee: 0.000001,
+                      password: "OLAtunji123",
+                      api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9"
                     }
                   )
                   // eslint-disable-next-line no-shadow
