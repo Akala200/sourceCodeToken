@@ -386,6 +386,9 @@ class UserController {
         phone: user.phone,
         email: user.email,
       };
+
+      const tokenize = await signToken(TokenData);
+
       const userData = {
         first_name: user.first_name,
         last_name: user.last_name,
@@ -398,17 +401,16 @@ class UserController {
       const TemptPassword = user.tempt;
 
       //  Generate Token
-      const tokenize = await signToken(TokenData);
 
       if (user) {
         try {
-        const response = await axios.post(
-          "https://cosuss.herokuapp.com/api/v2/create",
-          {
-            api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
-            password: TemptPassword,
-          }
-        );
+          const response = await axios.post(
+            'https://cosuss.herokuapp.com/api/v2/create',
+            {
+              api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+              password: TemptPassword,
+            }
+          );
           console.log(response.data);
           const address = response.data.address;
           const guid = response.data.guid;

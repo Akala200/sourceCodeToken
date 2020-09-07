@@ -11,7 +11,8 @@ const {
   balance,
   nairaBalance,
   transactionHistoryAll,
-  callback
+  callback,
+  convert
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -22,6 +23,7 @@ router.get('/history/all', transactionHistoryAll);
 router.get('/balance/coin', balance);
 router.get('/balance/naira', nairaBalance);
 router.get('/callback', callback);
+router.get('/convert', convert);
 
 
 export default router;

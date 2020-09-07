@@ -138,19 +138,20 @@ class WalletController {
       const { email } = req.query;
       let response;
       try {
-      const  user = await User.findOne({ email });
-       response = await axios.post(
-          `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`);
+        const user = await User.findOne({ email });
+        response = await axios.post(
+          `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
+        );
         console.log(response.data.balance);
-     } catch (error) {
-       console.log(error)
-     }
+      } catch (error) {
+        console.log(error);
+      }
 
       const balance = await Wallet.findOneAndUpdate(
-        { email: email },
-       {balance: response.data.balance},
+        { email },
+        { balance: response.data.balance },
         { new: true }
-      )
+      );
 
       if (!balance) {
         return res
@@ -176,7 +177,6 @@ class WalletController {
     try {
       console.log(req.body);
       console.log(req.query);
-
 
       return res.json(req.body);
     } catch (error) {
@@ -219,6 +219,39 @@ class WalletController {
       };
 
       rp(requestOptions).then(response => res.json(response.data.quote.NGN));
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async convert(req, res) {
+    try {
+      const { amount } = req.query;
+
+      const requestOptions = {
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+        qs: {
+          amount,
+          id: '2819',
+          convert: 'BTC',
+        },
+        headers: {
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+        },
+        json: true,
+        gzip: true,
+      };
+
+      rp(requestOptions).then(response => res.json(response.data.quote.BTC.price));
     } catch (error) {
       tracelogger(error);
     }
