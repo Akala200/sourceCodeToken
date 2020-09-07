@@ -268,6 +268,46 @@ class WalletController {
       tracelogger(error);
     }
   }
+  
+
+    /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async coinPrice(req, res) {
+    try {
+      const { amount } = req.query;
+
+
+      const requestOptions = {
+        method: "GET",
+        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        qs: {
+          amount: amount,
+          id: "2819",
+          convert: "BTC",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
+
+      rp(requestOptions).then((response) => {
+        const dataRes = {
+          price: response.data.quote.BTC.price,
+        };
+        res.json(dataRes);
+      });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
