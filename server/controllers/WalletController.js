@@ -334,7 +334,7 @@ class WalletController {
       const walletBalance = await Wallet.findOne({ email });
       console.log("amount", walletBalance.balance);
       if (flatAmount > walletBalance.balance) {
-        return res.status(404).json(responses.error(400, "Insufficient fund"));
+        return res.status(400).json(responses.error(400, "Insufficient fund"));
       }
 
       const transactionObject = {
