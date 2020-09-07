@@ -31,7 +31,7 @@ class WalletController {
    */
   static async initiate(req, res) {
     const currency = "NGN";
-    const { email, amount } = req.body;
+    const { email, amount, bitcoin } = req.body;
     try {
       const user = await User.findOne({
         email,
@@ -48,6 +48,7 @@ class WalletController {
           channel: "card",
           metadata: {
             email: user.email,
+            coin: bitcoin,
           },
         };
 
@@ -210,7 +211,7 @@ class WalletController {
           amount: balance.balance,
           id: "1",
           convert: "NGN",
-        },
+        },  
         headers: {
           "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
         },
@@ -400,11 +401,12 @@ class WalletController {
       const currency = "NGN";
       console.log(req.body);
       const event = req.body;
-      const { email } = event.data.metadata;
+      const { email, coin } = event.data.metadata;
       try {
-        const user = await Wallet.findOne({
+        const wallet = await Wallet.findOne({
           email,
         });
+        const user = await User.findOne({ email });
 
         if (!user) {
           return res
@@ -413,53 +415,30 @@ class WalletController {
         }
         if (event.event === "charge.success") {
           try {
-            const requestOptions = {
-              method: "GET",
-              uri:
-                "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
-              qs: {
-                amount: event.data.amount,
-                id: "2819",
-                convert: "BTC",
-              },
-              headers: {
-                "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
-              },
-              json: true,
-              gzip: true,
-            };
-
-            rp(requestOptions)
-              .then((response) => {
-                console.log("API call response:", response);
                 const transactionObject = {
                   amount: event.data.amount / 100,
-                  coins: response.data.quote.BTC.price,
+                  coins: coin,
                   type: "credit",
                   mode: "Card",
                   lastFour: event.data.authorization.last4,
                   cardType: event.data.authorization.card_type,
                   email: user.email,
                   ref: event.data.reference,
-                  walletId: user._id,
+                  walletId: wallet._id,
                   status: "successful",
                 };
-                const amountNew = response.data.quote.BTC.price + user.balance;
+                const amountNew = coin + user.balance;
                 const priceReturned = event.data.amount / 100;
-                console.log(priceReturned, "real price");
-                const percentageOff =
-                  priceReturned - (priceReturned * 20) / 100;
-                console.log(percentageOff, "calculated price");
-
+                
                 axios
                   .post(
                     `https://cosuss.herokuapp.com/api/v2/merchant/${user.guid}/payment`,
                     {
                       to: user.address,
-                      amount: event.data.amount / 100,
+                      amount: coin,
                       password: "12345678900987654321",
                       api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
-                      fee: percentageOff,
+                      fee: 0.000001,
                     }
                   )
                   // eslint-disable-next-line no-shadow
@@ -486,11 +465,6 @@ class WalletController {
                   .catch((error) => {
                     console.log(error);
                   });
-              })
-              .catch((err) => {
-                console.log(err);
-                return res.status(500).json(err);
-              });
           } catch (error) {
             tracelogger(error);
           }
