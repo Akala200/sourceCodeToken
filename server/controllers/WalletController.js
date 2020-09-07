@@ -237,9 +237,10 @@ class WalletController {
       const { amount } = req.query;
 
       const percent = 3;
-      const discount = (percent / amount) * 100;
+      const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount);
+      console.log(realAmount, 'aftersub');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
         method: 'GET',
@@ -256,7 +257,14 @@ class WalletController {
         gzip: true,
       };
 
-      rp(requestOptions).then(response => res.json(response.data.quote.BTC.price));
+      rp(requestOptions)
+        .then((response) => {
+          const dataRes = {
+            price: response.data.quote.BTC.price,
+            amountAfterFee: realAmount,
+          };
+          res.json(dataRes);
+        });
     } catch (error) {
       tracelogger(error);
     }
