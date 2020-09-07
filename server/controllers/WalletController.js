@@ -236,11 +236,16 @@ class WalletController {
     try {
       const { amount } = req.query;
 
+      const percent = 3;
+      const discount = (percent / amount) * 100;
+      const realAmount = amount - discount;
+      console.log(realAmount);
+
       const requestOptions = {
         method: 'GET',
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
-          amount,
+          amount: realAmount,
           id: '2819',
           convert: 'BTC',
         },
