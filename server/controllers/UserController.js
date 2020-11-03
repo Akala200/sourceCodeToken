@@ -369,9 +369,9 @@ class UserController {
     console.log(tokenUser.user);
     if (!tokenUser) {
       return res
-        .status(404)
+        .status(200)
         .json(
-          responses.error(404, 'Account verification Failed, Invalid token')
+          responses.success(200, 'Account verification Failed, Invalid token', userData)
         );
     }
 
@@ -440,7 +440,13 @@ class UserController {
           try {
             const willet = await Wallet.create(walletData);
             console.log(willet);
-            await Token.findOneAndDelete({ token: code }).then(toks => res.json(userData));
+            await Token.findOneAndDelete({ token: code }).then(toks => {
+              return res
+        .status(404)
+        .json(
+          responses.error(404, 'Account verification Failed, Invalid token')
+        );
+            });
           } catch (error) {
             return res.json(error);
           }
