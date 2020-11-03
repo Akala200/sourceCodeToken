@@ -369,9 +369,9 @@ class UserController {
     console.log(tokenUser.user);
     if (!tokenUser) {
       return res
-        .status(200)
+        .status(404)
         .json(
-          responses.success(200, 'Account verification Failed, Invalid token', userData)
+          responses.success(404, 'Account verification Failed, Invalid token', userData)
         );
     }
 
@@ -443,19 +443,31 @@ class UserController {
             await Token.findOneAndDelete({ token: code }).then(toks => {
               return res
         .status(404)
-        .json(
-          responses.error(404, 'Account verification Failed, Invalid token')
-        );
+        .json( responses.error(404, 'Account verification Failed, Invalid token') );
             });
           } catch (error) {
-            return res.json(error);
+            return res
+            .status(500)
+            .json(
+              responses.error(500, 'Server Error')
+            );
           }
         } catch (error) {
           console.error(error);
         }
+      } else {
+        return res
+        .status(404)
+        .json(
+          responses.error(404, 'Account verification Failed, Invalid token')
+        );
       }
     } catch (error) {
-      return res.json(error);
+      return res
+      .status(500)
+      .json(
+        responses.error(500, 'Server Error')
+      );
     }
 
     // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
