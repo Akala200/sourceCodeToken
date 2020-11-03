@@ -366,12 +366,11 @@ class UserController {
     } catch (error) {
       return res.json(error);
     }
-    console.log(tokenUser.user);
     if (!tokenUser) {
       return res
         .status(404)
         .json(
-          responses.success(404, 'Account verification Failed, Invalid token', userData)
+          responses.success(404, 'Account verification Failed, Invalid token',)
         );
     }
 
