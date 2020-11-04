@@ -441,8 +441,8 @@ class UserController {
             console.log(willet);
             await Token.findOneAndDelete({ token: code }).then(toks => {
               return res
-        .status(404)
-        .json( responses.error(404, 'Account verification Failed, Invalid token') );
+        .status(200)
+        .json( responses.error(200, 'Account verified successfully', userData ) );
             });
           } catch (error) {
             return res
