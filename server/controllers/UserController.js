@@ -344,7 +344,9 @@ class UserController {
       token,
     };
 
-    return res.json(userData);
+    return res
+        .status(200)
+        .json( responses.success(200, 'Login successfully', userData ) );
   }
 
   /**
