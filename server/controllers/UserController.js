@@ -309,11 +309,13 @@ class UserController {
     try {
       user = await User.findOne({ email });
     } catch (error) {
-      return res.json(error);
+      return res
+      .status(500)
+      .json(responses.error(500, { msg: 'Server error' }));
     }
 
     if (!user) {
-      return res.status(401).json(responses.error(422, erroresponse));
+      return res.status(401).json(responses.error(401, erroresponse));
     }
     if (user.regstatus === false) {
       return res
