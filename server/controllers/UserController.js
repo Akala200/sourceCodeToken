@@ -442,7 +442,7 @@ class UserController {
             await Token.findOneAndDelete({ token: code }).then(toks => {
               return res
         .status(200)
-        .json( responses.error(200, 'Account verified successfully', userData ) );
+        .json( responses.success(200, 'Account verified successfully', userData ) );
             });
           } catch (error) {
             return res
