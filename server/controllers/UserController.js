@@ -60,6 +60,14 @@ class UserController {
     const {
       email, phone, first_name, last_name, password
     } = req.body;
+
+     if (!email || !phone || first_name || last_name || password) {
+       return res
+         .status(400)
+         .json(responses.error(400, "Please fill in all details"));
+     }
+
+
     try {
       const user = await User.findOne({ email });
 
@@ -144,7 +152,7 @@ class UserController {
       rp(requestOptions)
         .then((response) => {
           console.log('API call response:', response);
-          return res.json(response);
+           return res.status(200).json(response);
         })
         .catch((err) => {
           console.log(err);
