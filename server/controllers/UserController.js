@@ -148,7 +148,7 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-                    console.log(response.data.quote);
+                    console.log(response.data);
 
           class person {
             constructor(o) {
