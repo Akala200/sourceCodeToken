@@ -149,6 +149,16 @@ class UserController {
       rp(requestOptions)
         .then((response) => {
          
+          class person {
+            constructor(o) {
+              this.name = o.name;
+              this.symbol = o.symbol;
+              this.symbol = o.age;
+              this.price = o.price;
+              this.percentage_change = o.percentage_change;
+            }
+          }
+
           var arr_of_classes = [];
           for (var i = 0; i < 10; i++) {
             arr_of_classes.push(
