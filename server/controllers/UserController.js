@@ -148,14 +148,15 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-         
+                    console.log(response.data.quote);
+
           class person {
             constructor(o) {
               this.name = o.name;
               this.symbol = o.symbol;
               this.symbol = o.age;
               this.price = o.price;
-              this.percentage_change = o.percentage_change;
+            //  this.percentage_change = o.percentage_change;
             }
           }
 
@@ -167,11 +168,10 @@ class UserController {
                 symbol: response.data.symbol,
                 symbol: response.data.symbol,
                 price: response.data.quote.NGN.price,
-                percentage_change: response.data.quote.NGN.percent_change_1h,
+               // percentage_change: response.data.quote.NGN.percent_change_1h,
               })
             );
           }
-           console.log(response.data.quote);
           return res.status(200).json(arr_of_classes);
         })
         .catch((err) => {
