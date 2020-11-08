@@ -181,7 +181,7 @@ class UserController {
           }
                               console.log(mapped);
 
-          return res.status(200).json(mapped);
+          return res.status(200).json(response);
         })
         .catch((err) => {
           console.log(err);
