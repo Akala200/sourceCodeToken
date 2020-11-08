@@ -151,19 +151,16 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-          const dataGotten = response.data[0];
-          const city = t(dataGotten, 'quote.NGN.price').safeObject;
-
-          console.log(response.data);
-          const newF = dataGotten.quote;
-          const mapped = dataGotten.map(({ name, slug }) => ({
+          const dataGotten = response.data;
+          const dataGottenNew = response.data[0];
+          const mapped = dataGotten.map(({ name, slug, quote }) => ({
             name,
             slug,
+            quote
           }));
 
-          console.log(mapped);
 
-          return res.status(200).json(newF);
+          return res.status(200).json(mapped);
         })
         .catch((err) => {
           console.log(err);
