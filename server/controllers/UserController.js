@@ -148,8 +148,21 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-          console.log("API call response:", response);
-          return res.status(200).json(response);
+         
+          var arr_of_classes = [];
+          for (var i = 0; i < 10; i++) {
+            arr_of_classes.push(
+              new person({
+                name: response.data.name,
+                symbol: response.data.symbol,
+                symbol: response.data.symbol,
+                price: response.data.quote.NGN.price,
+                percentage_change: response.data.quote.NGN.percent_change_1h,
+              })
+            );
+          }
+           console.log(arr_of_classes);
+          return res.status(200).json(arr_of_classes);
         })
         .catch((err) => {
           console.log(err);
