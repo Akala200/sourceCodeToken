@@ -171,7 +171,7 @@ class UserController {
               })
             );
           }
-           console.log(arr_of_classes);
+           console.log(response.data.quote);
           return res.status(200).json(arr_of_classes);
         })
         .catch((err) => {
