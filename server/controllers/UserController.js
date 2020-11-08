@@ -155,7 +155,7 @@ class UserController {
               this.name = o.name;
               this.symbol = o.symbol;
               this.symbol = o.age;
-              this.price = o.price;
+            //  this.price = o.price;
             //  this.percentage_change = o.percentage_change;
             }
           }
@@ -167,7 +167,7 @@ class UserController {
                 name: response.data.name,
                 symbol: response.data.symbol,
                 symbol: response.data.symbol,
-                price: response.data.quote.NGN.price,
+               // price: response.data.quote.NGN.price,
                // percentage_change: response.data.quote.NGN.percent_change_1h,
               })
             );
