@@ -150,7 +150,7 @@ class UserController {
         .then((response) => {
 
                     const dataGotten = response.data;
-                     console.log(dataGotten.quote);
+                     console.log(dataGotten);
                     const mapped = dataGotten.map(({ name, slug }) => ({
                       name,
                       slug,
