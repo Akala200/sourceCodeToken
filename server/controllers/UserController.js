@@ -150,7 +150,8 @@ class UserController {
         .then((response) => {
 
                     const dataGotten = response.data;
-                     console.log(dataGotten.quote);
+                        console.log( response.data;);
+                    const newF = dataGotten.quote;
                     const mapped = dataGotten.map(({ name, slug }) => ({
                       name,
                       slug,
@@ -181,7 +182,7 @@ class UserController {
           }
                               console.log(mapped);
 
-          return res.status(200).json(response);
+          return res.status(200).json(newF);
         })
         .catch((err) => {
           console.log(err);
