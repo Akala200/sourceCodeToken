@@ -57,16 +57,13 @@ class UserController {
    *@memberof UsersController
    */
   static async newUser(req, res) {
-    const {
-      email, phone, first_name, last_name, password
-    } = req.body;
+    const { email, phone, first_name, last_name, password } = req.body;
 
-     if (!email || !phone || first_name || last_name || password) {
-       return res
-         .status(400)
-         .json(responses.error(400, "Please fill in all details"));
-     }
-
+    if (!email || !phone || first_name || last_name || password) {
+      return res
+        .status(400)
+        .json(responses.error(400, "Please fill in all details"));
+    }
 
     try {
       const user = await User.findOne({ email });
@@ -74,12 +71,12 @@ class UserController {
       if (user) {
         return res
           .status(400)
-          .json(responses.error(400, 'Sorry, this user already exist'));
+          .json(responses.error(400, "Sorry, this user already exist"));
       }
       if (!user) {
         const code = randomstring.generate({
           length: 7,
-          charset: 'numeric',
+          charset: "numeric",
         });
 
         const userObject = {
@@ -95,8 +92,8 @@ class UserController {
 
         const msg = {
           to: createdUser.email,
-          from: 'support@ningotv.com',
-          subject: 'Email Verification',
+          from: "support@ningotv.com",
+          subject: "Email Verification",
           text: `Kindly use this ${code} to verify your account`,
         };
 
@@ -112,9 +109,9 @@ class UserController {
         if (tokenRegistration) {
           return res
             .status(201)
-            .json(responses.success(201, 'Email sent successfully'));
+            .json(responses.success(201, "Email sent successfully"));
         } else {
-          return res.status(500).json(responses.success(500, 'Email not sent'));
+          return res.status(500).json(responses.success(500, "Email not sent"));
         }
       }
     } catch (error) {
@@ -130,20 +127,20 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async bitcoin(req, res) {
-    console.log('here');
+  static async bitcoinMobile(req, res) {
+    console.log("here");
     try {
       const requestOptions = {
-        method: 'GET',
+        method: "GET",
         uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
         qs: {
-          start: '1',
-          limit: '1',
-          convert: 'NGN',
+          start: "1",
+          limit: "4",
+          convert: "NGN",
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
         },
         json: true,
         gzip: true,
@@ -151,8 +148,49 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-          console.log('API call response:', response);
-           return res.status(200).json(response);
+          console.log("API call response:", response);
+          return res.status(200).json(response);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async bitcoin(req, res) {
+    console.log("here");
+    try {
+      const requestOptions = {
+        method: "GET",
+        uri:
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        qs: {
+          start: "1",
+          limit: "1",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
+
+      rp(requestOptions)
+        .then((response) => {
+          console.log("API call response:", response);
+          return res.status(200).json(response);
         })
         .catch((err) => {
           console.log(err);
@@ -172,19 +210,19 @@ class UserController {
    *@memberof UsersController
    */
   static async shortlist(req, res) {
-    console.log('here');
+    console.log("here");
     try {
       const requestOptions = {
-        method: 'GET',
+        method: "GET",
         uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
         qs: {
-          start: '1',
-          limit: '4',
-          convert: 'NGN',
+          start: "1",
+          limit: "4",
+          convert: "NGN",
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
         },
         json: true,
         gzip: true,
@@ -192,7 +230,7 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-          console.log('API call response:', response);
+          console.log("API call response:", response);
           return res.json(response);
         })
         .catch((err) => {
@@ -227,9 +265,9 @@ class UserController {
         { new: true }
       );
       if (updatedUser) {
-        return res.send({ message: 'Success', data: updatedUser });
+        return res.send({ message: "Success", data: updatedUser });
       } else {
-        return res.send({ message: 'Failed' });
+        return res.send({ message: "Failed" });
       }
     } catch (error) {
       return res.status(500).send(error);
@@ -248,12 +286,12 @@ class UserController {
     try {
       const oldEmail = req.query.email;
       const updatedUser = await User.findOne({ email: oldEmail }).select([
-        '-password',
+        "-password",
       ]);
       if (updatedUser) {
-        return res.send({ message: 'Success', data: updatedUser });
+        return res.send({ message: "Success", data: updatedUser });
       } else {
-        return res.send({ message: 'Failed' });
+        return res.send({ message: "Failed" });
       }
     } catch (error) {
       return res.status(500).send(error);
@@ -269,19 +307,19 @@ class UserController {
    *@memberof UsersController
    */
   static async getlist(req, res) {
-    console.log('here');
+    console.log("here");
     try {
       const requestOptions = {
-        method: 'GET',
+        method: "GET",
         uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+          "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
         qs: {
-          start: '1',
-          limit: '10',
-          convert: 'NGN',
+          start: "1",
+          limit: "10",
+          convert: "NGN",
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
         },
         json: true,
         gzip: true,
@@ -289,7 +327,7 @@ class UserController {
 
       rp(requestOptions)
         .then((response) => {
-          console.log('API call response:', response);
+          console.log("API call response:", response);
           return res.json(response);
         })
         .catch((err) => {
@@ -318,8 +356,8 @@ class UserController {
       user = await User.findOne({ email });
     } catch (error) {
       return res
-      .status(500)
-      .json(responses.error(500, { msg: 'Server error' }));
+        .status(500)
+        .json(responses.error(500, { msg: "Server error" }));
     }
 
     if (!user) {
@@ -328,7 +366,7 @@ class UserController {
     if (user.regstatus === false) {
       return res
         .status(422)
-        .json(responses.error(422, { msg: 'Kindly verify your account' }));
+        .json(responses.error(422, { msg: "Kindly verify your account" }));
     }
 
     const valid = await bcrypt.compare(password, user.password);
@@ -355,8 +393,8 @@ class UserController {
     };
 
     return res
-        .status(200)
-        .json( responses.success(200, 'Login successfully', userData ) );
+      .status(200)
+      .json(responses.success(200, "Login successfully", userData));
   }
 
   /**
@@ -382,7 +420,7 @@ class UserController {
       return res
         .status(404)
         .json(
-          responses.success(404, 'Account verification Failed, Invalid token',)
+          responses.success(404, "Account verification Failed, Invalid token")
         );
     }
 
@@ -416,9 +454,9 @@ class UserController {
       if (user) {
         try {
           const response = await axios.post(
-            'https://cosuss.herokuapp.com/api/v2/create',
+            "https://cosuss.herokuapp.com/api/v2/create",
             {
-              api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+              api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
               password: TemptPassword,
             }
           );
@@ -440,45 +478,42 @@ class UserController {
             },
             (err, doc) => {
               if (err) {
-                console.log('Something wrong when updating data!');
+                console.log("Something wrong when updating data!");
               }
 
               console.log(doc);
             }
           );
 
-
           try {
             const willet = await Wallet.create(walletData);
             console.log(willet);
-            await Token.findOneAndDelete({ token: code }).then(toks => {
+            await Token.findOneAndDelete({ token: code }).then((toks) => {
               return res
-        .status(200)
-        .json( responses.success(200, 'Account verified successfully', userData ) );
+                .status(200)
+                .json(
+                  responses.success(
+                    200,
+                    "Account verified successfully",
+                    userData
+                  )
+                );
             });
           } catch (error) {
-            return res
-            .status(500)
-            .json(
-              responses.error(500, 'Server Error')
-            );
+            return res.status(500).json(responses.error(500, "Server Error"));
           }
         } catch (error) {
           console.error(error);
         }
       } else {
         return res
-        .status(404)
-        .json(
-          responses.error(404, 'Account verification Failed, Invalid token')
-        );
+          .status(404)
+          .json(
+            responses.error(404, "Account verification Failed, Invalid token")
+          );
       }
     } catch (error) {
-      return res
-      .status(500)
-      .json(
-        responses.error(500, 'Server Error')
-      );
+      return res.status(500).json(responses.error(500, "Server Error"));
     }
 
     // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
