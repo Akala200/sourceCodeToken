@@ -150,6 +150,14 @@ class UserController {
         .then((response) => {
                     console.log(response.data.quote);
 
+                    const dataGotten = response.data;
+
+                    const mapped = dataGotten.map(({ name, slug }) => ({
+                      name,
+                      slug,
+                    }));
+
+
           class person {
             constructor(o) {
               this.name = o.name;
@@ -172,9 +180,9 @@ class UserController {
               })
             );
           }
-                              console.log(arr_of_classes);
+                              console.log(mapped);
 
-          return res.status(200).json(arr_of_classes);
+          return res.status(200).json(mapped);
         })
         .catch((err) => {
           console.log(err);
