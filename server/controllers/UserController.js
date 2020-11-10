@@ -122,6 +122,7 @@ class UserController {
     }
   }
 
+
   /**
    *@description Creates a new wallet
    *@static
@@ -138,7 +139,15 @@ class UserController {
           // eslint-disable-next-line max-len
           'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
         )
-        .then(response => res.status(200).json(response.data))
+        .then((response) => {
+          const dataGotten = response.data;
+          const mapped = dataGotten.map(({ currency, timestamps, prices }) => ({
+            currency,
+            timestamps,
+            prices: prices.toFixed(3),
+          }));
+          return res.status(200).json(mapped);
+        })
         .catch((err) => {
           console.log(err);
           return res.status(500).json(err);
