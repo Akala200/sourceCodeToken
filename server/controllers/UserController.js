@@ -131,13 +131,48 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async bitcoinMobileNgn(req, res) {
+    console.log('here');
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,Chainlink,&interval=1d,30d&convert=NGN&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const mapped = dataGotten.map(({ currency, timestamps, prices }) => ({
+            currency,
+            timestamps,
+            prices: prices.map(parseFloat),
+          }));
+          return res.status(200).json(mapped);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async bitcoinMobile(req, res) {
     console.log('here');
     try {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,Chainlink&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
