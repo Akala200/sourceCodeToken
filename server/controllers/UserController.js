@@ -133,35 +133,12 @@ class UserController {
   static async bitcoinMobile(req, res) {
     console.log('here');
     try {
-      const requestOptions = {
-        method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
-        qs: {
-          start: '1',
-          limit: '4',
-          convert: 'NGN',
-        },
-        headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
-        },
-        json: true,
-        gzip: true,
-      };
-
-      rp(requestOptions)
-        .then((response) => {
-          const dataGotten = response.data;
-          const dataGottenNew = response.data[0];
-          const mapped = dataGotten.map(({ name, slug, quote }) => ({
-            name,
-            slug,
-            quote
-          }));
-
-
-          return res.status(200).json(mapped);
-        })
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
+        )
+        .then(response => res.status(200).json(response.data))
         .catch((err) => {
           console.log(err);
           return res.status(500).json(err);
