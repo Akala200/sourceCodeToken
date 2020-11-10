@@ -170,6 +170,45 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async bitcoinMobileUsd(req, res) {
+    console.log('here');
+    const time = '1d';
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
+            percentage_change: coin['1d'].price_change_pct,
+          }));
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async bitcoinMobile(req, res) {
     console.log('here');
     try {
