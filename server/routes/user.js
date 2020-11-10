@@ -13,6 +13,7 @@ const {
   updateUser,
   getUser,
   bitcoinMobile,
+  bitcoinMobileNgn,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -20,6 +21,8 @@ router.post('/login', login);
 router.post('/verify', verify);
 router.get('/lists', getlist);
 router.get('/mobile', bitcoinMobile);
+router.get('/coin/history', bitcoinMobileNgn);
+
 
 router.get('/get/user', getUser);
 router.put('/update/user', updateUser);

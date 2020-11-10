@@ -133,6 +133,7 @@ class UserController {
    */
   static async bitcoinMobileNgn(req, res) {
     console.log('here');
+    const time = '1d';
     try {
       axios
         .get(
@@ -141,13 +142,15 @@ class UserController {
         )
         .then((response) => {
           const dataGotten = response.data;
-          const mapped = dataGotten.map(({ currency, timestamps, prices }) => ({
-            currency,
-            timestamps,
-            prices: prices.map(parseFloat),
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: coin.price,
+            percentage_change: coin['1d'].price_change_pct,
           }));
-          console.log(mapped);
-          return res.status(200).json(mapped);
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
         })
         .catch((err) => {
           console.log(err);
