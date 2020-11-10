@@ -143,8 +143,8 @@ class UserController {
         .then((response) => {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
-            currency: coin.currency.map(parseFloat),
-            price: coin.price,
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
             percentage_change: coin['1d'].price_change_pct,
           }));
           // eslint-disable-next-line dot-notation
