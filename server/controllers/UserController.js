@@ -141,12 +141,7 @@ class UserController {
         )
         .then((response) => {
           const dataGotten = response.data;
-          const mapped = dataGotten.map(({ currency, timestamps, prices }) => ({
-            currency,
-            timestamps,
-            prices: prices.toFixed(3),
-          }));
-          return res.status(200).json(mapped);
+          return res.status(200).json(dataGotten);
         })
         .catch((err) => {
           console.log(err);
