@@ -143,7 +143,7 @@ class UserController {
         .then((response) => {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
-            currency: coin.currency,
+            currency: coin.currency.map(parseFloat),
             price: coin.price,
             percentage_change: coin['1d'].price_change_pct,
           }));
