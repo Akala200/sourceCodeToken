@@ -137,7 +137,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,Chainlink,&interval=1d,30d&convert=NGN&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,USDT,&interval=1d,30d&convert=NGN&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -146,6 +146,7 @@ class UserController {
             timestamps,
             prices: prices.map(parseFloat),
           }));
+          console.log(mapped);
           return res.status(200).json(mapped);
         })
         .catch((err) => {
@@ -172,7 +173,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,Chainlink&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -181,6 +182,7 @@ class UserController {
             timestamps,
             prices: prices.map(parseFloat),
           }));
+          console.log(mapped);
           return res.status(200).json(mapped);
         })
         .catch((err) => {
