@@ -122,6 +122,157 @@ class UserController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async bitcoinMobileMarketETH(req, res) {
+    console.log('here');
+    const time = '1d';
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=ETH&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
+            percentage_change: coin['1d'].price_change_pct,
+          }));
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async bitcoinMobileMarketXRP(req, res) {
+    console.log('here');
+    const time = '1d';
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=BTC&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
+            percentage_change: coin['1d'].price_change_pct,
+          }));
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async bitcoinMobileMarketUSDT(req, res) {
+    console.log('here');
+    const time = '1d';
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=BTC&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
+            percentage_change: coin['1d'].price_change_pct,
+          }));
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async bitcoinMobileMarketBTC(req, res) {
+    console.log('here');
+    const time = '1d';
+    try {
+      axios
+        .get(
+          // eslint-disable-next-line max-len
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=BTC&per-page=100&page=1'
+        )
+        .then((response) => {
+          const dataGotten = response.data;
+          const result = dataGotten.map(coin => ({
+            currency: coin.currency,
+            price: parseFloat(coin.price).toFixed(2),
+            percentage_change: coin['1d'].price_change_pct,
+          }));
+          // eslint-disable-next-line dot-notation
+
+          // console.log(dataGotten['1d'].price_change_pct);
+          return res.status(200).json(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
@@ -161,7 +312,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -200,7 +350,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -214,11 +363,12 @@ class UserController {
 
     const date = new Date();
     const refinedDate = date.getUTCDate;
+    console.log(refinedDate);
     try {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2020-04-14T00%3A00%3A00Z&end=2020-05-14T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
