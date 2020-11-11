@@ -257,7 +257,7 @@ class UserController {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
             currency: coin.currency,
-            price: parseFloat(coin.price).toFixed(2),
+            price: parseFloat(coin.price),
             percentage_change: coin['1d'].price_change_pct,
             priceChange: coin['1d'].price_change,
             logo: coin.logo_url,
