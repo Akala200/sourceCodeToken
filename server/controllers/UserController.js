@@ -137,14 +137,16 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=ETH&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
             currency: coin.currency,
-            price: parseFloat(coin.price).toFixed(2),
+            price: parseFloat(coin.price),
             percentage_change: coin['1d'].price_change_pct,
+            priceChange: coin['1d'].price_change,
+            logo: coin.logo_url,
           }));
           // eslint-disable-next-line dot-notation
 
@@ -175,14 +177,16 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=BTC&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
             currency: coin.currency,
-            price: parseFloat(coin.price).toFixed(2),
+            price: parseFloat(coin.price),
             percentage_change: coin['1d'].price_change_pct,
+            priceChange: coin['1d'].price_change,
+            logo: coin.logo_url,
           }));
           // eslint-disable-next-line dot-notation
 
@@ -213,14 +217,16 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USDT&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
           const result = dataGotten.map(coin => ({
             currency: coin.currency,
-            price: parseFloat(coin.price).toFixed(2),
+            price: parseFloat(coin.price),
             percentage_change: coin['1d'].price_change_pct,
+            priceChange: coin['1d'].price_change,
+            logo: coin.logo_url,
           }));
           // eslint-disable-next-line dot-notation
 
