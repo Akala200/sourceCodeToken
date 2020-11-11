@@ -260,9 +260,9 @@ class UserController {
             price: parseFloat(coin.price).toFixed(2),
             percentage_change: coin['1d'].price_change_pct,
             priceChange: coin['1d'].price_change,
+            logo: coin.logo_url,
           }));
           // eslint-disable-next-line dot-notation
-
           // console.log(dataGotten['1d'].price_change_pct);
           return res.status(200).json(result);
         })
