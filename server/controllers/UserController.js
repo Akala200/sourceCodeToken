@@ -211,11 +211,14 @@ class UserController {
    */
   static async bitcoinMobile(req, res) {
     console.log('here');
+
+    const date = new Date();
+    const refinedDate = date.getUTCDate;
     try {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2018-04-14T00%3A00%3A00Z&end=2018-05-14T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2020-04-14T00%3A00%3A00Z&end=2020-05-14T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -224,7 +227,6 @@ class UserController {
             timestamps,
             prices: prices.map(parseFloat),
           }));
-          console.log(mapped);
           return res.status(200).json(mapped);
         })
         .catch((err) => {
