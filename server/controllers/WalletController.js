@@ -205,6 +205,12 @@ class WalletController {
           .status(404)
           .json(responses.error(404, 'User does not exist'));
       }
+      let dataBalance;
+
+      if (balance.balance === 0) {
+        dataBalance = 0;
+        return res.status(200).json(responses.success(200, dataBalance));
+      }
       const requestOptions = {
         method: 'GET',
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
