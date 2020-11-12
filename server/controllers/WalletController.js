@@ -3,19 +3,19 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-import Wallet from "../models/Wallet";
-import Transaction from "../models/Transaction";
+import Wallet from '../models/Wallet';
+import Transaction from '../models/Transaction';
 
-import responses from "../utils/responses";
-import tracelogger from "../logger/tracelogger";
-import User from "../models/Users";
+import responses from '../utils/responses';
+import tracelogger from '../logger/tracelogger';
+import User from '../models/Users';
 
-const rp = require("request-promise");
+const rp = require('request-promise');
 
-const token = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
+const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
 // eslint-disable-next-line import/no-extraneous-dependencies
-const axios = require("axios").default;
-const crypto = require("crypto");
+const axios = require('axios').default;
+const crypto = require('crypto');
 /**
  * @description Defines the actions to for the users endpoints
  * @class UsersController
@@ -30,7 +30,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async initiate(req, res) {
-    const currency = "NGN";
+    const currency = 'NGN';
     const { email, amount, bitcoin } = req.body;
     try {
       const user = await User.findOne({
@@ -39,13 +39,13 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(401, "Sorry, this user does not exist"));
+          .json(responses.error(401, 'Sorry, this user does not exist'));
       } else {
         const data = {
           amount: amount * 100,
           currency,
           email: user.email,
-          channel: "card",
+          channel: 'card',
           metadata: {
             email: user.email,
             coin: bitcoin,
@@ -53,7 +53,7 @@ class WalletController {
         };
 
         axios
-          .post("https://api.paystack.co/transaction/initialize", data, {
+          .post('https://api.paystack.co/transaction/initialize', data, {
             headers: {
               Authorization: `Bearer ${token}`, // the token is a variable which holds the token
             },
@@ -81,7 +81,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async transactionHistory(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       const { email } = req.query;
 
@@ -90,7 +90,7 @@ class WalletController {
       if (!transaction) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
       return res.json(transaction);
@@ -108,7 +108,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async transactionHistoryAll(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       const { email } = req.query;
 
@@ -117,7 +117,7 @@ class WalletController {
       if (!transaction) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
       return res.json(transaction);
@@ -141,6 +141,7 @@ class WalletController {
       try {
         const user = await User.findOne({ email });
         response = await axios.post(
+          // eslint-disable-next-line max-len
           `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
         );
         console.log(response.data.balance);
@@ -157,10 +158,10 @@ class WalletController {
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
-      return res.json(balance);
+      return res.status(200).json(responses.success(200, balance));
     } catch (error) {
       tracelogger(error);
     }
@@ -202,24 +203,24 @@ class WalletController {
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.balance,
-          id: "1",
-          convert: "NGN",
-        },  
+          id: '1',
+          convert: 'NGN',
+        },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
       };
 
-      rp(requestOptions).then((response) => res.json(response.data.quote.NGN));
+      rp(requestOptions).then(response => res.json(response.data.quote.NGN));
     } catch (error) {
       tracelogger(error);
     }
@@ -240,19 +241,19 @@ class WalletController {
       const percent = 3;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount, "aftersub");
-      console.log(discount, "discount amount");
+      console.log(realAmount, 'aftersub');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "BTC",
+          id: '2819',
+          convert: 'BTC',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -269,9 +270,9 @@ class WalletController {
       tracelogger(error);
     }
   }
-  
 
-    /**
+
+  /**
    *@description Creates a new wallet
    *@static
    *@param  {Object} req - request
@@ -285,15 +286,15 @@ class WalletController {
 
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
-          amount: amount,
-          id: "2819",
-          convert: "BTC",
+          amount,
+          id: '2819',
+          convert: 'BTC',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -333,20 +334,20 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log("amount", walletBalance.balance);
+      console.log('amount', walletBalance.balance);
       if (flatAmount > walletBalance.balance) {
-        return res.status(400).json(responses.error(400, "Insufficient fund"));
+        return res.status(400).json(responses.error(400, 'Insufficient fund'));
       }
 
       const transactionObject = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "transfer",
+        type: 'debit',
+        mode: 'transfer',
         to: address,
         email: user.email,
         walletId: user._id,
-        status: "successful",
+        status: 'successful',
       };
 
       const params = {
@@ -354,17 +355,17 @@ class WalletController {
         to: address,
         amount: bitcoin,
         fee: 0.0001,
-        api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9",
+        api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
         from: user.address,
       };
 
       axios
         .get(`https://cosuss.herokuapp.com/merchant/${user.guid}/payment`, {
-          params: params,
+          params,
         })
         // eslint-disable-next-line no-shadow
         .then((response) => {
-          console.log("amount", response);
+          console.log('amount', response);
           const newAmount = walletBalance.balance - flatAmount;
           Wallet.findOneAndUpdate(
             { email },
@@ -374,18 +375,16 @@ class WalletController {
             { new: true },
             (err, doc) => {
               if (err) {
-                console.log("Something wrong when updating data!");
+                console.log('Something wrong when updating data!');
               }
 
               console.log(doc);
               Transaction.create(transactionObject);
-              return res.status(200).json("Transaction saved");
+              return res.status(200).json('Transaction saved');
             }
           );
         })
-        .catch((error) => {
-           return res.status(500).json(responses.error(500, error.response.data));
-        });
+        .catch(error => res.status(500).json(responses.error(500, error.response.data)));
     } catch (error) {
       tracelogger(error);
     }
@@ -393,12 +392,12 @@ class WalletController {
 
   static async webhook(req, res) {
     const hash = crypto
-      .createHmac("sha512", token)
+      .createHmac('sha512', token)
       .update(JSON.stringify(req.body))
-      .digest("hex");
+      .digest('hex');
 
-    if (hash === req.headers["x-paystack-signature"]) {
-      const currency = "NGN";
+    if (hash === req.headers['x-paystack-signature']) {
+      const currency = 'NGN';
       console.log(req.body);
       const event = req.body;
       const { email, coin } = event.data.metadata;
@@ -411,59 +410,60 @@ class WalletController {
         if (!user) {
           return res
             .status(404)
-            .json(responses.error(404, "Sorry, this user does not exist"));
+            .json(responses.error(404, 'Sorry, this user does not exist'));
         }
-        if (event.event === "charge.success") {
+        if (event.event === 'charge.success') {
           try {
-                const transactionObject = {
-                  amount: event.data.amount / 100,
-                  coins: coin,
-                  type: "credit",
-                  mode: "Card",
-                  lastFour: event.data.authorization.last4,
-                  cardType: event.data.authorization.card_type,
-                  email: user.email,
-                  ref: event.data.reference,
-                  walletId: wallet._id,
-                  status: "successful",
-                };
-                const amountNew = coin + user.balance;
-                const priceReturned = event.data.amount / 100;
-                
-                axios
-                  .post(
-                    `https://cosuss.herokuapp.com/api/v2/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment`,
-                    {
-                      to: user.address,
-                      amount: coin,
-                      password: "OLAtunji123",
-                      api_code: "54a36981-7b31-4cdb-af4b-b69bd0fc4ea9"
-                    }
-                  )
-                  // eslint-disable-next-line no-shadow
-                  .then((response) => {
-                    console.log(response);
-                    console.log("amount", amountNew);
-                    Wallet.findOneAndUpdate(
-                      { email },
-                      {
-                        $set: { balance: amountNew },
-                      },
-                      { new: true },
-                      (err, doc) => {
-                        if (err) {
-                          console.log("Something wrong when updating data!");
-                        }
+            const transactionObject = {
+              amount: event.data.amount / 100,
+              coins: coin,
+              type: 'credit',
+              mode: 'Card',
+              lastFour: event.data.authorization.last4,
+              cardType: event.data.authorization.card_type,
+              email: user.email,
+              ref: event.data.reference,
+              walletId: wallet._id,
+              status: 'successful',
+            };
+            const amountNew = coin + user.balance;
+            const priceReturned = event.data.amount / 100;
 
-                        console.log(doc);
-                        Transaction.create(transactionObject);
-                        return res.status(200).json("Transaction saved");
-                      }
-                    );
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
+            axios
+              .post(
+                // eslint-disable-next-line max-len
+                'https://cosuss.herokuapp.com/api/v2/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment',
+                {
+                  to: user.address,
+                  amount: coin,
+                  password: 'OLAtunji123',
+                  api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9'
+                }
+              )
+            // eslint-disable-next-line no-shadow
+              .then((response) => {
+                console.log(response);
+                console.log('amount', amountNew);
+                Wallet.findOneAndUpdate(
+                  { email },
+                  {
+                    $set: { balance: amountNew },
+                  },
+                  { new: true },
+                  (err, doc) => {
+                    if (err) {
+                      console.log('Something wrong when updating data!');
+                    }
+
+                    console.log(doc);
+                    Transaction.create(transactionObject);
+                    return res.status(200).json('Transaction saved');
+                  }
+                );
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           } catch (error) {
             tracelogger(error);
           }
