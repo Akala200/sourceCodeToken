@@ -151,7 +151,7 @@ class WalletController {
 
       const balance = await Wallet.findOneAndUpdate(
         { email },
-        { balance: response.data.balance },
+        { balance: parseFloat(response.data.balance) },
         { new: true }
       );
 
