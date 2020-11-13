@@ -1,15 +1,21 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { isEmail } from 'validator';
 
 
 const saltRounds = 10; // or another integer in that ballpark
 
 const { Schema } = mongoose;
 
+
 const UserSchema = new Schema(
   {
     email: {
       type: String,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      validate: [isEmail, 'invalid email'],
     },
     first_name: {
       type: String,

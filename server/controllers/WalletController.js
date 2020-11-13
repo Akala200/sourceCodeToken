@@ -80,6 +80,33 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async allWallet(req, res) {
+    console.log('here');
+    try {
+      const { email } = req.query;
+
+      const wallet = await Wallet.find({ email }).limit(5);
+
+      if (!wallet) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'Wallet does not exist'));
+      }
+
+      return res.json(transaction);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async transactionHistory(req, res) {
     console.log('here');
     try {
@@ -277,7 +304,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -289,7 +315,6 @@ class WalletController {
   static async coinPrice(req, res) {
     try {
       const { amount } = req.query;
-
 
       const requestOptions = {
         method: 'GET',
@@ -443,10 +468,10 @@ class WalletController {
                   to: user.address,
                   amount: coin,
                   password: 'OLAtunji123',
-                  api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9'
+                  api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
                 }
               )
-            // eslint-disable-next-line no-shadow
+              // eslint-disable-next-line no-shadow
               .then((response) => {
                 console.log(response);
                 console.log('amount', amountNew);
