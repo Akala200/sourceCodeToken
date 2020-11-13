@@ -84,14 +84,34 @@ class WalletController {
     console.log('here');
     try {
       const { email } = req.query;
-
       const wallet = await Wallet.find({ email }).limit(5);
-
       if (!wallet) {
         return res
           .status(404)
           .json(responses.error(404, 'Wallet does not exist'));
       }
+
+
+      const requestOptions = {
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+        qs: {
+          amount: wallet.balance,
+          id: '1',
+          convert: 'NGN',
+        },
+        headers: {
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+        },
+        json: true,
+        gzip: true,
+      };
+      const result = wallet.map(wall => ({
+        currency: 'BTC',
+        price: wall.balance,
+        priceCurrency: p(requestOptions).then(response => response.data.quote.NGN),
+      }));
+
 
       return res.json(wallet);
     } catch (error) {
