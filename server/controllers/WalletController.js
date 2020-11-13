@@ -253,7 +253,8 @@ class WalletController {
         gzip: true,
       };
 
-      rp(requestOptions).then(response => res.json(response.data.quote.NGN));
+      // eslint-disable-next-line max-len
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
     } catch (error) {
       tracelogger(error);
     }
