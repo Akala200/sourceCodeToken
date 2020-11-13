@@ -93,7 +93,7 @@ class WalletController {
           .json(responses.error(404, 'Wallet does not exist'));
       }
 
-      return res.json(transaction);
+      return res.json(wallet);
     } catch (error) {
       tracelogger(error);
     }
