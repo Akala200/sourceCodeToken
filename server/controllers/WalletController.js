@@ -106,14 +106,25 @@ class WalletController {
         json: true,
         gzip: true,
       };
-      const result = wallet.map(wall => ({
-        currency: 'BTC',
-        price: wall.balance,
-        priceCurrency: p(requestOptions).then(response => response.data.quote.NGN),
-      }));
 
-
-      return res.json(wallet);
+      rp(requestOptions).then((response) => {
+        if (!response) {
+          const result = wallet.map(wall => ({
+            currency: 'BTC',
+            price: wall.balance,
+            priceCurrency: response.data.quote.NGN,
+          }));
+          return res.status(200).json(responses.success(200, result));
+        }
+      }).catch((err) => {
+        console.log(err.body);
+        const result = wallet.map(wall => ({
+          currency: 'BTC',
+          price: wall.balance,
+          priceCurrency: 0,
+        }));
+        return res.status(200).json(responses.success(200, result));
+      });
     } catch (error) {
       tracelogger(error);
     }
