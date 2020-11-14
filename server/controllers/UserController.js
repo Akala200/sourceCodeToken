@@ -62,7 +62,7 @@ class UserController {
       email, phone, first_name, last_name, password
     } = req.body;
 
-    if (!email || !phone || first_name || last_name || password) {
+    if (!email || !phone || !first_name || !last_name || !password) {
       return res
         .status(400)
         .json(responses.error(400, 'Please fill in all details'));
