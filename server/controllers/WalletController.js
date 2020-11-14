@@ -495,7 +495,7 @@ class WalletController {
             Wallet.findOneAndUpdate(
               { email },
               {
-                $set: { balance: amountNew },
+                $set: { balance: parseFloat(amountNew) },
               },
               { new: true },
               (err, doc) => {
