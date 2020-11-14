@@ -461,7 +461,7 @@ class WalletController {
 
     if (hash === req.headers['x-paystack-signature']) {
       const currency = 'NGN';
-      console.log(req.body);
+      console.log(req.body.data.metadata);
       const event = req.body;
       const { email, coin } = event.data.metadata;
       try {
@@ -469,6 +469,7 @@ class WalletController {
           email,
         });
         const user = await User.findOne({ email });
+      
 
         if (!user) {
           return res
@@ -490,6 +491,7 @@ class WalletController {
               status: 'successful',
             };
             const amountNew = coin + user.balance;
+            console.log(amountNew);
             const priceReturned = event.data.amount / 100;
 
             Wallet.findOneAndUpdate(
