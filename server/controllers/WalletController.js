@@ -492,6 +492,23 @@ class WalletController {
             const amountNew = coin + user.balance;
             const priceReturned = event.data.amount / 100;
 
+            allet.findOneAndUpdate(
+              { email },
+              {
+                $set: { balance: amountNew },
+              },
+              { new: true },
+              (err, doc) => {
+                if (err) {
+                  console.log('Something wrong when updating data!');
+                }
+
+                console.log(doc);
+                Transaction.create(transactionObject);
+                return res.status(200).json('Transaction saved');
+              }
+            );
+/** 
             axios
               .post(
                 // eslint-disable-next-line max-len
@@ -526,7 +543,7 @@ class WalletController {
               })
               .catch((error) => {
                 console.log(error);
-              });
+              }); */
           } catch (error) {
             tracelogger(error);
           }
