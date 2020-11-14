@@ -500,7 +500,7 @@ class WalletController {
               { new: true },
               (err, doc) => {
                 if (err) {
-                  console.log('Something wrong when updating data!');
+                  console.log(err);
                 }
 
                 console.log(doc);
