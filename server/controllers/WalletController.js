@@ -196,7 +196,7 @@ class WalletController {
     try {
       const { email } = req.query;
       let response;
-      try {
+    /**   try {
         const user = await User.findOne({ email });
         response = await axios.post(
           // eslint-disable-next-line max-len
@@ -218,7 +218,8 @@ class WalletController {
           .status(404)
           .json(responses.error(404, 'User does not exist'));
       }
-
+      */
+     const balance = await Wallet.findOne({email: email})
       return res.status(200).json(responses.success(200, balance));
     } catch (error) {
       tracelogger(error);
