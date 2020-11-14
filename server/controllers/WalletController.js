@@ -492,7 +492,7 @@ class WalletController {
             const amountNew = coin + user.balance;
             const priceReturned = event.data.amount / 100;
 
-            allet.findOneAndUpdate(
+            wallet.findOneAndUpdate(
               { email },
               {
                 $set: { balance: amountNew },
