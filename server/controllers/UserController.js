@@ -596,7 +596,7 @@ class UserController {
     }
 
     if (!user) {
-      return res.status(401).json(responses.error(401, erroresponse));
+      return res.status(401).json(responses.error(401, 'Unable to login'));
     }
     if (user.regstatus === false) {
       return res
@@ -607,7 +607,7 @@ class UserController {
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-      return res.status(401).json(responses.error(401, erroresponse));
+      return res.status(401).json(responses.error(401,  'Unable to login'));
     }
 
     const TokenData = {
