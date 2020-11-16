@@ -25,14 +25,14 @@ const {
 router.post('/create/account', newUser);
 router.post('/login', login);
 router.post('/verify', verify);
-router.get('/lists', auth, getlist);
-router.get('/mobile', auth, bitcoinMobile);
-router.get('/coin/history', auth, bitcoinMobileNgn);
-router.get('/coin/history/usd', auth, bitcoinMobileUsd);
-router.get('/coin/market/btc', auth, bitcoinMobileMarketBTC);
-router.get('/coin/market/xrp', auth, bitcoinMobileMarketXRP);
-router.get('/coin/market/sudt', auth, bitcoinMobileMarketUSDT);
-router.get('/coin/market/eth', auth, bitcoinMobileMarketETH);
+router.get('/lists', getlist);
+router.get('/mobile', bitcoinMobile);
+router.get('/coin/history', bitcoinMobileNgn);
+router.get('/coin/history/usd', bitcoinMobileUsd);
+router.get('/coin/market/btc', bitcoinMobileMarketBTC);
+router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
+router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
+router.get('/coin/market/eth', bitcoinMobileMarketETH);
 
 
 router.get('/get/user', getUser);
