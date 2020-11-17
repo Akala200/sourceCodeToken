@@ -108,7 +108,8 @@ class WalletController {
       };
 
       rp(requestOptions).then((response) => {
-        if (!response) {
+        if (response) {
+          console.log(response);
           const result = wallet.map(wall => ({
             currency: 'BTC',
             price: wall.balance,
