@@ -530,7 +530,7 @@ class UserController {
       if (updatedUser) { 
         return res
         .status(200)
-        .json(responses.success(200, { data:  updatedUser.address  }));
+        .json(responses.success(200, { updatedUser.address  }));
       } else {
         return res.send({ message: 'Failed' });
       }
