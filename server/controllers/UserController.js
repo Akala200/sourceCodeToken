@@ -528,7 +528,9 @@ class UserController {
         '-guid'
       ]);
       if (updatedUser) { 
-        return res.send({ message: 'Success', data: updatedUser.address });
+        return res
+        .status(200)
+        .json(responses.success(200, { data:  updatedUser.address  }));
       } else {
         return res.send({ message: 'Failed' });
       }
