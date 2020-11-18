@@ -20,6 +20,7 @@ const {
   bitcoinMobileMarketXRP,
   bitcoinMobileMarketUSDT,
   bitcoinMobileMarketETH,
+  getAddress
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -33,7 +34,9 @@ router.get('/coin/market/btc', bitcoinMobileMarketBTC);
 router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
 router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
 router.get('/coin/market/eth', bitcoinMobileMarketETH);
+router.get('/user/address', getAddress);
 
+//getAddress
 
 router.get('/get/user', getUser);
 router.put('/update/user', updateUser);

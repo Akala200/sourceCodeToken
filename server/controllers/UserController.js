@@ -509,6 +509,36 @@ class UserController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getAddress(req, res) {
+    try {
+      const { email } = req.query;
+
+      const updatedUser = await User.findOne({ email: email }).select([
+        '-password',
+        '-tempt',
+        '-guid'
+      ]);
+      if (updatedUser) { 
+        return res.send({ message: 'Success', data: updatedUser.address });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+
+
   /**
    *@description Creates a new wallet
    *@static
@@ -522,6 +552,7 @@ class UserController {
       const oldEmail = req.query.email;
       const updatedUser = await User.findOne({ email: oldEmail }).select([
         '-password',
+        '-tempt'
       ]);
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
