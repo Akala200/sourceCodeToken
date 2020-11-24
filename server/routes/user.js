@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
-const {auth} = require('../middlewares/authMiddleware')
+
+const { auth } = require('../middlewares/authMiddleware');
 
 const router = Router();
 
@@ -35,8 +36,10 @@ router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
 router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
 router.get('/coin/market/eth', bitcoinMobileMarketETH);
 router.get('/user/address', getAddress);
+router.get("/update/password", changePassword);
 
-//getAddress
+
+// getAddress
 
 router.get('/get/user', getUser);
 router.put('/update/user', updateUser);

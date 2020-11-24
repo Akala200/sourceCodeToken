@@ -509,7 +509,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -522,15 +521,15 @@ class UserController {
     try {
       const { email } = req.query;
 
-      const updatedUser = await User.findOne({ email: email }).select([
+      const updatedUser = await User.findOne({ email }).select([
         '-password',
         '-tempt',
-        '-guid'
+        '-guid',
       ]);
-      if (updatedUser) { 
+      if (updatedUser) {
         return res
-        .status(200)
-        .json(responses.success(200,   updatedUser.address  ));
+          .status(200)
+          .json(responses.success(200, updatedUser.address));
       } else {
         return res.send({ message: 'Failed' });
       }
@@ -539,7 +538,39 @@ class UserController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async changePassword(req, res) {
+    const email = req.query.email;
+    // Find a user from token
+    User.findOne({ email })
+      .then((user) => {
+        // Save the new password
 
+        user.password = req.body.password;
+        user.save((err) => {
+          if (err) {
+            return res
+              .status(500)
+              .send({ msg: 'Error in saving the password' });
+          }
+          res
+            .status(200)
+            .send('The password has been changed.');
+        }).catch((err) => {
+          throw err;
+        });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
 
   /**
    *@description Creates a new wallet
@@ -554,8 +585,9 @@ class UserController {
       const oldEmail = req.query.email;
       const updatedUser = await User.findOne({ email: oldEmail }).select([
         '-password',
-        '-tempt'
+        '-tempt',
       ]);
+      console.log(oldEmail);
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
       } else {
@@ -640,7 +672,7 @@ class UserController {
     const valid = await bcrypt.compare(password, user.password);
 
     if (!valid) {
-      return res.status(401).json(responses.error(401,  'Unable to login'));
+      return res.status(401).json(responses.error(401, 'Unable to login'));
     }
 
     const TokenData = {
