@@ -15,6 +15,7 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
 import Wallet from '../models/Wallet';
+import Transaction from '../models/Transaction';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
@@ -806,7 +807,7 @@ class UserController {
               if (err) {
                 console.log('Something wrong when updating data!');
               } else {
-                User.updateMany(
+                Transaction.updateMany(
                   { email: tokenUser.user },
                   user,
                   {

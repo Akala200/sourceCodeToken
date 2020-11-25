@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 /* eslint-disable require-jsdoc */
@@ -197,9 +198,11 @@ class WalletController {
     try {
       const { email } = req.query;
       let response;
-    /**   try {
+      /**   try {
         const user = await User.findOne({ email });
         response = await axios.post(
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len
           // eslint-disable-next-line max-len
           `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
         );
@@ -220,7 +223,7 @@ class WalletController {
           .json(responses.error(404, 'User does not exist'));
       }
       */
-     const balance = await Wallet.findOne({email: email})
+      const balance = await Wallet.findOne({ email });
       return res.status(200).json(responses.success(200, balance));
     } catch (error) {
       tracelogger(error);
@@ -471,7 +474,7 @@ class WalletController {
           email,
         });
         const user = await User.findOne({ email });
-      
+
 
         if (!user) {
           return res
@@ -512,7 +515,7 @@ class WalletController {
                 return res.status(200).json('Transaction saved');
               }
             );
-/** 
+            /**
             axios
               .post(
                 // eslint-disable-next-line max-len

@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import { notFound, errorHandler } from './server/middlewares/errorhandlers';
 import traceLogger from './server/logger/tracelogger';
 import routes from './server/routes';
-import config from './server/config/index';
+// import config from './server/config/index';
 
 
 // initialize express
@@ -19,6 +19,7 @@ app.use(cors());
 app.use(logger('dev'));
 
 // connect to mongodb
+// eslint-disable-next-line max-len
 const mongoURL = 'mongodb+srv://coin:1234567890@cluster0.y5nwu.mongodb.net/coins?retryWrites=true&w=majority';
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
