@@ -947,7 +947,7 @@ class UserController {
           );
       }
     } catch (error) {
-      return res.status(500).json(responses.error(500, 'Server Error'));
+      return res.status(500).json(responses.error(500, error));
     }
 
     // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
