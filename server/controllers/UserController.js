@@ -8,6 +8,7 @@
 import bcrypt from 'bcrypt';
 import randomstring from 'randomstring';
 import t from 'typy'; // ES6 style import
+import { sign, verify } from 'jsonwebtoken';
 import User from '../models/Users';
 import Token from '../models/Token';
 import TokenUsed from '../models/Regular_Token';
@@ -50,6 +51,29 @@ const verifyresponce = [
  * @class UsersController
  */
 class UserController {
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async betokened(req, res) {
+    const str = req.get('Authorization');
+
+    try {
+      const decoded = verify(str, process.env.ENCRYPT_ID);
+      const returnValue = {
+        invalid: false,
+        decoded,
+      };
+      return res.send('valid token');
+    } catch (err) {
+      return res.send('invalid token');
+    }
+  }
+
   /**
    *@description Creates a new User
    *@static
@@ -914,7 +938,8 @@ class UserController {
             },
             (err, doc) => {
               if (err) {
-                console.log('Something wrong when updating data!');
+                console.log(err);
+                return res.status(500).json(responses.error(500, err));
               }
 
               console.log(doc);
@@ -939,6 +964,7 @@ class UserController {
           }
         } catch (error) {
           console.error(error);
+          return res.status(500).json(responses.error(500, error));
         }
       } else {
         return res

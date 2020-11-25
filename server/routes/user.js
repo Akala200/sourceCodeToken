@@ -24,7 +24,8 @@ const {
   getAddress,
   changePassword,
   changeEmail,
-  verifyNew
+  verifyNew,
+  betokened
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -42,6 +43,7 @@ router.get('/user/address', getAddress);
 router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
 router.post('/verify/new/email', verifyNew);
+router.post('/data', verifyNew);
 
 
 // getAddress
