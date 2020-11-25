@@ -547,7 +547,7 @@ class UserController {
    *@memberof UsersController
    */
   static async changePassword(req, res) {
-    const email = req.query.email;
+    const email = req.body.email;
     // Find a user from token
     User.findOne({ email })
       .then((user) => {
