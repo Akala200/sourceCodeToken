@@ -791,13 +791,42 @@ class UserController {
       {
         new: true,
       },
-      (err, doc) => {
+      (err, user) => {
         if (err) {
           console.log('Something wrong when updating data!');
         } else {
-          return res
-            .status(200)
-            .json(responses.success(200, 'Email change successfully', doc));
+          Wallet.findOneAndUpdate(
+            // eslint-disable-next-line no-undef
+            { email: tokenUser.oldEmail },
+            { email: remail },
+            {
+              new: true,
+            },
+            (err, wallet) => {
+              if (err) {
+                console.log('Something wrong when updating data!');
+              } else {
+                User.updateMany(
+                  { email: tokenUser.user },
+                  user,
+                  {
+                    new: true,
+                    multi: true,
+                  },
+                  (err, transaction) => {
+                    if (err) {
+                      console.log('Something wrong when updating data!');
+                    }
+                    return res
+                      .status(200)
+                      .json(
+                        responses.success(200, 'Email change successfully', user)
+                      );
+                  }
+                );
+              }
+            }
+          );
         }
       }
     );
