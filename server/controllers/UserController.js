@@ -781,6 +781,8 @@ class UserController {
       return res.status(404).json(responses.error(404, 'Invalid Code'));
     }
 
+    await TokenUsed.findOneAndDelete({ token: code });
+
     // const user = await User.findOne({ email: tokenUser.oldEmail });
     const remail = tokenUser.newEmail;
 

@@ -488,6 +488,7 @@ class WalletController {
               coins: coin,
               type: 'credit',
               mode: 'Card',
+              user: user._id,
               lastFour: event.data.authorization.last4,
               cardType: event.data.authorization.card_type,
               email: user.email,
