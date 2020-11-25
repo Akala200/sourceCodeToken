@@ -59,6 +59,106 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async forgetPassword(req, res) {
+    const { email } = req.body;
+
+    if (!email) {
+      return res
+        .status(400)
+        .json(responses.error(400, 'Please fill in all details'));
+    }
+
+    try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(400)
+          .json(responses.error(400, 'Sorry, the email does not exist'));
+      }
+      const code = randomstring.generate({
+        length: 5,
+        charset: 'numeric',
+      });
+
+      const uObject = {
+        token: code,
+        oldEmail: email,
+      };
+
+      const createdUser = await TokenUsed.create(uObject);
+
+      const msg = {
+        to: email,
+        from: 'support@ningotv.com',
+        subject: 'Email Verification',
+        text: `Kindly use this ${code} to verify your account`,
+      };
+
+      sgMail.send(msg);
+
+      if (createdUser) {
+        return res
+          .status(200)
+          .json(responses.success(200, 'Email sent successfully'));
+      } else {
+        return res.status(500).json(responses.success(500, 'Email not sent'));
+      }
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async confirmPassword(req, res) {
+    const { code } = req.body;
+
+    const tokenUser = await TokenUsed.findOne({ token: code });
+
+    if (!tokenUser) {
+      return res.status(404).json(responses.error(404, 'Invalid Code'));
+    }
+
+    // Find a user from token
+    User.findOne({ email: tokenUser.oldEmail })
+      .then((user) => {
+        // Save the new password
+
+        user.password = req.body.password;
+        user
+          .save((err) => {
+            if (err) {
+              return res
+                .status(500)
+                .send({ msg: 'Error in saving the password' });
+            }
+            return res.send({ message: 'Success', data: 'Password changed' });
+          })
+          .catch((err) => {
+            throw err;
+          });
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async betokened(req, res) {
     const str = req.get('Authorization');
 
@@ -156,9 +256,7 @@ class UserController {
    *@memberof UsersController
    */
   static async changeEmail(req, res) {
-    const {
-      email
-    } = req.body;
+    const { email } = req.body;
     const existEmail = req.query.email;
 
     if (!email) {
@@ -169,6 +267,12 @@ class UserController {
 
     try {
       const user = await User.findOne({ email: existEmail });
+
+      if (user) {
+        return res
+          .status(400)
+          .json(responses.error(400, 'User already exist'));
+      }
 
       if (user.email === email) {
         return res
@@ -208,7 +312,6 @@ class UserController {
       tracelogger(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -785,7 +888,6 @@ class UserController {
       .json(responses.success(200, 'Login successfully', userData));
   }
 
-
   /**
    *@description Creates user user
    *@static
@@ -800,12 +902,10 @@ class UserController {
 
     const tokenUser = await TokenUsed.findOne({ token: code });
 
-
     if (!tokenUser) {
       return res.status(404).json(responses.error(404, 'Invalid Code'));
     }
 
-    await TokenUsed.findOneAndDelete({ token: code });
 
     // const user = await User.findOne({ email: tokenUser.oldEmail });
     const remail = tokenUser.newEmail;
@@ -838,15 +938,18 @@ class UserController {
                   { $set: { test: 'success!' } },
                   { multi: true }
                 )
-                  .then(transactions => res
-                    .status(200)
-                    .json(
-                      responses.success(
-                        200,
-                        'Email change successfully',
-                        user
-                      )
-                    ))
+                  .then((transactions) => {
+                    TokenUsed.findOneAndDelete({ token: code });
+                    res
+                      .status(200)
+                      .json(
+                        responses.success(
+                          200,
+                          'Email change successfully',
+                          user
+                        )
+                      );
+                  })
                   .catch(err => res.status(500).json(responses.error(500, err)));
               }
             }
@@ -855,7 +958,6 @@ class UserController {
       }
     );
   }
-
 
   /**
    *@description Creates user user
