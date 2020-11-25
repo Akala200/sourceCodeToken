@@ -781,7 +781,7 @@ class UserController {
       return res.status(404).json(responses.error(404, 'Invalid Code'));
     }
 
-    const user = await User.findOne({ email: tokenUser.oldEmail });
+    // const user = await User.findOne({ email: tokenUser.oldEmail });
     const remail = tokenUser.newEmail;
 
     await User.findOneAndUpdate(
@@ -807,13 +807,21 @@ class UserController {
                 console.log('Something wrong when updating data!');
               } else {
                 // eslint-disable-next-line max-len
-                Transaction.update({ foo: 'bar' }, { $set: { test: 'success!' } }, { multi: true }).then(transactions => res
-                  .status(200)
-                  .json(
-                    responses.success(200, 'Email change successfully', user)
-                  )).catch(err => res
-                  .status(500)
-                  .json(responses.error(500, err)));
+                Transaction.update(
+                  { email: tokenUser.oldEmail },
+                  { $set: { test: 'success!' } },
+                  { multi: true }
+                )
+                  .then(transactions => res
+                    .status(200)
+                    .json(
+                      responses.success(
+                        200,
+                        'Email change successfully',
+                        user
+                      )
+                    ))
+                  .catch(err => res.status(500).json(responses.error(500, err)));
               }
             }
           );
