@@ -68,9 +68,9 @@ class UserController {
         invalid: false,
         decoded,
       };
-      return res.send('valid token');
+      return res.send({ message: 'valid token' });
     } catch (err) {
-      return res.send('invalid token');
+      return res.send({ message: 'invalid token' });
     }
   }
 
