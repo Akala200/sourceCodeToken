@@ -43,7 +43,7 @@ router.get('/user/address', getAddress);
 router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
 router.post('/verify/new/email', verifyNew);
-router.post('/data', betokened);
+router.get('/data', betokened);
 
 
 // getAddress
