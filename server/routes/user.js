@@ -47,7 +47,7 @@ router.post('/update/email', changeEmail);
 router.post('/verify/new/email', verifyNew);
 router.get('/data', betokened);
 router.post('/forgot/password', forgetPassword);
-router.post('/new/password', forgetPassword);
+router.post('/new/password', confirmPassword);
 
 
 // getAddress
