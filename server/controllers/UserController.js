@@ -10,6 +10,7 @@ import randomstring from 'randomstring';
 import t from 'typy'; // ES6 style import
 import User from '../models/Users';
 import Token from '../models/Token';
+import TokenUsed from '../models/Regular_Token';
 import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
@@ -121,6 +122,69 @@ class UserController {
       tracelogger(error);
     }
   }
+
+  /**
+   *@description Creates a new User
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created User
+   *@memberof UsersController
+   */
+  static async changeEmail(req, res) {
+    const {
+      email
+    } = req.body;
+    const existEmail = req.query.email;
+
+    if (!email) {
+      return res
+        .status(400)
+        .json(responses.error(400, 'Please fill in all details'));
+    }
+
+    try {
+      const user = await User.findOne({ email: existEmail });
+
+      if (user.email === email) {
+        return res
+          .status(400)
+          .json(responses.error(400, 'Sorry, the email is the same'));
+      }
+      const code = randomstring.generate({
+        length: 5,
+        charset: 'numeric',
+      });
+
+      const uObject = {
+        newEmail: email,
+        token: code,
+        oldEmail: existEmail,
+      };
+
+      const createdUser = await TokenUsed.create(uObject);
+
+      const msg = {
+        to: user.email,
+        from: 'support@ningotv.com',
+        subject: 'Email Verification',
+        text: `Kindly use this ${code} to verify your account`,
+      };
+
+      sgMail.send(msg);
+
+      if (createdUser) {
+        return res
+          .status(200)
+          .json(responses.success(200, 'Email sent successfully'));
+      } else {
+        return res.status(500).json(responses.success(500, 'Email not sent'));
+      }
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
 
   /**
    *@description Creates a new wallet
@@ -554,16 +618,18 @@ class UserController {
         // Save the new password
 
         user.password = req.body.password;
-        user.save((err) => {
-          if (err) {
-            return res
-              .status(500)
-              .send({ msg: 'Error in saving the password' });
-          }
-          return res.send({ message: 'Success', data: 'Password changed' });
-        }).catch((err) => {
-          throw err;
-        });
+        user
+          .save((err) => {
+            if (err) {
+              return res
+                .status(500)
+                .send({ msg: 'Error in saving the password' });
+            }
+            return res.send({ message: 'Success', data: 'Password changed' });
+          })
+          .catch((err) => {
+            throw err;
+          });
       })
       .catch((err) => {
         throw err;
@@ -694,6 +760,49 @@ class UserController {
       .status(200)
       .json(responses.success(200, 'Login successfully', userData));
   }
+
+
+  /**
+   *@description Creates user user
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof userController
+   */
+
+  static async verifyNew(req, res) {
+    const { code } = req.body;
+
+    const tokenUser = await TokenUsed.findOne({ token: code });
+
+
+    if (!tokenUser) {
+      return res.status(404).json(responses.error(404, 'Invalid Code'));
+    }
+
+    const user = await User.findOne({ email: tokenUser.oldEmail });
+    const remail = tokenUser.newEmail;
+
+    await User.findOneAndUpdate(
+      // eslint-disable-next-line no-undef
+      { email: tokenUser.oldEmail },
+      { email: remail },
+      {
+        new: true,
+      },
+      (err, doc) => {
+        if (err) {
+          console.log('Something wrong when updating data!');
+        } else {
+          return res
+            .status(200)
+            .json(responses.success(200, 'Email change successfully', doc));
+        }
+      }
+    );
+  }
+
 
   /**
    *@description Creates user user
