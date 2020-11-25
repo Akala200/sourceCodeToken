@@ -560,9 +560,7 @@ class UserController {
               .status(500)
               .send({ msg: 'Error in saving the password' });
           }
-          res
-            .status(200)
-            .send('The password has been changed.');
+          return res.send({ message: 'Success', data: 'Password changed' });
         }).catch((err) => {
           throw err;
         });
