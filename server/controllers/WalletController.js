@@ -170,9 +170,9 @@ class WalletController {
   static async transactionHistoryAll(req, res) {
     console.log('here');
     try {
-      const { email } = req.query;
+      const { user } = req.query;
 
-      const transaction = await Transaction.find({ email });
+      const transaction = await Transaction.find({ user });
 
       if (!transaction) {
         return res
@@ -491,7 +491,6 @@ class WalletController {
               user: user._id,
               lastFour: event.data.authorization.last4,
               cardType: event.data.authorization.card_type,
-              email: user.email,
               ref: event.data.reference,
               walletId: wallet._id,
               status: 'successful',

@@ -6,7 +6,6 @@ const transactionSchema = mongoose.Schema({
   coins: { type: Number, required: true },
   type: { type: String, enum: ['credit', 'debit'], required: true },
   mode: { type: String, required: true },
-  email: { type: String, required: true },
   user: { type: String, required: true },
   cardType: { type: String },
   lastFour: { type: String },
