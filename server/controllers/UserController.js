@@ -166,8 +166,8 @@ class UserController {
 
       const msg = {
         to: email,
-        from: "support@ningotv.com",
-        subject: "Email Verification",
+        from: 'support@ningotv.com',
+        subject: 'Email Verification',
         text: `Kindly use this ${code} to verify your account`,
       };
 
