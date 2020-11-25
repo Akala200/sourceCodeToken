@@ -165,9 +165,9 @@ class UserController {
       const createdUser = await TokenUsed.create(uObject);
 
       const msg = {
-        to: user.email,
-        from: 'support@ningotv.com',
-        subject: 'Email Verification',
+        to: email,
+        from: "support@ningotv.com",
+        subject: "Email Verification",
         text: `Kindly use this ${code} to verify your account`,
       };
 
