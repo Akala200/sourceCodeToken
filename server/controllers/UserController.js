@@ -934,7 +934,8 @@ class UserController {
                 )
               ));
           } catch (error) {
-            return res.status(500).json(responses.error(500, error));
+            console.log(error);
+            return res.status(500).json(responses.error(500, 'Whats up'));
           }
         } catch (error) {
           console.error(error);
@@ -947,6 +948,7 @@ class UserController {
           );
       }
     } catch (error) {
+      console.log(error);
       return res.status(500).json(responses.error(500, error));
     }
 
