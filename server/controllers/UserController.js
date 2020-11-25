@@ -38,7 +38,6 @@ const erroresponse = [
     message: 'Unable to Login',
   },
 ];
-
 const verifyresponce = [
   {
     path: 'verify',
@@ -807,24 +806,14 @@ class UserController {
               if (err) {
                 console.log('Something wrong when updating data!');
               } else {
-                Transaction.updateMany(
-                  { email: tokenUser.user },
-                  user,
-                  {
-                    new: true,
-                    multi: true,
-                  },
-                  (err, transaction) => {
-                    if (err) {
-                      console.log('Something wrong when updating data!');
-                    }
-                    return res
-                      .status(200)
-                      .json(
-                        responses.success(200, 'Email change successfully', user)
-                      );
-                  }
-                );
+                // eslint-disable-next-line max-len
+                Transaction.update({ foo: 'bar' }, { $set: { test: 'success!' } }, { multi: true }).then(transactions => res
+                  .status(200)
+                  .json(
+                    responses.success(200, 'Email change successfully', user)
+                  )).catch(err => res
+                  .status(500)
+                  .json(responses.error(500, err)));
               }
             }
           );
