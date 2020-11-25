@@ -37,7 +37,7 @@ router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
 router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
 router.get('/coin/market/eth', bitcoinMobileMarketETH);
 router.get('/user/address', getAddress);
-router.get('/update/password', changePassword);
+router.put('/update/password', changePassword);
 
 
 // getAddress
