@@ -41,7 +41,7 @@ router.get('/coin/market/eth', bitcoinMobileMarketETH);
 router.get('/user/address', getAddress);
 router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
-router.post('/verify/email', verifyNew);
+router.post('/verify/new/email', verifyNew);
 
 
 // getAddress
