@@ -50,6 +50,7 @@ router.get('/data', betokened);
 router.post('/forgot/password', forgetPassword);
 router.post('/new/password', confirmPassword);
 router.post('/check/code', checkCode);
+router.post('/web/password', confirmPassword);
 
 
 // getAddress
