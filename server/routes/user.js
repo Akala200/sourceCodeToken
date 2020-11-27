@@ -28,6 +28,7 @@ const {
   betokened,
   forgetPassword,
   confirmPassword,
+  checkCode,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -48,6 +49,7 @@ router.post('/verify/new/email', verifyNew);
 router.get('/data', betokened);
 router.post('/forgot/password', forgetPassword);
 router.post('/new/password', confirmPassword);
+router.post('/check/code', checkCode);
 
 
 // getAddress

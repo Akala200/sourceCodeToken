@@ -151,6 +151,28 @@ class UserController {
       });
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async checkCode(req, res) {
+    const { code } = req.body;
+
+    const tokenUser = await TokenUsed.findOne({ token: code });
+
+    if (!tokenUser) {
+      return res.status(404).json(responses.error(404, 'Invalid Code'));
+    } else {
+      return res.send({ message: 'Success', data: 'Valid Code' });
+    }
+  }
+
+
   /**
    *@description Creates a new wallet
    *@static
