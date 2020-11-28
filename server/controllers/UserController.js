@@ -294,11 +294,7 @@ class UserController {
         return res.status(400).json(responses.error(400, 'User already exist'));
       }
 
-      if (user.email === email) {
-        return res
-          .status(400)
-          .json(responses.error(400, 'Sorry, the email is the same'));
-      }
+
       const code = randomstring.generate({
         length: 5,
         charset: 'numeric',
