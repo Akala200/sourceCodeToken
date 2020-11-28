@@ -1,6 +1,9 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import { sign, verify } from 'jsonwebtoken';
 
+const Encryp = 'hvhvhwvwhecvhjwvlwvwhfvhjvhvhjvbwbwcjbgfwhbflvfwbsjvwflwjflhsvhvwajnvslnvwlvshsnvwhjcjafbkjfbwefsvjsbvbsvbvsbvjvbjvhchcshvcshzhsjvjvjvbjsbvjvbksjbvjfbvsjvbsvbsfvbjvbakjcbskjvbsvbbsjbvjsbvjvbsdvbjsvbjdsbvJBVksvbvkbvvzkvzkvVNKZnkbLSBNKSbkxBNvSLK';
 const genToken = async (data) => {
   let token;
   // generate new jwt token for register = Cliebt_ID , ROle_ID
@@ -8,7 +11,7 @@ const genToken = async (data) => {
     {
       ...data,
     },
-    process.env.ENCRYPT_ID,
+    Encryp,
     {
       expiresIn: '7d',
     }
