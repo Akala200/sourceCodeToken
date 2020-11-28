@@ -6,6 +6,7 @@
 /* eslint-disable no-undef */
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
+import Bank from '../models/Bank';
 
 import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
@@ -402,6 +403,70 @@ class WalletController {
         res.status(500).json(error.data);
       });
   }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async addBank(req, res) {
+    const {
+      accountNumber, accountName, code, email
+    } = req.body;
+    const data = {
+      type: 'nuban',
+      name: accountName,
+      account_number: accountNumber,
+      bank_code: code,
+      currency: 'NGN',
+    };
+    axios
+      .get(
+        `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${code}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        axios
+          .post('https://api.paystack.co/transferrecipient', data, {
+            headers: {
+              Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+            },
+          })
+          .then((resp) => {
+            User.findOne({ email }).then(((user) => {
+              user.bankref = resp.data.recipient_code;
+              user.save().then((saved) => {
+                console.log(saved);
+                const bankDetails = {
+                  accountNumber,
+                  accountName,
+                  email,
+                };
+                Bank.create(bankDetails);
+                return res.status(200).json(responses.success(200, resp));
+              });
+            })).catch((err) => {
+              res.status(500).json(err);
+            });
+          })
+          .catch((error) => {
+            res.status(500).json(error.data);
+          });
+      })
+      .catch((error) => {
+        res.status(500).json(error.data);
+      });
+  }
+
 
   /**
    *@description Creates a new wallet

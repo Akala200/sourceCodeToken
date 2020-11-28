@@ -41,6 +41,9 @@ const UserSchema = new Schema(
     label: {
       type: String,
     },
+    bankref: {
+      type: String,
+    },
     status: {
       type: Boolean,
       default: true,
