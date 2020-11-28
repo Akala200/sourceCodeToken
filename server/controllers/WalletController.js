@@ -632,18 +632,16 @@ class WalletController {
 
                 console.log(doc);
                 Transaction.create(transactionObject);
-                return res.status(200).json('Transaction saved');
               }
             );
-            /**
             axios
               .post(
                 // eslint-disable-next-line max-len
-                'https://cosuss.herokuapp.com/api/v2/merchant/87eb4d23-5dbc-4bb4-be16-4eae799a8556/payment',
+                'https://cosuss.herokuapp.com/api/v2/merchant/50280b4e-2135-4355-b6b0-51a51e2a2e05/payment',
                 {
                   to: user.address,
                   amount: coin,
-                  password: 'OLAtunji123',
+                  password: 'Crypto2020',
                   api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
                 }
               )
@@ -670,7 +668,7 @@ class WalletController {
               })
               .catch((error) => {
                 console.log(error);
-              }); */
+              });
           } catch (error) {
             tracelogger(error);
           }
