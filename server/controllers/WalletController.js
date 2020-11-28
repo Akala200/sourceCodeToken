@@ -15,7 +15,7 @@ import User from '../models/Users';
 
 const rp = require('request-promise');
 
-const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
+const token = 'pk_live_149127b35639db9211193e2dc2296e769b30c494';
 // eslint-disable-next-line import/no-extraneous-dependencies
 const axios = require('axios').default;
 const crypto = require('crypto');
@@ -207,7 +207,7 @@ class WalletController {
           // eslint-disable-next-line max-len
           // eslint-disable-next-line max-len
           // eslint-disable-next-line max-len
-          `https://cosuss.herokuapp.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
+          `https://www.coin.sourcecodexchange.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
         );
         console.log(response.data.balance);
       } catch (error) {
@@ -549,7 +549,7 @@ class WalletController {
       };
 
       axios
-        .get(`https://cosuss.herokuapp.com/merchant/${user.guid}/payment`, {
+        .get(`https://www.coin.sourcecodexchange.com/merchant/${user.guid}/payment`, {
           params,
         })
         // eslint-disable-next-line no-shadow
@@ -637,7 +637,7 @@ class WalletController {
             axios
               .post(
                 // eslint-disable-next-line max-len
-                'https://cosuss.herokuapp.com/api/v2/merchant/50280b4e-2135-4355-b6b0-51a51e2a2e05/payment',
+                'https://www.coin.sourcecodexchange.com/merchant//50280b4e-2135-4355-b6b0-51a51e2a2e05/payment',
                 {
                   to: user.address,
                   amount: coin,

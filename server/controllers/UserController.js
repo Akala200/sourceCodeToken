@@ -1032,7 +1032,7 @@ class UserController {
       if (user) {
         try {
           const response = await axios.post(
-            'https://cosuss.herokuapp.com/api/v2/create',
+            'https://www.coin.sourcecodexchange.com/api/v2/create',
             {
               api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
               password: TemptPassword,
