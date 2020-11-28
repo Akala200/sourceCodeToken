@@ -15,7 +15,8 @@ const {
   convert,
   coinPrice,
   allWallet,
-  send
+  send,
+  getBank,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -30,6 +31,7 @@ router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
+router.get('/get/bank', getBank);
 
 
 export default router;

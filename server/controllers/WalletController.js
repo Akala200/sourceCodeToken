@@ -92,7 +92,6 @@ class WalletController {
           .json(responses.error(404, 'Wallet does not exist'));
       }
 
-
       const requestOptions = {
         method: 'GET',
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
@@ -108,25 +107,27 @@ class WalletController {
         gzip: true,
       };
 
-      rp(requestOptions).then((response) => {
-        if (response) {
-          console.log(response);
+      rp(requestOptions)
+        .then((response) => {
+          if (response) {
+            console.log(response);
+            const result = wallet.map(wall => ({
+              currency: 'BTC',
+              price: wall.balance,
+              priceCurrency: response.data.quote.NGN,
+            }));
+            return res.status(200).json(responses.success(200, result));
+          }
+        })
+        .catch((err) => {
+          console.log(err.body);
           const result = wallet.map(wall => ({
             currency: 'BTC',
             price: wall.balance,
-            priceCurrency: response.data.quote.NGN,
+            priceCurrency: 0,
           }));
           return res.status(200).json(responses.success(200, result));
-        }
-      }).catch((err) => {
-        console.log(err.body);
-        const result = wallet.map(wall => ({
-          currency: 'BTC',
-          price: wall.balance,
-          priceCurrency: 0,
-        }));
-        return res.status(200).json(responses.success(200, result));
-      });
+        });
     } catch (error) {
       tracelogger(error);
     }
@@ -387,6 +388,29 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async getBank(req, res) {
+    axios
+      .get('https://api.paystack.co/bank', {
+        headers: {
+          Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+        },
+      })
+      .then((response) => {
+        res.send(response.data.data);
+      })
+      .catch((error) => {
+        res.status(500).json(error.data);
+      });
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async send(req, res) {
     try {
       const {
@@ -474,7 +498,6 @@ class WalletController {
           email,
         });
         const user = await User.findOne({ email });
-
 
         if (!user) {
           return res
