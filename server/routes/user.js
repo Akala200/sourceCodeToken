@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
 
-// const { auth } = require('../middlewares/authMiddleware');
+const { decodeRegToken } = require('../utils/storeToken');
 
 const router = Router();
 
@@ -35,19 +35,19 @@ router.post('/create/account', newUser);
 router.post('/login', login);
 router.post('/verify', verify);
 router.get('/lists', getlist);
-router.get('/mobile', bitcoinMobile);
+router.get('/mobile', decodeRegToken, bitcoinMobile);
 router.get('/coin/history', bitcoinMobileNgn);
-router.get('/coin/history/usd', bitcoinMobileUsd);
-router.get('/coin/market/btc', bitcoinMobileMarketBTC);
-router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
-router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
-router.get('/coin/market/eth', bitcoinMobileMarketETH);
-router.get('/user/address', getAddress);
-router.put('/update/password', changePassword);
-router.post('/update/email', changeEmail);
-router.post('/update/web', changeEmail);
+router.get('/coin/history/usd', decodeRegToken, bitcoinMobileUsd);
+router.get('/coin/market/btc', decodeRegToken, bitcoinMobileMarketBTC);
+router.get('/coin/market/xrp', decodeRegToken, bitcoinMobileMarketXRP);
+router.get('/coin/market/sudt', decodeRegToken, bitcoinMobileMarketUSDT);
+router.get('/coin/market/eth', decodeRegToken, bitcoinMobileMarketETH);
+router.get('/user/address', decodeRegToken, getAddress);
+router.put('/update/password', decodeRegToken, changePassword);
+router.post('/update/email', decodeRegToken, changeEmail);
+router.post('/update/web', decodeRegToken, changeEmail);
 
-router.post('/verify/new/email', verifyNew);
+router.post('/verify/new/email', decodeRegToken, verifyNew);
 router.get('/data', betokened);
 router.post('/forgot/password', forgetPassword);
 router.post('/new/password', confirmPassword);
