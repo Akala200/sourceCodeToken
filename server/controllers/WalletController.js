@@ -405,6 +405,32 @@ class WalletController {
       });
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getUserBank(req, res) {
+    console.log('here');
+    try {
+      const { email } = req.query;
+
+      const datails = await Bank.find({ email }).limit(5);
+
+      if (!datails) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+
+      return res.json(datails);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
@@ -425,7 +451,6 @@ class WalletController {
       bank_code: code,
       currency: 'NGN',
     };
-
 
     function saveBank(id1) {
       console.log(id1);
@@ -471,10 +496,9 @@ class WalletController {
         saveBank(email);
       })
       .catch((error) => {
-        res.status(500).json(error.data);
+        res.status(500).json(error);
       });
   }
-
 
   /**
    *@description Creates a new wallet
