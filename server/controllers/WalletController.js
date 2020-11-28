@@ -438,7 +438,7 @@ class WalletController {
         .then((resp) => {
           User.findOne({ email })
             .then((user) => {
-              user.bankref = resp.data.recipient_code;
+              user.bankref = resp.data.data.recipient_code;
               user.save().then((saved) => {
                 console.log(saved);
                 const bankDetails = {
@@ -447,7 +447,7 @@ class WalletController {
                   email,
                 };
                 Bank.create(bankDetails);
-                return res.status(200).json(responses.success(200, resp));
+                return res.status(200).json(responses.success(200, resp.data));
               });
             })
             .catch((err) => {
