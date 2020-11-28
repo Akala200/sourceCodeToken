@@ -27,7 +27,7 @@ export const signToken = async (data) => {
   return token;
 };
 
-export const decodeRegToken = async (token) => {
+export const decodeRegTokens = async (token) => {
   try {
     const decodedvalue = await verify(token, process.env.ENCRYPT_ID);
     const returnValue = {
@@ -37,5 +37,20 @@ export const decodeRegToken = async (token) => {
     return returnValue;
   } catch (err) {
     return { invalid: true };
+  }
+};
+
+export const decodeRegToken = async (req, res, next) => {
+  const token = req.headers.authorization;
+
+  try {
+    const decodedvalue = await verify(token, process.env.ENCRYPT_ID);
+    const returnValue = {
+      invalid: false,
+      decodedvalue,
+    };
+    next();
+  } catch (err) {
+    return res.status(401).send('Unauthorized User');
   }
 };
