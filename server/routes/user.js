@@ -53,7 +53,6 @@ router.post('/forgot/password', forgetPassword);
 router.post('/new/password', confirmPassword);
 router.post('/check/code', checkCode);
 router.post('/web/password', confirmPassword);
-router.post('/add/bank', confirmPassword);
 
 
 // getAddress
