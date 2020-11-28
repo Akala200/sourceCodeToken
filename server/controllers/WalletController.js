@@ -15,7 +15,7 @@ import User from '../models/Users';
 
 const rp = require('request-promise');
 
-const token = 'pk_live_149127b35639db9211193e2dc2296e769b30c494';
+const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
 // eslint-disable-next-line import/no-extraneous-dependencies
 const axios = require('axios').default;
 const crypto = require('crypto');
