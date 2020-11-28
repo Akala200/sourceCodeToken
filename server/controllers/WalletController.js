@@ -418,7 +418,7 @@ class WalletController {
     try {
       const { email } = req.query;
 
-      const datails = await Bank.find({ email }).limit(5);
+      const datails = await Bank.findOne({ email }).limit(5);
 
       if (!datails) {
         return res
