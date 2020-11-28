@@ -4,6 +4,7 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+import { id } from 'monk';
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
 import Bank from '../models/Bank';
@@ -424,25 +425,19 @@ class WalletController {
       bank_code: code,
       currency: 'NGN',
     };
-    axios
-      .get(
-        `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${code}`,
-        {
+
+
+    function saveBank(id1) {
+      console.log(id1);
+      axios
+        .post('https://api.paystack.co/transferrecipient', data, {
           headers: {
             Authorization: `Bearer ${token}`, // the token is a variable which holds the token
           },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        axios
-          .post('https://api.paystack.co/transferrecipient', data, {
-            headers: {
-              Authorization: `Bearer ${token}`, // the token is a variable which holds the token
-            },
-          })
-          .then((resp) => {
-            User.findOne({ email }).then(((user) => {
+        })
+        .then((resp) => {
+          User.findOne({ email })
+            .then((user) => {
               user.bankref = resp.data.recipient_code;
               user.save().then((saved) => {
                 console.log(saved);
@@ -454,13 +449,26 @@ class WalletController {
                 Bank.create(bankDetails);
                 return res.status(200).json(responses.success(200, resp));
               });
-            })).catch((err) => {
+            })
+            .catch((err) => {
               res.status(500).json(err);
             });
-          })
-          .catch((error) => {
-            res.status(500).json(error.data);
-          });
+        })
+        .catch((error) => {
+          res.status(500).json(error.data);
+        });
+    }
+    axios
+      .get(
+        `https://api.paystack.co/bank/resolve?account_number=${accountNumber}&bank_code=${code}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+          },
+        }
+      )
+      .then((response) => {
+        saveBank(email);
       })
       .catch((error) => {
         res.status(500).json(error.data);
