@@ -15,8 +15,10 @@ import User from '../models/Users';
 
 const rp = require('request-promise');
 
-const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
-// eslint-disable-next-line import/no-extraneous-dependencies
+// const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
+const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
+
+// eslint-disable-next-line import/no-extraneous-dependencies  sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e
 const axios = require('axios').default;
 const crypto = require('crypto');
 /**
@@ -637,7 +639,7 @@ class WalletController {
             axios
               .post(
                 // eslint-disable-next-line max-len
-                'https://www.coin.sourcecodexchange.com/merchant//50280b4e-2135-4355-b6b0-51a51e2a2e05/payment',
+                'https://www.coin.sourcecodexchange.com/merchant/7b87a095-a1ed-47e8-8f4c-045b2d14c471/payment',
                 {
                   to: user.address,
                   amount: coin,
