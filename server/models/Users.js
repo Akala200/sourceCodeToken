@@ -13,6 +13,7 @@ const UserSchema = new Schema(
     email: {
       type: String,
       trim: true,
+      required: true,
       lowercase: true,
       unique: true,
       validate: [isEmail, 'invalid email'],
@@ -25,6 +26,7 @@ const UserSchema = new Schema(
     },
     phone: {
       type: String,
+      required: true,
     },
     password: {
       type: String,

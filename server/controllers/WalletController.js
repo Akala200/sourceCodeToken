@@ -13,7 +13,10 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 
+
 const rp = require('request-promise');
+const MyWallet = require('blockchain.info/MyWallet');
+const bitcoinTransaction = require('bitcoin-transaction');
 
 // const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
 const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
@@ -21,6 +24,9 @@ const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
 // eslint-disable-next-line import/no-extraneous-dependencies  sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e
 const axios = require('axios').default;
 const crypto = require('crypto');
+const CryptoAccount = require('send-crypto');
+
+
 /**
  * @description Defines the actions to for the users endpoints
  * @class UsersController
@@ -164,6 +170,33 @@ class WalletController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async createTest(req, res) {
+    console.log('here');
+    try {
+      walleted.getBalance().then((response) => {
+        console.log('My balance is %d!', response.balance);
+      });
+
+
+      if (!balance) {
+        return res.status(404).json(responses.error(404, balance));
+      }
+
+      return res.json(balance);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
   /**
    *@description Creates a new wallet
    *@static
@@ -203,8 +236,31 @@ class WalletController {
     try {
       const { email } = req.query;
       let response;
-      /**   try {
-        const user = await User.findOne({ email });
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+      const privateKey = user.tempt;
+      const account = new CryptoAccount(privateKey);
+      await account
+        .getBalance('BTC')
+        .then((balances) => {
+          // Save the new password
+          console.log(balances);
+          Wallet.findOneAndUpdate(
+            { email },
+            { balance: parseFloat(balances) },
+            { new: true }
+          );
+          return res.status(200).json(responses.success(200, balances));
+        })
+        .catch((err) => {
+          console.log(balances);
+        });
+      /**
         response = await axios.post(
           // eslint-disable-next-line max-len
           // eslint-disable-next-line max-len
@@ -228,8 +284,6 @@ class WalletController {
           .json(responses.error(404, 'User does not exist'));
       }
       */
-      const balance = await Wallet.findOne({ email });
-      return res.status(200).json(responses.success(200, balance));
     } catch (error) {
       tracelogger(error);
     }
@@ -525,7 +579,6 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log('amount', walletBalance.balance);
       if (flatAmount > walletBalance.balance) {
         return res.status(400).json(responses.error(400, 'Insufficient fund'));
       }
@@ -540,23 +593,11 @@ class WalletController {
         walletId: user._id,
         status: 'successful',
       };
-
-      const params = {
-        password: user.tempt,
-        to: address,
-        amount: bitcoin,
-        fee: 0.0001,
-        api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-        from: user.address,
-      };
-
-      axios
-        .get(`https://www.coin.sourcecodexchange.com/merchant/${user.guid}/payment`, {
-          params,
-        })
-        // eslint-disable-next-line no-shadow
-        .then((response) => {
-          console.log('amount', response);
+      const account = new CryptoAccount(user.tempt);
+      account
+        .send(address, flatAmount, 'BTC')
+        .then((rep) => {
+          console.log(rep, 'result');
           const newAmount = walletBalance.balance - flatAmount;
           Wallet.findOneAndUpdate(
             { email },
@@ -568,14 +609,16 @@ class WalletController {
               if (err) {
                 console.log('Something wrong when updating data!');
               }
-
               console.log(doc);
               Transaction.create(transactionObject);
-              return res.status(200).json('Transaction saved');
+              return res.status(200).json('Transaction sent');
             }
           );
         })
-        .catch(error => res.status(500).json(responses.error(500, error.response.data)));
+        .catch((error) => {
+          console.log(error);
+          res.status(500).json(responses.error(500, error));
+        });
     } catch (error) {
       tracelogger(error);
     }
@@ -620,31 +663,18 @@ class WalletController {
             const amountNew = coin + user.balance;
             console.log(amountNew);
             const priceReturned = event.data.amount / 100;
-
-            Wallet.findOneAndUpdate(
-              { email },
-              {
-                $set: { balance: parseFloat(amountNew) },
-              },
-              { new: true },
-              (err, doc) => {
-                if (err) {
-                  console.log(err);
-                }
-
-                console.log(doc);
-                Transaction.create(transactionObject);
-              }
-            );
+            const _url = 'https://api.luno.com/api/1/send';
+            const uname = 'est9nqyd6gn2r';
+            const pass = 'LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4';
             axios
               .post(
-                // eslint-disable-next-line max-len
-                'https://www.coin.sourcecodexchange.com/merchant/7b87a095-a1ed-47e8-8f4c-045b2d14c471/payment',
+                _url,
+                {},
                 {
-                  to: user.address,
-                  amount: coin,
-                  password: 'Crypto2020',
-                  api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
+                  auth: {
+                    username: uname,
+                    password: pass,
+                  },
                 }
               )
               // eslint-disable-next-line no-shadow

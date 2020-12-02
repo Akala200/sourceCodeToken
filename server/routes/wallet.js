@@ -21,11 +21,12 @@ const {
   getBank,
   addBank,
   getUserBank,
+  createTest,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
 router.post('/credit', decodeRegToken, numberChecker, initiate);
-router.post('/send', decodeRegToken, send);
+router.post('/send', send);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', decodeRegToken, transactionHistory);
 router.get('/history/all', decodeRegToken, transactionHistoryAll);
@@ -38,6 +39,7 @@ router.get('/wallet/all', decodeRegToken, allWallet);
 router.get('/get/bank', decodeRegToken, getBank);
 router.post('/add/bank', decodeRegToken, addBank);
 router.get('/user/bank', decodeRegToken, getUserBank);
+router.get('/test', createTest);
 
 
 export default router;

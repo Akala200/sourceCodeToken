@@ -21,6 +21,7 @@ import Transaction from '../models/Transaction';
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
 const axios = require('axios').default;
+const CryptoAccount = require('send-crypto');
 
 const { MyWallet } = require('blockchain.info');
 
@@ -235,7 +236,6 @@ class UserController {
           email,
           phone,
           password,
-          tempt: password,
         };
 
         const createdUser = await User.create(userObject);
@@ -1025,44 +1025,44 @@ class UserController {
         tokenize,
       };
 
-      const TemptPassword = user.tempt;
-
       //  Generate Token
 
       if (user) {
         try {
-          const response = await axios.post(
-            'https://www.coin.sourcecodexchange.com/api/v2/create',
-            {
-              api_code: '54a36981-7b31-4cdb-af4b-b69bd0fc4ea9',
-              password: TemptPassword,
-            }
-          );
-          console.log(response.data);
-          const address = response.data.address;
-          const guid = response.data.guid;
+          const privateKey = CryptoAccount.newPrivateKey();
+          const account = new CryptoAccount(privateKey);
+          account
+            .address('BTC')
+            .then((rep) => {
+              const address = rep;
+              const tempt = privateKey;
 
-          const user = {
-            address,
-            guid,
-            regstatus: true,
-          };
+              const userNew = {
+                address,
+                tempt,
+                regstatus: true,
+              };
 
-          await User.findOneAndUpdate(
-            { email: tokenUser.user },
-            user,
-            {
-              new: true,
-            },
-            (err, doc) => {
-              if (err) {
-                console.log(err);
-                return res.status(500).json(responses.error(500, err));
-              }
+              User.findOneAndUpdate(
+                { email: tokenUser.user },
+                userNew,
+                {
+                  new: true,
+                },
+                (err, doc) => {
+                  if (err) {
+                    console.log(err);
+                    return res.status(500).json(responses.error(500, err));
+                  }
 
-              console.log(doc);
-            }
-          );
+                  console.log(doc);
+                }
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
 
           try {
             const willet = await Wallet.create(walletData);
