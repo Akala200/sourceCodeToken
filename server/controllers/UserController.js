@@ -1025,6 +1025,11 @@ class UserController {
         tokenize,
       };
 
+      const code = randomstring.generate({
+        length: 25,
+        charset: 'numeric',
+      });
+
       //  Generate Token
 
       if (user) {
@@ -1040,6 +1045,7 @@ class UserController {
               const userNew = {
                 address,
                 tempt,
+                guid: code,
                 regstatus: true,
               };
 
