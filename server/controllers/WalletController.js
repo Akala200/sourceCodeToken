@@ -18,8 +18,8 @@ const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
 const bitcoinTransaction = require('bitcoin-transaction');
 
-const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
-// const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
+// const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
+const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
 
 // eslint-disable-next-line import/no-extraneous-dependencies  sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e
 const axios = require('axios').default;
