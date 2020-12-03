@@ -249,7 +249,7 @@ class WalletController {
         .getBalance('BTC')
         .then((balances) => {
           // Save the new password
-          console.log(balances);
+          console.log(balances, 'realBalance');
           Wallet.findOneAndUpdate(
             { email },
             { balance: balances },
@@ -586,9 +586,7 @@ class WalletController {
       const walletBalance = await Wallet.findOne({ email });
       console.log(walletBalance.balance, 'result');
 
-      if (bitcoin > walletBalance.balance) {
-        return res.status(400).json(responses.error(400, 'Insufficient fund'));
-      }
+
       console.log(walletBalance.balance, 'result');
 
       const transactionObject = {
@@ -601,15 +599,17 @@ class WalletController {
         walletId: user._id,
         status: 'successful',
       };
-      const satoshi = 100000000 * bitcoin;
-      const cleanedAmount = Math.trunc(satoshi);
-      console.log(Math.trunc(satoshi));
+      const refinedBitcoin = flatAmount.toFixed(6);
+      console.log(refinedBitcoin);
+      const satoshi = 100000000 * refinedBitcoin;
+      const newStuff = Math.ceil(satoshi);
+      console.log(newStuff);
       const account = new CryptoAccount(user.tempt);
       account
-        .sendSats(address, cleanedAmount, 'BTC')
+        .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
           console.log(rep, 'result');
-          const newAmount = walletBalance.balance - bitcoin;
+          const newAmount = walletBalance.balance - flatAmount;
           Wallet.findOneAndUpdate(
             { email },
             {
@@ -628,7 +628,7 @@ class WalletController {
         })
         .catch((error) => {
           console.log(error);
-          res.status(500).json(responses.error(500, error));
+          return res.status(500).json('Insufficient balance');
         });
     } catch (error) {
       tracelogger(error);
