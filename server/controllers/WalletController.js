@@ -601,7 +601,7 @@ class WalletController {
         walletId: user._id,
         status: 'successful',
       };
-      const satoshi = 100000000 * flatAmount;
+      const satoshi = 100000000 * bitcoin;
       console.log(satoshi);
       const account = new CryptoAccount(user.tempt);
       account
