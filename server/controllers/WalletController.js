@@ -674,7 +674,7 @@ class WalletController {
 
             const amountNew = coin + user.balance;
             console.log(amountNew);
-            const limited = coin.toFixed(6)
+            const limited = coin.toFixed(6);
             const refinedCoin = limited.toString();
             const priceReturned = event.data.amount / 100;
             const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=BTC&address=${user.address}`;
