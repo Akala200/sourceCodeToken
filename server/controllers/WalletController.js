@@ -18,8 +18,8 @@ const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
 const bitcoinTransaction = require('bitcoin-transaction');
 
-const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
-// const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
+// const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
+const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
 
 // eslint-disable-next-line import/no-extraneous-dependencies  sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e
 const axios = require('axios').default;
@@ -671,10 +671,12 @@ class WalletController {
               walletId: wallet._id,
               status: 'successful',
             };
+
             const amountNew = coin + user.balance;
             console.log(amountNew);
+            const refinedCoin = coin.toString();
             const priceReturned = event.data.amount / 100;
-            const _url = 'https://api.luno.com/api/1/send';
+            const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=BTC&address=${user.address}`;
             const uname = 'est9nqyd6gn2r';
             const pass = 'LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4';
             axios
