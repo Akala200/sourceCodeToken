@@ -677,7 +677,7 @@ class WalletController {
             const limited = parseFloat(coin).toFixed(6);
             const refinedCoin = limited.toString();
             const priceReturned = event.data.amount / 100;
-            const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=BTC&address=${user.address}`;
+            const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=XBT&address=${user.address}`;
             const uname = 'est9nqyd6gn2r';
             const pass = 'LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4';
             axios
