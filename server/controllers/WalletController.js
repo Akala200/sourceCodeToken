@@ -170,7 +170,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -185,7 +184,6 @@ class WalletController {
       walleted.getBalance().then((response) => {
         console.log('My balance is %d!', response.balance);
       });
-
 
       if (!balance) {
         return res.status(404).json(responses.error(404, balance));
@@ -254,13 +252,15 @@ class WalletController {
             { email },
             { balance: balances },
             { new: true }
-          ).then((ress) => {
-            console.log(ress);
-            return res.status(200).json(responses.success(200, balances));
-          }).catch((err) => {
-            console.log(err);
-            return res.status(500).json(responses.success(500, err));
-          });
+          )
+            .then((ress) => {
+              console.log(ress);
+              return res.status(200).json(responses.success(200, balances));
+            })
+            .catch((err) => {
+              console.log(err);
+              return res.status(500).json(responses.success(500, err));
+            });
         })
         .catch((err) => {
           console.log(balances);
@@ -397,7 +397,7 @@ class WalletController {
         const dataRes = {
           price: response.data.quote.BTC.price,
           amountAfterFee: realAmount,
-          fee: discount
+          fee: discount,
         };
         res.json(dataRes);
       });
@@ -587,7 +587,6 @@ class WalletController {
       const walletBalance = await Wallet.findOne({ email });
       console.log(walletBalance.balance, 'result');
 
-
       console.log(walletBalance.balance, 'result');
 
       const transactionObject = {
@@ -633,10 +632,12 @@ class WalletController {
                 console.log('Something wrong when updating data!');
               }
               console.log(doc);
-              Transaction.create(transactionObject).then((respp) => {
-                console.log(respp);
-                return res.status(200).json('Transaction sent');
-              }).catch(err => res.status(500).json(err));
+              Transaction.create(transactionObject)
+                .then((respp) => {
+                  console.log(respp);
+                  return res.status(200).json('Transaction sent');
+                })
+                .catch(err => res.status(500).json(err));
             }
           );
         })
@@ -647,6 +648,118 @@ class WalletController {
               console.log(respp);
               return res.status(500).json('Insufficient balance');
             })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json('Insufficient balance');
+            });
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async withdraw(req, res) {
+    try {
+      const {
+        amount,
+        fee,
+        address,
+        coin,
+        wallet,
+        bitcoin,
+        email,
+        flatAmount,
+      } = req.body;
+
+      const user = await User.findOne({ email });
+      const walletBalance = await Wallet.findOne({ email });
+      console.log(walletBalance.balance, 'result');
+
+      console.log(walletBalance.balance, 'result');
+
+      const transactionObject = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Withdrawal',
+        to: address,
+        email: user.email,
+        walletId: user._id,
+        status: 'successful',
+      };
+
+      const transactionObjectF = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Withdrawal',
+        to: address,
+        email: user.email,
+        walletId: user._id,
+        status: 'Failed',
+      };
+      const refinedBitcoin = flatAmount.toFixed(6);
+      console.log(refinedBitcoin);
+      const satoshi = 100000000 * refinedBitcoin;
+      const newStuff = Math.ceil(satoshi);
+      console.log(newStuff);
+      const account = new CryptoAccount(user.tempt);
+      account
+        .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, 'BTC')
+        .then((rep) => {
+          console.log(rep, 'result');
+          const newAmount = walletBalance.balance - flatAmount;
+          Wallet.findOneAndUpdate(
+            { email },
+            {
+              $set: { balance: newAmount },
+            },
+            { new: true },
+            (err, doc) => {
+              if (err) {
+                console.log('Something wrong when updating data!');
+              }
+              console.log(doc);
+              Transaction.create(transactionObject)
+                .then((respp) => {
+                  console.log(respp);
+                  const transferData = {
+                    source: 'balance',
+                    amount: amount * 100,
+                    recipient: user.bankref,
+                    reason: 'Selling Bitcoin',
+                  };
+                  axios
+                    .post('https://api.paystack.co/transfer', data, {
+                      headers: {
+                        Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+                      },
+                    })
+                    .then((response) => {
+                      console.log(response.data);
+                      return res.status(200).json('Transaction sent');
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      res.status(500).json(err);
+                    });
+                })
+                .catch(err => res.status(500).json(err));
+            }
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+          Transaction.create(transactionObjectF)
+            .then(respp => res.status(500).json('Insufficient balance'))
             .catch((err) => {
               console.log(err);
               res.status(500).json('Insufficient balance');
