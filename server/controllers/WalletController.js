@@ -75,7 +75,7 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
-            res.status(500).json(error.data);
+            res.status(500).json(error);
           });
       }
     } catch (error) {
