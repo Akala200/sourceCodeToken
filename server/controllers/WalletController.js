@@ -372,7 +372,7 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 3;
+      const percent = 10;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
       console.log(realAmount, 'aftersub');
