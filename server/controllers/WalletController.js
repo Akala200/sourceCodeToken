@@ -374,7 +374,7 @@ class WalletController {
 
       const percent = 3;
       const discount = (percent / 100) * amount;
-      const realAmount = amount - discount;
+      const realAmount = amount - discount - 800;
       console.log(realAmount, 'aftersub');
       console.log(discount, 'discount amount');
 
@@ -397,6 +397,7 @@ class WalletController {
         const dataRes = {
           price: response.data.quote.BTC.price,
           amountAfterFee: realAmount,
+          fee: discount
         };
         res.json(dataRes);
       });
