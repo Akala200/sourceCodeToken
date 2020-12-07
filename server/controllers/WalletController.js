@@ -600,6 +600,17 @@ class WalletController {
         walletId: user._id,
         status: 'successful',
       };
+
+      const transactionObjectF = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'transfer',
+        to: address,
+        email: user.email,
+        walletId: user._id,
+        status: 'Failed',
+      };
       const refinedBitcoin = flatAmount.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
@@ -622,14 +633,24 @@ class WalletController {
                 console.log('Something wrong when updating data!');
               }
               console.log(doc);
-              Transaction.create(transactionObject);
-              return res.status(200).json('Transaction sent');
+              Transaction.create(transactionObject).then((respp) => {
+                console.log(respp);
+                return res.status(200).json('Transaction sent');
+              }).catch(err => res.status(500).json(err));
             }
           );
         })
         .catch((error) => {
           console.log(error);
-          return res.status(500).json('Insufficient balance');
+          Transaction.create(transactionObjectF)
+            .then((respp) => {
+              console.log(respp);
+              return res.status(500).json('Insufficient balance');
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json('Insufficient balance');
+            });
         });
     } catch (error) {
       tracelogger(error);
