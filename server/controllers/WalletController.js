@@ -752,12 +752,8 @@ class WalletController {
             Transaction.create(transactionObjectF)
               .then((respp) => {
                 console.log(respp);
-                return res.status(500).json('Insufficient balance');
+                return res.status(200).json(error.response._message);
               })
-              .catch((err) => {
-                console.log(err);
-                res.status(500).json('Insufficient balance');
-              });
           });
       }
       account
