@@ -738,7 +738,7 @@ class WalletController {
                     reason: 'Selling Bitcoin',
                   };
                   axios
-                    .post('https://api.paystack.co/transfer', data, {
+                    .post('https://api.paystack.co/transfer', transferData, {
                       headers: {
                         Authorization: `Bearer ${token}`, // the token is a variable which holds the token
                       },

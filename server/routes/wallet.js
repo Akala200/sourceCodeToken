@@ -22,11 +22,13 @@ const {
   addBank,
   getUserBank,
   createTest,
+  withdraw,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
 router.post('/credit', numberChecker, initiate);
 router.post('/send', send);
+router.post('/transfer', withdraw);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
