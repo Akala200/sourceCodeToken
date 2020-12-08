@@ -802,6 +802,7 @@ class WalletController {
     }
   }
 
+  
   /**
    *@description Creates a new wallet
    *@static
@@ -827,7 +828,7 @@ class WalletController {
       const walletBalance = await Wallet.findOne({ email });
       console.log(walletBalance.balance, 'result');
 
-      console.log(walletBalance.balance, 'result');
+      console.log(user);
       if (!user.bankref) {
         return res
           .status(400)
@@ -887,19 +888,19 @@ class WalletController {
                     reason: 'Selling Bitcoin',
                   };
                   axios
-                    .post('https://api.paystack.co/transfer', transferData, {
-                      headers: {
-                        Authorization: `Bearer ${token}`, // the token is a variable which holds the token
-                      },
-                    })
-                    .then((response) => {
-                      console.log(response.data);
-                      return res.status(200).json('Transaction sent');
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      res.status(500).json(err);
-                    });
+                  .post('https://api.paystack.co/transfer', transferData, {
+                    headers: {
+                      Authorization: `Bearer ${token}`, // the token is a variable which holds the token
+                    },
+                  })
+                  .then((response) => {
+                    console.log(response.data);
+                    return res.status(200).json(response.data);
+                  })
+                  .catch((err) => {
+                    console.log(err.response.data);
+                    res.status(200).json(err.response.data.message);
+                  });
                 })
                 .catch(err => res.status(500).json(err));
             }
@@ -918,6 +919,7 @@ class WalletController {
       tracelogger(error);
     }
   }
+
 
   static async webhook(req, res) {
     const hash = crypto
