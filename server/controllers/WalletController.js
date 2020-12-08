@@ -420,7 +420,7 @@ class WalletController {
 
       const percent = 0.015;
       const discount = (percent / 100) * amount;
-      const realAmount = amount - discount;
+      const realAmount = amount - discount - 800;
       console.log(realAmount, 'aftersub');
       console.log(discount, 'discount amount');
 
