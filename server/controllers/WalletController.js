@@ -723,7 +723,7 @@ class WalletController {
         };
 
         account
-          .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuffFee, 'BTC')
+          .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
           .then((rep) => {
             console.log(rep, 'result');
             const newAmount = walletBalance.balance - flatAmount;
