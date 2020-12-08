@@ -727,6 +727,11 @@ class WalletController {
       console.log(walletBalance.balance, 'result');
 
       console.log(walletBalance.balance, 'result');
+      if (!user.bankref) {
+        return res
+          .status(400)
+          .json(responses.error(400, 'Please add recipient bank'));
+      }
 
       const transactionObject = {
         amount,
