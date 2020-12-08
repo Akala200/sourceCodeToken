@@ -12,7 +12,7 @@ import Bank from '../models/Bank';
 import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
-
+import Commission from '../models/Commission';
 
 const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
@@ -421,8 +421,6 @@ class WalletController {
       const percent = 0.015;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
-      console.log(realAmount, 'aftersub');
-      console.log(discount, 'discount amount');
 
       const requestOptions = {
         method: 'GET',
@@ -702,17 +700,28 @@ class WalletController {
         walletId: user._id,
         status: 'Failed',
       };
+
       const refinedBitcoin = flatAmount.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
       console.log(newStuff);
       const account = new CryptoAccount(user.tempt);
+
+
       // eslint-disable-next-line no-inner-declarations
       function sendFee(feeNew) {
         const refinedBitcoinFee = feeNew.toFixed(6);
         const satoshiFee = 100000000 * refinedBitcoinFee;
         const newStuffFee = Math.ceil(satoshiFee);
+
+        const transactionFee = {
+          amount,
+          coins: feeNew,
+          type: 'transfer',
+          from: user.email,
+        };
+
         account
           .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuffFee, 'BTC')
           .then((rep) => {
@@ -729,7 +738,7 @@ class WalletController {
                   console.log('Something wrong when updating data!');
                 }
                 console.log(doc);
-                Transaction.create(transactionObject)
+                Transaction.create(transactionFee)
                   .then((respp) => {
                     console.log(respp);
                     return res.status(200).json('Transaction sent');
@@ -830,7 +839,7 @@ class WalletController {
         coins: bitcoin,
         type: 'debit',
         mode: 'Withdrawal',
-        to: address,
+        to: user.address,
         email: user.email,
         walletId: user._id,
         status: 'successful',
