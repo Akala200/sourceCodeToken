@@ -38,6 +38,7 @@ router.get('/balance/naira', nairaBalance);
 router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/transfer/convert', convertTransfer);
+router.get('/sell/convert', convertTransfer);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
 router.get('/get/bank', getBank);
