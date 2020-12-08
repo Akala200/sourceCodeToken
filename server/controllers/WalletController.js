@@ -154,9 +154,9 @@ class WalletController {
   static async transactionHistory(req, res) {
     console.log('here');
     try {
-      const { email } = req.query;
+      const { user } = req.query;
 
-      const transaction = await Transaction.find({ email }).limit(5);
+      const transaction = await Transaction.find({ user: user }).limit(5);
 
       if (!transaction) {
         return res
@@ -208,7 +208,7 @@ class WalletController {
     try {
       const { user } = req.query;
 
-      const transaction = await Transaction.find({ user });
+      const transaction = await Transaction.find({ user: user });
 
       if (!transaction) {
         return res
