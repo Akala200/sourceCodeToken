@@ -916,12 +916,6 @@ class WalletController {
 
 
   static async webhook(req, res) {
-    const hash = crypto
-      .createHmac('sha512', token)
-      .update(JSON.stringify(req.body))
-      .digest('hex');
-
-    if (hash === req.headers['x-paystack-signature']) {
       const currency = 'NGN';
       console.log(req.body.data.metadata);
       const event = req.body;
@@ -987,22 +981,22 @@ class WalletController {
                     }
 
                     console.log(doc);
-                    Transaction.create(transactionObject);
+                    Transaction.create(transactionObject)
                     return res.status(200).json('Transaction saved');
                   }
                 );
               })
               .catch((error) => {
                 console.log(error);
+                return res.status(500).json(error);
               });
           } catch (error) {
-            tracelogger(error);
+            return res.status(500).json(error);
           }
         }
       } catch (error) {
-        tracelogger(error);
-      }
-    }
+        return res.status(500).json(error);
+            }
   }
 }
 export default WalletController;
