@@ -921,7 +921,8 @@ class WalletController {
     if (hash == req.headers['x-paystack-signature']) {
       console.log(req.body.data);
       const event = req.body;
-      const { email, coin } = event.data.metadata;
+      const { coin } = event.data.metadata;
+      const email = event.data.customer.email;
       try {
         const wallet = await Wallet.findOne({
           email,
@@ -934,7 +935,6 @@ class WalletController {
             .json(responses.error(404, 'Sorry, this user does not exist'));
         }
         if (event.event === 'charge.success') {
-          try {
             const transactionObject = {
               amount: event.data.amount / 100,
               coins: coin,
@@ -949,7 +949,6 @@ class WalletController {
             };
 
             const amountNew = coin + user.balance;
-            console.log(amountNew);
             const limited = parseFloat(coin).toFixed(6);
             const refinedCoin = limited.toString();
             const priceReturned = event.data.amount / 100;
@@ -970,7 +969,6 @@ class WalletController {
               // eslint-disable-next-line no-shadow
               .then((response) => {
                 console.log(response);
-                console.log('amount', amountNew);
                 Wallet.findOneAndUpdate(
                   { email },
                   {
@@ -981,7 +979,6 @@ class WalletController {
                     if (err) {
                       console.log('Something wrong when updating data!');
                     }
-                    console.log(doc);
                     Transaction.create(transactionObject);
                     return res.status(200).json('Transaction saved');
                   }
@@ -991,9 +988,7 @@ class WalletController {
                 console.log(error);
                 return res.status(500).json(error);
               });
-          } catch (error) {
-            return res.status(500).json(error);
-          }
+         
         }
       } catch (error) {
         return res.status(500).json(error);
