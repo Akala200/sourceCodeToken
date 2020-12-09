@@ -853,6 +853,7 @@ class WalletController {
       const refinedBitcoin = flatAmount.toFixed(6);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
+      const refinedPaystackAmount =  Math.ceil(amount)
       const account = new CryptoAccount(user.tempt);
       account
         .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, 'BTC')
@@ -875,7 +876,7 @@ class WalletController {
                   console.log(respp);
                   const transferData = {
                     source: 'balance',
-                    amount: amount * 100,
+                    amount: refinedPaystackAmount * 100,
                     recipient: user.bankref,
                     reason: 'Selling Bitcoin',
                   };
