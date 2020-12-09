@@ -156,7 +156,7 @@ class WalletController {
     try {
       const { user } = req.query;
 
-      const transaction = await Transaction.find({ user: user }).limit(5);
+      const transaction = await Transaction.find({ user: user }).limit(7);
 
       if (!transaction) {
         return res
@@ -683,7 +683,7 @@ class WalletController {
         amount,
         coins: bitcoin,
         type: 'debit',
-        mode: 'transfer',
+        mode: 'Transfer',
         to: address,
         email: user.email,
         walletId: user._id,
@@ -715,47 +715,19 @@ class WalletController {
         const satoshiFee = 100000000 * refinedBitcoinFee;
         const newStuffFee = Math.ceil(satoshiFee);
 
-        const transactionFee = {
-          amount,
-          coins: feeNew,
-          type: 'transfer',
-          from: user.email,
-        };
-
+        console.log("called");
         account
           .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
           .then((rep) => {
-            console.log(rep, 'result');
-            const newAmount = walletBalance.balance - flatAmount;
-            Wallet.findOneAndUpdate(
-              { email },
-              {
-                $set: { balance: newAmount },
-              },
-              { new: true },
-              (err, doc) => {
-                if (err) {
-                  console.log('Something wrong when updating data!');
-                }
-                console.log(doc);
-                Transaction.create(transactionFee)
-                  .then((respp) => {
-                    console.log(respp);
-                    return res.status(200).json('Transaction sent');
-                  })
-                  .catch(err => res.status(500).json(err));
-              }
-            );
+            console.log(rep)
+            return res.status(200).json('Transaction sent');
           })
           .catch((error) => {
             console.log(error);
-            Transaction.create(transactionObjectF)
-              .then((respp) => {
-                console.log(respp);
-                return res.status(200).json(error.response._message);
-              })
+            return res.status(200).json('Transaction sent');
           });
       }
+
       account
         .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
@@ -774,7 +746,7 @@ class WalletController {
               console.log(doc);
               Transaction.create(transactionObject)
                 .then((respp) => {
-                  console.log(respp);
+                  console.log(respp, "created");
                   sendFee(fee);
                 })
                 .catch(err => res.status(500).json(err));
