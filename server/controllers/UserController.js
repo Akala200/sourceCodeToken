@@ -121,7 +121,7 @@ class UserController {
    */
   static async confirmPassword(req, res) {
     const { code } = req.body;
-
+  try {
     const tokenUser = await TokenUsed.findOne({ token: code });
 
     if (!tokenUser) {
@@ -143,13 +143,12 @@ class UserController {
             }
             return res.send({ message: 'Success', data: 'Password changed' });
           })
-          .catch((err) => {
-            throw err;
-          });
       })
-      .catch((err) => {
-        throw err;
-      });
+  } catch (error) {
+    return res
+                .status(500)
+                .send({ msg: 'Error in saving the password' });
+  }
   }
 
 
