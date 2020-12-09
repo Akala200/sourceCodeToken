@@ -30,7 +30,7 @@ const { numberChecker } = verifyNumber;
 router.post('/credit', numberChecker, initiate);
 router.post('/send', send);
 router.post('/withdraw', withdraw);
-router.post('/webhook', numberChecker, webhook);
+//router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
 router.get('/balance/coin', balance);
