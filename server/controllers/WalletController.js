@@ -156,7 +156,7 @@ class WalletController {
     try {
       const { user } = req.query;
 
-      const transaction = await Transaction.find({ user: user }).limit(7);
+      const transaction = await Transaction.find({ user: user }).sort({'_id':-1}).limit(10);
 
       if (!transaction) {
         return res
@@ -208,7 +208,7 @@ class WalletController {
     try {
       const { user } = req.query;
 
-      const transaction = await Transaction.find({ user: user });
+      const transaction = await Transaction.find({ user: user }).sort({'_id':-1});
 
       if (!transaction) {
         return res
