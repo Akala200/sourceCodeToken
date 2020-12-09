@@ -698,7 +698,7 @@ class WalletController {
         to: address,
         email: user.email,
         walletId: user._id,
-        status: 'Failed',
+        status: 'failed',
       };
 
       const refinedBitcoin = flatAmount.toFixed(6);
