@@ -916,10 +916,12 @@ class WalletController {
 
 
   static async webhook(req, res) {
-      const currency = 'NGN';
-      console.log(req.body.data.metadata);
+    const currency = 'NGN';
+    var hash = crypto.createHmac('sha512', token).update(JSON.stringify(req.body)).digest('hex');
+    if (hash == req.headers['x-paystack-signature']) {
+      console.log(req.body);
       const event = req.body;
-      const { email, coin } = event.data.metadata;
+      const { email, coin } = event;
       try {
         const wallet = await Wallet.findOne({
           email,
@@ -1002,5 +1004,6 @@ class WalletController {
         return res.status(500).json(error);
             }
   }
+}
 }
 export default WalletController;
