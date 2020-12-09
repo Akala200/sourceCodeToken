@@ -959,7 +959,8 @@ class WalletController {
                 );
               })
               .catch((error) => {
-                console.log(error);
+                console.log(error.response.data);
+                console.log(error.data);
                 return res.status(500).json(error);
               });
          
