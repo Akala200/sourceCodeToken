@@ -822,13 +822,11 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log(walletBalance.balance, 'result');
 
-      console.log(user);
       if (!user.bankref) {
         return res
           .status(400)
-          .json(responses.error(400, 'Please add recipient bank'));
+          .json(responses.error(400, 'Please link your bank account via settings'));
       }
 
       const transactionObject = {
@@ -853,10 +851,8 @@ class WalletController {
         status: 'Failed',
       };
       const refinedBitcoin = flatAmount.toFixed(6);
-      console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
-      console.log(newStuff);
       const account = new CryptoAccount(user.tempt);
       account
         .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, 'BTC')
@@ -883,6 +879,7 @@ class WalletController {
                     recipient: user.bankref,
                     reason: 'Selling Bitcoin',
                   };
+                  console.log(transferData);
                   axios
                   .post('https://api.paystack.co/transfer', transferData, {
                     headers: {
