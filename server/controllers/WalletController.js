@@ -685,6 +685,7 @@ class WalletController {
         type: 'debit',
         mode: 'Transfer',
         to: address,
+        user: user._id,
         email: user.email,
         walletId: user._id,
         status: 'successful',
@@ -696,6 +697,7 @@ class WalletController {
         type: 'debit',
         mode: 'transfer',
         to: address,
+        user: user._id,
         email: user.email,
         walletId: user._id,
         status: 'failed',
@@ -807,7 +809,7 @@ class WalletController {
         type: 'debit',
         mode: 'Withdrawal',
         to: user.address,
-        email: user.email,
+        user: user._id,
         walletId: user._id,
         status: 'successful',
       };
@@ -818,7 +820,7 @@ class WalletController {
         type: 'debit',
         mode: 'Withdrawal',
         to: address,
-        email: user.email,
+        user: user._id,
         walletId: user._id,
         status: 'Failed',
       };
