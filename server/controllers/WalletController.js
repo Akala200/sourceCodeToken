@@ -919,9 +919,9 @@ class WalletController {
     const currency = 'NGN';
     var hash = crypto.createHmac('sha512', token).update(JSON.stringify(req.body)).digest('hex');
     if (hash == req.headers['x-paystack-signature']) {
-      console.log(req.body);
+      console.log(req.body.data);
       const event = req.body;
-      const { email, coin } = event;
+      const { email, coin } = event.data.metadata;
       try {
         const wallet = await Wallet.findOne({
           email,
@@ -981,14 +981,9 @@ class WalletController {
                     if (err) {
                       console.log('Something wrong when updating data!');
                     }
-
                     console.log(doc);
-                    Transaction.create(transactionObject).then((respons) => {
-                      console.log(respons)
-                      return res.status(200).json('Transaction saved');
-                    }).catch((err) => {
-                      return res.status(200).json('Transaction saved');
-                    })
+                    Transaction.create(transactionObject);
+                    return res.status(200).json('Transaction saved');
                   }
                 );
               })
