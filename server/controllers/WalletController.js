@@ -472,7 +472,7 @@ class WalletController {
         method: 'GET',
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
-          amount,
+          realAmount,
           id: '2819',
           convert: 'BTC',
         },
