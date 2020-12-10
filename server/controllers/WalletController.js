@@ -961,12 +961,12 @@ class WalletController {
               .catch((error) => {
                 console.log(error.response.data);
                 console.log(error.data);
-                return res.status(500).json(error);
+                return res.status(500).json(error.response.data);
               });
          
         }
       } catch (error) {
-        return res.send(200);
+        res.send(200);
             }
   }
 }
