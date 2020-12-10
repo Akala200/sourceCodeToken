@@ -24,6 +24,7 @@ const {
   createTest,
   withdraw,
   convertTransfer,
+  convertSale
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -37,6 +38,7 @@ router.get('/balance/coin', balance);
 router.get('/balance/naira', nairaBalance);
 router.get('/callback', callback);
 router.get('/convert', convert);
+router.get('/convert/sale', convertSale);
 router.get('/transfer/convert', convertTransfer);
 router.get('/sell/convert', convertTransfer);
 router.get('/get/coin', coinPrice);
