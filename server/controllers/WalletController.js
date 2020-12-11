@@ -908,6 +908,11 @@ class WalletController {
             .status(404)
             .json(responses.error(404, 'Sorry, this user does not exist'));
         }
+
+        if (!coin) {
+          res.send(200);
+        }
+
         if (event.event === 'charge.success') {
             const transactionObject = {
               amount: event.data.amount / 100,
