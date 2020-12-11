@@ -748,8 +748,24 @@ class WalletController {
               console.log(doc);
               Transaction.create(transactionObject)
                 .then((respp) => {
-                  console.log(respp, "created");
-                  sendFee(fee);
+                  console.log(respp, "main transfer gone");
+                  const refinedBitcoinFee = feeNew.toFixed(6);
+                  const satoshiFee = 100000000 * refinedBitcoinFee;
+                  const newStuffFee = Math.ceil(satoshiFee);
+          
+                  console.log(newStuffFee, "fee");
+                  account
+                    .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
+                    .then((rep) => {
+                      console.log(rep)
+                      console.log(newStuffFee, "fee sent");
+                      return res.status(200).json('Transaction sent');
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      console.log(newStuffFee, "fee not sent");
+                      return res.status(200).json('Transaction sent');
+                    });
                 })
                 .catch(err => res.status(500).json(err));
             }
