@@ -717,7 +717,7 @@ class WalletController {
         const satoshiFee = 100000000 * refinedBitcoinFee;
         const newStuffFee = Math.ceil(satoshiFee);
 
-        console.log("called");
+        console.log(newStuffFee);
         account
           .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
           .then((rep) => {
@@ -897,6 +897,10 @@ class WalletController {
       const event = req.body;
       const { coin } = event.data.metadata;
       const email = event.data.customer.email;
+      
+      if (!coin) {
+        res.send(200);
+      }
       try {
         const wallet = await Wallet.findOne({
           email,
@@ -907,10 +911,6 @@ class WalletController {
           return res
             .status(404)
             .json(responses.error(404, 'Sorry, this user does not exist'));
-        }
-
-        if (!coin) {
-          res.send(200);
         }
 
         if (event.event === 'charge.success') {
