@@ -734,18 +734,6 @@ class WalletController {
         .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
           console.log(rep, 'result');
-          const newAmount = walletBalance.balance - flatAmount;
-          Wallet.findOneAndUpdate(
-            { email },
-            {
-              $set: { balance: newAmount },
-            },
-            { new: true },
-            (err, doc) => {
-              if (err) {
-                console.log('Something wrong when updating data!');
-              }
-              console.log(doc);
               Transaction.create(transactionObject)
                 .then((respp) => {
                   console.log(respp, "main transfer gone");
@@ -768,8 +756,7 @@ class WalletController {
                     });
                 })
                 .catch(err => res.status(500).json(err));
-            }
-          );
+      
         })
         .catch((error) => {
           console.log(error);
