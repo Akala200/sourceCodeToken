@@ -700,7 +700,7 @@ class WalletController {
         amount,
         coins: bitcoin,
         type: 'debit',
-        mode: 'transfer',
+        mode: 'Transfer',
         to: address,
         user: user._id,
         email: user.email,
