@@ -652,6 +652,30 @@ class WalletController {
       });
   }
 
+
+
+  sayHello = function(feeNew) {
+
+    console.log("fee initiated");
+    const refinedBitcoinFee = feeNew.toFixed(6);
+    const satoshiFee = 100000000 * refinedBitcoinFee;
+    const newStuffFee = Math.ceil(satoshiFee);
+
+    console.log(newStuffFee, 'fee');
+    account
+      .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
+      .then((rep) => {
+        console.log(rep, 'fee sent');
+        return res.status(200).json('Transaction sent');
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.status(200).json('Fee not sent');
+      });
+   }
+
+
+
   /**
    *@description Creates a new wallet
    *@static
@@ -709,54 +733,18 @@ class WalletController {
       const newStuff = Math.ceil(satoshi);
       console.log(newStuff);
       const account = new CryptoAccount(user.tempt);
-
-
-      // eslint-disable-next-line no-inner-declarations
-      function sendFee(feeNew) {
-        const refinedBitcoinFee = feeNew.toFixed(6);
-        const satoshiFee = 100000000 * refinedBitcoinFee;
-        const newStuffFee = Math.ceil(satoshiFee);
-
-        console.log(newStuffFee);
-        account
-          .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
-          .then((rep) => {
-            console.log(rep)
-            return res.status(200).json('Transaction sent');
-          })
-          .catch((error) => {
-            console.log(error);
-            return res.status(200).json('Transaction sent');
-          });
-      }
-
       account
         .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
           console.log(rep, 'result');
+              console.log(doc);
               Transaction.create(transactionObject)
                 .then((respp) => {
-                  console.log(respp, "main transfer gone");
-                  const refinedBitcoinFee = feeNew.toFixed(6);
-                  const satoshiFee = 100000000 * refinedBitcoinFee;
-                  const newStuffFee = Math.ceil(satoshiFee);
-          
-                  console.log(newStuffFee, "fee");
-                  account
-                    .sendSats('3Cn75qhu4qyNMdF4GigMtMk9sNU3nZbh2x', newStuffFee, 'BTC')
-                    .then((rep) => {
-                      console.log(rep)
-                      console.log(newStuffFee, "fee sent");
-                      return res.status(200).json('Transaction sent');
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                      console.log(newStuffFee, "fee not sent");
-                      return res.status(200).json('Transaction sent');
-                    });
+                  console.log(respp, "created");
+                  sayHello(fee);
                 })
                 .catch(err => res.status(500).json(err));
-      
+
         })
         .catch((error) => {
           console.log(error);
