@@ -718,7 +718,6 @@ class WalletController {
         .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
           console.log(rep, 'result');
-              console.log(doc);
               Transaction.create(transactionObject)
                 .then((respp) => {
                   console.log(respp, "created");
