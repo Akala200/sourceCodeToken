@@ -343,7 +343,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -383,7 +383,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -423,7 +423,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -463,7 +463,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -502,7 +502,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
