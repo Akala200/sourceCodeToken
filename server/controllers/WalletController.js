@@ -221,8 +221,7 @@ class WalletController {
       tracelogger(error);
     }
   }
-
-  /**
+ /**
    *@description Creates a new wallet
    *@static
    *@param  {Object} req - request
@@ -230,7 +229,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async balance(req, res) {
+   static async balance(req, res) {
     try {
       const { email } = req.query;
       let response;
@@ -246,24 +245,21 @@ class WalletController {
       await account
         .getBalance('BTC')
         .then((balances) => {
-          // Save the new password
-          console.log(balances, 'realBalance');
-          Wallet.findOneAndUpdate(
-            { email },
-            { balance: balances },
-            { new: true }
-          )
-            .then((ress) => {
-              console.log(ress);
-              return res.status(200).json(responses.success(200, balances));
-            })
-            .catch((err) => {
-              console.log(err);
-              return res.status(500).json(responses.success(500, err));
+            Wallet.findOneAndUpdate( { email: email },{balance: balances},{ new: true }).then((wallet) => {
+              console.log(wallet);
+              if(balances === 0) {
+                const dataAge = 0.000001
+                console.log(dataAge);
+                 console.log(dataAge);
+                return res.status(200).json(responses.success(200, dataAge));
+              } 
+                return res.status(200).json(responses.success(200, balances));
+            }).catch((err) => {
+              res.send(err);
             });
         })
         .catch((err) => {
-          console.log(balances);
+          console.log(err);
         });
       /**
         response = await axios.post(
