@@ -581,7 +581,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=8d7600c7d7d88daca311a502525c5063&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -622,7 +622,7 @@ class UserController {
           convert: 'NGN',
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
         },
         json: true,
         gzip: true,
@@ -663,7 +663,7 @@ class UserController {
           convert: 'NGN',
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
         },
         json: true,
         gzip: true,
@@ -825,7 +825,7 @@ class UserController {
           convert: 'NGN',
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
         },
         json: true,
         gzip: true,
