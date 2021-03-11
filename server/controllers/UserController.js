@@ -540,7 +540,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=demo-0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
