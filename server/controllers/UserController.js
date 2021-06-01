@@ -613,16 +613,15 @@ class UserController {
     console.log('here');
     try {
       const requestOptions = {
-        method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        method: "GET",
+        uri: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
         qs: {
-          start: '1',
-          limit: '1',
-          convert: 'NGN',
+          start: "1",
+          limit: "1",
+          convert: "NGN",
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
+          "X-CMC_PRO_API_KEY": "2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3",
         },
         json: true,
         gzip: true,
