@@ -22,6 +22,7 @@ const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
 const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
+const cw = require("crypto-wallets");
 
 const { MyWallet } = require('blockchain.info');
 
@@ -229,6 +230,8 @@ class UserController {
           charset: 'numeric',
         });
 
+        console.log(code);
+
         const userObject = {
           first_name,
           last_name,
@@ -253,15 +256,26 @@ class UserController {
 
         const tokenRegistration = await Token.create(tokenObject);
 
-        sgMail.send(msg);
-
-        if (tokenRegistration) {
-          return res
-            .status(201)
-            .json(responses.success(201, 'Email sent successfully'));
-        } else {
-          return res.status(500).json(responses.success(500, 'Email not sent'));
-        }
+        sgMail
+          .send(msg)
+          .then((resp) => {
+            console.log(resp);
+            if (tokenRegistration) {
+              return res
+                .status(201)
+                .json(responses.success(201, "Email sent successfully"));
+            } else {
+              return res
+                .status(500)
+                .json(responses.success(500, "Email not sent"));
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            return res
+              .status(500)
+              .json(responses.success(500, error));
+          });
       }
     } catch (error) {
       tracelogger(error);
@@ -1039,10 +1053,17 @@ class UserController {
             .then((rep) => {
               const address = rep;
               const tempt = privateKey;
+              const ethWallet = cw.generateWallet("ETH");
+              const dodgeWallet = cw.generateWallet("DOGE");
+
 
               const userNew = {
                 address,
                 tempt,
+                eth_address: ethWallet.address,
+                eth_guid: ethWallet.privateKey,
+                doge_address: dodgeWallet.address,
+                dodge_guid: dodgeWallet.privateKey,
                 guid: code,
                 regstatus: true,
               };

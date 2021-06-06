@@ -24,7 +24,11 @@ const {
   createTest,
   withdraw,
   convertTransfer,
-  convertSale
+  convertSale,
+  convertTransferETH,
+  convertTransferDodge,
+  convertSaleETH,
+  convertSaleDOGE,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -41,6 +45,13 @@ router.get('/convert', convert);
 router.get('/convert/sale', convertSale);
 router.get('/transfer/convert', convertTransfer);
 router.get('/sell/convert', convertTransfer);
+router.get("/eth/transfer/convert", convertTransferETH);
+router.get("/dodge/transfer/convert", convertTransferDodge);
+router.get("eth/convert/sale", convertSaleETH);
+router.get("doge/convert/sale", convertSaleDOGE);
+
+router.get("/eth/sell/convert", convertTransferETH);
+router.get("/doge/sell/convert", convertTransferDodge);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
 router.get('/get/bank', getBank);

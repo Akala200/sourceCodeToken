@@ -16,7 +16,7 @@ const UserSchema = new Schema(
       required: true,
       lowercase: true,
       unique: true,
-      validate: [isEmail, 'invalid email'],
+      validate: [isEmail, "invalid email"],
     },
     first_name: {
       type: String,
@@ -41,6 +41,18 @@ const UserSchema = new Schema(
       type: String,
     },
     label: {
+      type: String,
+    },
+    eth_address: {
+      type: String,
+    },
+    eth_tempt: {
+      type: String,
+    },
+    doge_address: {
+      type: String,
+    },
+    dodge_tempt: {
       type: String,
     },
     bankref: {

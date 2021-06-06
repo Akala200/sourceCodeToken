@@ -30,6 +30,7 @@
     "cors": "^2.8.4",
     "coveralls": "^3.0.1",
     "cross-env": "^5.2.0",
+    "crypto-wallets": "^1.0.0",
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",
     "eslint": "^5.4.0",
