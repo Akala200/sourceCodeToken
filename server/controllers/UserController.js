@@ -672,7 +672,7 @@ class UserController {
           'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
           start: '1',
-          limit: '4',
+          limit: '6',
           convert: 'NGN',
         },
         headers: {
