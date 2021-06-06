@@ -357,7 +357,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -397,7 +397,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -437,7 +437,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -477,7 +477,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -516,7 +516,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -554,7 +554,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -595,7 +595,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=0a9023fcca9ff878841923a66c6f2f91&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -676,7 +676,7 @@ class UserController {
           convert: 'NGN',
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
+          'X-CMC_PRO_API_KEY': '2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3',
         },
         json: true,
         gzip: true,
@@ -838,7 +838,7 @@ class UserController {
           convert: 'NGN',
         },
         headers: {
-          'X-CMC_PRO_API_KEY': '0a9023fcca9ff878841923a66c6f2f91',
+          'X-CMC_PRO_API_KEY': '2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3',
         },
         json: true,
         gzip: true,
