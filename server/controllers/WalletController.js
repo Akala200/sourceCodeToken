@@ -257,7 +257,7 @@ class WalletController {
             .then((wallet) => {
               console.log(wallet);
               if (balances === 0) {
-                const dataAge = 0.000001;
+                const dataAge = 0.000000;
                 console.log(dataAge);
                 console.log(dataAge);
                 return res.status(200).json(responses.success(200, dataAge));
