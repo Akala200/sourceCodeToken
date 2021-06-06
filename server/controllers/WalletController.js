@@ -239,6 +239,8 @@ class WalletController {
       let response;
       const user = await User.findOne({ email });
 
+
+      
       if (!user) {
         return res
           .status(404)
