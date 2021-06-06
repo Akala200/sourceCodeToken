@@ -233,14 +233,12 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async balance(req, res) {
+  static async balanceBTC(req, res) {
     try {
       const { email, coin_type } = req.query;
       let response;
       const user = await User.findOne({ email });
 
-
-      
       if (!user) {
         return res
           .status(404)
@@ -259,7 +257,7 @@ class WalletController {
             .then((wallet) => {
               console.log(wallet);
               if (balances === 0) {
-                const dataAge = 0.000000;
+                const dataAge = 0.0;
                 console.log(dataAge);
                 console.log(dataAge);
                 return res.status(200).json(responses.success(200, dataAge));
@@ -302,6 +300,78 @@ class WalletController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async balanceETH(req, res) {
+    try {
+      const { email, coin_type } = req.query;
+      let response;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(404)
+          .json(responses.error(404, "User does not exist"));
+      }
+      const privateKey = user.eth_tempt;
+      const account = new CryptoAccount(privateKey);
+      await account
+        .getBalance(coin_type)
+        .then((balances) => {
+          Wallet.findOneAndUpdate(
+            { email: email },
+            { eth_balance: balances },
+            { new: true }
+          )
+            .then((wallet) => {
+              console.log(wallet);
+              if (balances === 0) {
+                const dataAge = 0.0;
+                return res.status(200).json(responses.success(200, dataAge));
+              }
+              return res.status(200).json(responses.success(200, balances));
+            })
+            .catch((err) => {
+              res.send(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      /**
+        response = await axios.post(
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len
+          `https://www.coin.sourcecodexchange.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
+        );
+        console.log(response.data.balance);
+      } catch (error) {
+        console.log(error);
+      }
+
+      const balance = await Wallet.findOneAndUpdate(
+        { email },
+        { balance: parseFloat(response.data.balance) },
+        { new: true }
+      );
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+      */
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
   /**
    *@description Creates a new wallet
    *@static
@@ -1116,8 +1186,16 @@ class WalletController {
    */
   static async withdraw(req, res) {
     try {
-      const { amount, fee, address, coin_type, wallet, bitcoin, email, flatAmount } =
-        req.body;
+      const {
+        amount,
+        fee,
+        address,
+        coin_type,
+        wallet,
+        bitcoin,
+        email,
+        flatAmount,
+      } = req.body;
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
@@ -1203,8 +1281,6 @@ class WalletController {
       tracelogger(error);
     }
   }
-
-
 
   static async webhook(req, res) {
     const currency = "NGN";

@@ -10,7 +10,8 @@ const {
   initiate,
   webhook,
   transactionHistory,
-  balance,
+  balanceBTC,
+  balanceETH,
   nairaBalance,
   transactionHistoryAll,
   callback,
@@ -38,7 +39,8 @@ router.post('/withdraw', withdraw);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
-router.get('/balance/coin', balance);
+router.get("/balance/coin", balanceBTC);
+router.get("/balance/eth", balanceETH);
 router.get('/balance/naira', nairaBalance);
 router.get('/callback', callback);
 router.get('/convert', convert);
