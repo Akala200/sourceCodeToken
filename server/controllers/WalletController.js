@@ -478,7 +478,7 @@ class WalletController {
    */
   static async nairaBalance(req, res) {
     try {
-      const { email, coin_type } = req.query;
+      const { email } = req.query;
 
       const balance = await Wallet.findOne({ email });
 
@@ -498,7 +498,7 @@ class WalletController {
         uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
         qs: {
           amount: balance.balance,
-          symbol: coin_type,
+          symbol: "BTC",
           convert: "NGN",
         },
         headers: {
@@ -516,6 +516,112 @@ class WalletController {
       tracelogger(error);
     }
   }
+
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async nairaBalanceETH(req, res) {
+    try {
+      const { email } = req.query;
+
+      const balance = await Wallet.findOne({ email });
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, "User does not exist"));
+      }
+      let dataBalance;
+
+      if (balance.eth_balance === 0) {
+        dataBalance = 0;
+        return res.status(200).json(responses.success(200, dataBalance));
+      }
+      const requestOptions = {
+        method: "GET",
+        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        qs: {
+          amount: balance.eth_balance,
+          symbol: "ETH",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
+
+      // eslint-disable-next-line max-len
+      rp(requestOptions).then((response) =>
+        res.status(200).json(200, response.data.quote.NGN)
+      );
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
+
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async nairaBalanceDOGE(req, res) {
+    try {
+      const { email } = req.query;
+
+      const balance = await Wallet.findOne({ email });
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, "User does not exist"));
+      }
+      let dataBalance;
+
+      if (balance.dodge_balance === 0) {
+        dataBalance = 0;
+        return res.status(200).json(responses.success(200, dataBalance));
+      }
+      const requestOptions = {
+        method: "GET",
+        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        qs: {
+          amount: balance.dodge_balance,
+          symbol: "DOGE",
+          convert: "NGN",
+        },
+        headers: {
+          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+        },
+        json: true,
+        gzip: true,
+      };
+
+      // eslint-disable-next-line max-len
+      rp(requestOptions).then((response) =>
+        res.status(200).json(200, response.data.quote.NGN)
+      );
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
 
   /**
    *@description Creates a new wallet

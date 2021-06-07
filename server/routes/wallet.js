@@ -31,6 +31,8 @@ const {
   convertTransferDodge,
   convertSaleETH,
   convertSaleDOGE,
+  nairaBalanceETH,
+  nairaBalanceDOGE,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -44,6 +46,8 @@ router.get("/balance/coin", balanceBTC);
 router.get("/balance/eth", balanceETH);
 router.get("/balance/doge", balanceDoge);
 router.get('/balance/naira', nairaBalance);
+router.get("/balance/eth/naira", nairaBalanceETH);
+router.get("/balance/doge/naira", nairaBalanceDOGE);
 router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/convert/sale', convertSale);
