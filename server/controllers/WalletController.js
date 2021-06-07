@@ -374,6 +374,80 @@ class WalletController {
   }
 
 
+
+    /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async balanceDoge(req, res) {
+    try {
+      const { email, coin_type } = req.query;
+      let response;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(404)
+          .json(responses.error(404, "User does not exist"));
+      }
+      const privateKey = user.dodge_tempt;
+      const account = new CryptoAccount(privateKey);
+      await account
+        .getBalance(coin_type)
+        .then((balances) => {
+          Wallet.findOneAndUpdate(
+            { email: email },
+            { eth_balance: balances },
+            { new: true }
+          )
+            .then((wallet) => {
+              console.log(wallet);
+              if (balances === 0) {
+                const dataAge = 0.0;
+                return res.status(200).json(responses.success(200, dataAge));
+              }
+              return res.status(200).json(responses.success(200, balances));
+            })
+            .catch((err) => {
+              res.send(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      /**
+        response = await axios.post(
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len
+          // eslint-disable-next-line max-len
+          `https://www.coin.sourcecodexchange.com/merchant/${user.guid}/balance?password=${user.tempt}&api_code=54a36981-7b31-4cdb-af4b-b69bd0fc4ea9`
+        );
+        console.log(response.data.balance);
+      } catch (error) {
+        console.log(error);
+      }
+
+      const balance = await Wallet.findOneAndUpdate(
+        { email },
+        { balance: parseFloat(response.data.balance) },
+        { new: true }
+      );
+
+      if (!balance) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+      */
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
   
   /**
    *@description Creates a new wallet

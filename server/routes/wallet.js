@@ -12,6 +12,7 @@ const {
   transactionHistory,
   balanceBTC,
   balanceETH,
+  balanceDoge,
   nairaBalance,
   transactionHistoryAll,
   callback,
@@ -41,6 +42,7 @@ router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
 router.get("/balance/coin", balanceBTC);
 router.get("/balance/eth", balanceETH);
+router.get("/balance/doge", balanceDoge);
 router.get('/balance/naira', nairaBalance);
 router.get('/callback', callback);
 router.get('/convert', convert);
