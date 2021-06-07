@@ -478,7 +478,7 @@ class WalletController {
    */
   static async nairaBalance(req, res) {
     try {
-      const { email } = req.query;
+      const { email, coin_type } = req.query;
 
       const balance = await Wallet.findOne({ email });
 
@@ -498,7 +498,7 @@ class WalletController {
         uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
         qs: {
           amount: balance.balance,
-          id: "1",
+          symbol: coin_type,
           convert: "NGN",
         },
         headers: {
