@@ -372,6 +372,9 @@ class WalletController {
       tracelogger(error);
     }
   }
+
+
+  
   /**
    *@description Creates a new wallet
    *@static

@@ -1061,9 +1061,9 @@ class UserController {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
-                eth_guid: ethWallet.privateKey,
+                eth_tempt: ethWallet.privateKey,
                 doge_address: dodgeWallet.address,
-                dodge_guid: dodgeWallet.privateKey,
+                dodge_tempt: dodgeWallet.privateKey,
                 guid: code,
                 regstatus: true,
               };
