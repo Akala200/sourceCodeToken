@@ -1054,7 +1054,7 @@ class UserController {
               const address = rep;
               const tempt = privateKey;
               const ethWallet = cw.generateWallet("ETH");
-              const dodgeWallet = cw.generateWallet("DOGE");
+              const dodgeWallet = cw.generateWallet("BCH");
 
 
               const userNew = {
@@ -1062,8 +1062,8 @@ class UserController {
                 tempt,
                 eth_address: ethWallet.address,
                 eth_tempt: ethWallet.privateKey,
-                doge_address: dodgeWallet.address,
-                dodge_tempt: dodgeWallet.privateKey,
+                bch_address: dodgeWallet.address,
+                bch_tempt: dodgeWallet.privateKey,
                 guid: code,
                 regstatus: true,
               };

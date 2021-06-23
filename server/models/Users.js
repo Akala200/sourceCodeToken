@@ -49,10 +49,10 @@ const UserSchema = new Schema(
     eth_tempt: {
       type: String,
     },
-    doge_address: {
+    bch_address: {
       type: String,
     },
-    dodge_tempt: {
+    bch_tempt: {
       type: String,
     },
     bankref: {

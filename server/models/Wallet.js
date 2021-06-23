@@ -7,7 +7,7 @@ const walletSchema = new Schema({
   phone: { type: String },
   balance: { type: Number, default: 0 },
   eth_balance: { type: Number, default: 0 },
-  dodge_balance: { type: Number, default: 0 },
+  bch_balance: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
 });
 

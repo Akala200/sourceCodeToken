@@ -12,7 +12,7 @@ const {
   transactionHistory,
   balanceBTC,
   balanceETH,
-  balanceDoge,
+  balancebch,
   nairaBalance,
   transactionHistoryAll,
   callback,
@@ -30,9 +30,9 @@ const {
   convertTransferETH,
   convertTransferDodge,
   convertSaleETH,
-  convertSaleDOGE,
+  convertSalebch,
   nairaBalanceETH,
-  nairaBalanceDOGE,
+  nairaBalancebch,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -44,10 +44,10 @@ router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
 router.get("/balance/coin", balanceBTC);
 router.get("/balance/eth", balanceETH);
-router.get("/balance/doge", balanceDoge);
+router.get("/balance/bch", balancebch);
 router.get('/balance/naira', nairaBalance);
 router.get("/balance/eth/naira", nairaBalanceETH);
-router.get("/balance/doge/naira", nairaBalanceDOGE);
+router.get("/balance/bch/naira", nairaBalancebch);
 router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/convert/sale', convertSale);
@@ -56,10 +56,10 @@ router.get('/sell/convert', convertTransfer);
 router.get("/eth/transfer/convert", convertTransferETH);
 router.get("/dodge/transfer/convert", convertTransferDodge);
 router.get("eth/convert/sale", convertSaleETH);
-router.get("doge/convert/sale", convertSaleDOGE);
+router.get("bch/convert/sale", convertSalebch);
 
 router.get("/eth/sell/convert", convertTransferETH);
-router.get("/doge/sell/convert", convertTransferDodge);
+router.get("/bch/sell/convert", convertTransferDodge);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
 router.get('/get/bank', getBank);

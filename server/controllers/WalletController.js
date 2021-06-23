@@ -383,7 +383,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async balanceDoge(req, res) {
+  static async balancebch(req, res) {
     try {
       const { email, coin_type } = req.query;
       let response;
@@ -580,7 +580,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async nairaBalanceDOGE(req, res) {
+  static async nairaBalancebch(req, res) {
     try {
       const { email } = req.query;
 
@@ -602,7 +602,7 @@ class WalletController {
         uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
         qs: {
           amount: balance.dodge_balance,
-          symbol: "DOGE",
+          symbol: "BCH",
           convert: "NGN",
         },
         headers: {
@@ -677,7 +677,7 @@ class WalletController {
       } else {
          rp(requestOptions).then((response) => {
            const dataRes = {
-             price: response.data.quote.DOGE.price,
+             price: response.data.quote.BCH.price,
              amountAfterFee: realAmount,
              fee: discount,
            };
@@ -800,7 +800,7 @@ class WalletController {
         qs: {
           amount: realAmount,
           id: "2819",
-          convert: "DOGE",
+          convert: "BCH",
         },
         headers: {
           "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
@@ -812,7 +812,7 @@ class WalletController {
       rp(requestOptions).then((response) => {
         console.log(response.data.quote);
         const dataRes = {
-          price: response.data.quote.DOGE.price,
+          price: response.data.quote.bch.price,
           amountAfterFee: realAmount,
           fee: discount,
         };
@@ -923,7 +923,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async convertSaleDOGE(req, res) {
+  static async convertSalebch(req, res) {
     try {
       const { amount } = req.query;
 
@@ -939,7 +939,7 @@ class WalletController {
         qs: {
           amount: realAmount,
           id: "2819",
-          convert: "DOGE",
+          convert: "BCH",
         },
         headers: {
           "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
@@ -1306,7 +1306,7 @@ class WalletController {
    *@memberof UsersController
    */
   /*
-  static async sendDoge(req, res) {
+  static async sendbch(req, res) {
     try {
       const { amount, fee, address, coin, wallet, bitcoin, email, flatAmount } =
         req.body;
@@ -1323,7 +1323,7 @@ class WalletController {
         type: "debit",
         mode: "Transfer",
         to: address,
-        coinType: "Doge",
+        coinType: "bch",
         user: user._id,
         email: user.email,
         walletId: user._id,
@@ -1337,7 +1337,7 @@ class WalletController {
         mode: "Transfer",
         to: address,
         user: user._id,
-        coinType: "Doge",
+        coinType: "bch",
         email: user.email,
         walletId: user._id,
         status: "failed",
