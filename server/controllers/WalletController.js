@@ -510,7 +510,7 @@ class WalletController {
    */
   static async nairaBalance(req, res) {
     try {
-      const { email } = req.query;
+      const { email, coinType } = req.query;
 
       const balance = await Wallet.findOne({ email });
 
@@ -530,8 +530,8 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.balance,
-          symbol: 'BTC',
-          convert: 'NGN',
+          symbol: coinType,
+          convert: 'USD',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
