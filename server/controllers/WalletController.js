@@ -517,7 +517,7 @@ class WalletController {
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, 'User does not exist'));
+          .json(responses.error(404, 'Wallet does not exist'));
       }
       let dataBalance;
 
