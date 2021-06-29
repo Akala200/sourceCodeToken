@@ -347,7 +347,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -387,7 +387,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -427,7 +427,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -467,7 +467,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -506,7 +506,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -544,7 +544,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -585,7 +585,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -639,52 +639,6 @@ class UserController {
         .catch((err) => {
           console.log(err);
           return res.status(500).json(err);
-        });
-    } catch (error) {
-      tracelogger(error);
-    }
-  }
-
-  /**
-   *@description Creates a new wallet
-   *@static
-   *@param  {Object} req - request
-   *@param  {object} res - response
-   *@returns {object} - status code, message and created wallet
-   *@memberof UsersController
-   */
-  static async completeSetUp(req, res) {
-    console.log('here');
-    const {
-      account_number, first_name, last_name, middle_name, bank_code, bvn,
-    } = req.body;
-    try {
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer sk_test_32673719a34917f018d7b138ca9b5d8a4dec135b',
-      };
-      axios
-        .post(
-          'https://api.paystack.co/bvn/match',
-          {
-            bvn,
-            account_number,
-            bank_code,
-            first_name,
-            last_name,
-            middle_name,
-          },
-          {
-            headers,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-          return res.json(response.data);
-        })
-        .catch((err) => {
-          console.log(err.response.data, 'Here');
-          return res.status(500).json(err.response.data);
         });
     } catch (error) {
       tracelogger(error);
@@ -773,7 +727,7 @@ class UserController {
    */
   static async getAddress(req, res) {
     try {
-      const { email } = req.query;
+      const { email, coin_type } = req.query;
 
       const updatedUser = await User.findOne({ email }).select([
         '-password',
@@ -781,9 +735,19 @@ class UserController {
         '-guid',
       ]);
       if (updatedUser) {
-        return res
-          .status(200)
-          .json(responses.success(200, updatedUser.address));
+        if (coin_type === 'BTC') {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.address));
+        } else if (coin_type === 'ETH') {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.eth_address));
+        } else {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.bch_address));
+        }
       } else {
         return res.send({ message: 'Failed' });
       }
@@ -1032,8 +996,7 @@ class UserController {
   static async verify(req, res) {
     const { code } = req.body;
     let tokenUser;
-    let saveChanges;
-    let user;
+
     try {
       tokenUser = await Token.findOne({ token: code });
     } catch (error) {
@@ -1087,15 +1050,16 @@ class UserController {
               const address = rep;
               const tempt = privateKey;
               const ethWallet = cw.generateWallet('ETH');
-              const bchWallet = cw.generateWallet('BCH');
+              const bcash = cw.generateWallet('BCH');
+
 
               const userNew = {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
                 eth_tempt: ethWallet.privateKey,
-                bch_address: bchWallet.address,
-                bch_tempt: bchWallet.privateKey,
+                bch_address: bcash.address,
+                bch_tempt: bcash.privateKey,
                 guid: code,
                 regstatus: true,
               };

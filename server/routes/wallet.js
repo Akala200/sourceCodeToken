@@ -1,5 +1,4 @@
 import { Router } from 'express';
-// eslint-disable-next-line import/no-named-as-default
 import WalletController from '../controllers/WalletController';
 import verifyNumber from '../middlewares/verifyNumber';
 
@@ -13,7 +12,7 @@ const {
   transactionHistory,
   balanceBTC,
   balanceETH,
-  balanceBCH,
+  balanceDoge,
   nairaBalance,
   transactionHistoryAll,
   callback,
@@ -31,9 +30,10 @@ const {
   convertTransferETH,
   convertTransferBCH,
   convertSaleETH,
-  convertSaleBCH,
+  convertSaleDOGE,
   nairaBalanceETH,
-  nairaBalanceBCH,
+  nairaBalanceDOGE,
+  getWallet,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -42,13 +42,14 @@ router.post('/send', send);
 router.post('/withdraw', withdraw);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
+router.get('/get/wallet', getWallet);
 router.get('/history/all', transactionHistoryAll);
 router.get('/balance/coin', balanceBTC);
 router.get('/balance/eth', balanceETH);
-router.get('/balance/bch', balanceBCH);
+router.get('/balance/doge', balanceDoge);
 router.get('/balance/naira', nairaBalance);
 router.get('/balance/eth/naira', nairaBalanceETH);
-router.get('/balance/bch/naira', nairaBalanceBCH);
+router.get('/balance/doge/naira', nairaBalanceDOGE);
 router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/convert/sale', convertSale);
@@ -57,16 +58,15 @@ router.get('/sell/convert', convertTransfer);
 router.get('/eth/transfer/convert', convertTransferETH);
 router.get('/dodge/transfer/convert', convertTransferBCH);
 router.get('eth/convert/sale', convertSaleETH);
-router.get('bch/convert/sale', convertSaleBCH);
+router.get('doge/convert/sale', convertSaleDOGE);
 
 router.get('/eth/sell/convert', convertTransferETH);
-router.get('/bch/sell/convert', convertTransferBCH);
+router.get('/doge/sell/convert', convertTransferBCH);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
 router.get('/get/bank', getBank);
 router.post('/add/bank', addBank);
 router.get('/user/bank', getUserBank);
 router.get('/test', createTest);
-
 
 export default router;

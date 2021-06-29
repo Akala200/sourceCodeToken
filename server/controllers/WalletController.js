@@ -28,7 +28,6 @@ const axios = require('axios').default;
 const crypto = require('crypto');
 const CryptoAccount = require('send-crypto');
 
-
 /**
  * @description Defines the actions to for the users endpoints
  * @class UsersController
@@ -182,6 +181,32 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async getWallet(req, res) {
+    console.log('here');
+    try {
+      const { email } = req.query;
+
+      const wallet = await Wallet.findOne({ email });
+      if (!wallet) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+
+      return res.json(wallet);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async createTest(req, res) {
     console.log('here');
     try {
@@ -246,6 +271,13 @@ class WalletController {
         return res
           .status(404)
           .json(responses.error(404, 'User does not exist'));
+      }
+
+      if (coin_type === 'DOGE' || coin_type === 'LIT') {
+        const dataAge = 0.0;
+        console.log(dataAge);
+        console.log(dataAge);
+        return res.status(200).json(responses.success(200, dataAge));
       }
       const privateKey = user.tempt;
       const account = new CryptoAccount(privateKey);
@@ -376,7 +408,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -385,7 +416,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async balanceBCH(req, res) {
+  static async balanceDoge(req, res) {
     try {
       const { email, coin_type } = req.query;
       let response;
@@ -449,7 +480,6 @@ class WalletController {
       tracelogger(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -517,7 +547,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -565,7 +594,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -574,7 +602,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async nairaBalanceBCH(req, res) {
+  static async nairaBalanceDOGE(req, res) {
     try {
       const { email } = req.query;
 
@@ -596,7 +624,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.dodge_balance,
-          symbol: 'BCH',
+          symbol: 'DOGE',
           convert: 'NGN',
         },
         headers: {
@@ -613,7 +641,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -629,7 +656,7 @@ class WalletController {
       const percent = 10;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
-      console.log(realAmount, 'aftersub');
+      console.log(realAmount, 'realamount');
       console.log(discount, 'discount amount');
 
       const requestOptions = {
@@ -649,6 +676,7 @@ class WalletController {
 
       if (coin_type == 'BTC') {
         rp(requestOptions).then((response) => {
+          console.log(response);
           const dataRes = {
             price: response.data.quote.BTC.price,
             amountAfterFee: realAmount,
@@ -665,10 +693,37 @@ class WalletController {
           };
           res.json(dataRes);
         });
-      } else {
+      } else if (coin_type == 'BCH') {
         rp(requestOptions).then((response) => {
           const dataRes = {
             price: response.data.quote.BCH.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'LIT') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.LIT.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'ZEC') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.ZEC.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.DOGE.price,
             amountAfterFee: realAmount,
             fee: discount,
           };
@@ -742,7 +797,7 @@ class WalletController {
 
       const requestOptions = {
         method: 'GET',
-        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+        uri: 'https://pro-api.npm.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
           id: '2819',
@@ -803,7 +858,7 @@ class WalletController {
       rp(requestOptions).then((response) => {
         console.log(response.data.quote);
         const dataRes = {
-          price: response.data.quote.BCH.price,
+          price: response.data.quote.DOGE.price,
           amountAfterFee: realAmount,
           fee: discount,
         };
@@ -914,7 +969,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async convertSaleBCH(req, res) {
+  static async convertSaleDOGE(req, res) {
     try {
       const { amount } = req.query;
 
@@ -930,7 +985,7 @@ class WalletController {
         qs: {
           amount: realAmount,
           id: '2819',
-          convert: 'BCH',
+          convert: 'DOGE',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
@@ -1299,7 +1354,7 @@ class WalletController {
    *@memberof UsersController
    */
   /*
-  static async sendbch(req, res) {
+  static async sendDoge(req, res) {
     try {
       const { amount, fee, address, coin, wallet, bitcoin, email, flatAmount } =
         req.body;
@@ -1316,7 +1371,7 @@ class WalletController {
         type: "debit",
         mode: "Transfer",
         to: address,
-        coinType: "bch",
+        coinType: "Doge",
         user: user._id,
         email: user.email,
         walletId: user._id,
@@ -1330,7 +1385,7 @@ class WalletController {
         mode: "Transfer",
         to: address,
         user: user._id,
-        coinType: "bch",
+        coinType: "Doge",
         email: user.email,
         walletId: user._id,
         status: "failed",
