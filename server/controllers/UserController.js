@@ -984,6 +984,50 @@ class UserController {
     );
   }
 
+  static async completeSetUp(req, res) {
+    console.log('here');
+    const {
+      account_number,
+      first_name,
+      last_name,
+      middle_name,
+      bank_code,
+      bvn,
+    } = req.body;
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer sk_test_32673719a34917f018d7b138ca9b5d8a4dec135b',
+      };
+      axios
+        .post(
+          'https://api.paystack.co/bvn/match',
+          {
+            bvn,
+            account_number,
+            bank_code,
+            first_name,
+            last_name,
+            middle_name,
+          },
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          return res.json(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data, 'Here');
+          return res.status(500).json(err.response.data);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
   /**
    *@description Creates user user
    *@static
@@ -1051,7 +1095,6 @@ class UserController {
               const tempt = privateKey;
               const ethWallet = cw.generateWallet('ETH');
               const bcash = cw.generateWallet('BCH');
-
 
               const userNew = {
                 address,
