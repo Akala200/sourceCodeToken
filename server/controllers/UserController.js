@@ -585,7 +585,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT&start=2021-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
