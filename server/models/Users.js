@@ -16,7 +16,7 @@ const UserSchema = new Schema(
       required: true,
       lowercase: true,
       unique: true,
-      validate: [isEmail, "invalid email"],
+      validate: [isEmail, 'invalid email'],
     },
     first_name: {
       type: String,
@@ -49,14 +49,18 @@ const UserSchema = new Schema(
     eth_tempt: {
       type: String,
     },
-    doge_address: {
+    bch_address: {
       type: String,
     },
-    dodge_tempt: {
+    bch_tempt: {
       type: String,
     },
     bankref: {
       type: String,
+    },
+    bvn_verified: {
+      type: Boolean,
+      default: false,
     },
     status: {
       type: Boolean,

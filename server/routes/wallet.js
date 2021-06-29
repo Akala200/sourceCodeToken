@@ -12,7 +12,7 @@ const {
   transactionHistory,
   balanceBTC,
   balanceETH,
-  balanceDoge,
+  balanceBCH,
   nairaBalance,
   transactionHistoryAll,
   callback,
@@ -28,11 +28,11 @@ const {
   convertTransfer,
   convertSale,
   convertTransferETH,
-  convertTransferDodge,
+  convertTransferBCH,
   convertSaleETH,
-  convertSaleDOGE,
+  convertSaleBCH,
   nairaBalanceETH,
-  nairaBalanceDOGE,
+  nairaBalanceBCH,
 } = WalletController;
 const { numberChecker } = verifyNumber;
 
@@ -42,24 +42,24 @@ router.post('/withdraw', withdraw);
 router.post('/webhook', numberChecker, webhook);
 router.get('/history', transactionHistory);
 router.get('/history/all', transactionHistoryAll);
-router.get("/balance/coin", balanceBTC);
-router.get("/balance/eth", balanceETH);
-router.get("/balance/doge", balanceDoge);
+router.get('/balance/coin', balanceBTC);
+router.get('/balance/eth', balanceETH);
+router.get('/balance/bch', balanceBCH);
 router.get('/balance/naira', nairaBalance);
-router.get("/balance/eth/naira", nairaBalanceETH);
-router.get("/balance/doge/naira", nairaBalanceDOGE);
+router.get('/balance/eth/naira', nairaBalanceETH);
+router.get('/balance/bch/naira', nairaBalanceBCH);
 router.get('/callback', callback);
 router.get('/convert', convert);
 router.get('/convert/sale', convertSale);
 router.get('/transfer/convert', convertTransfer);
 router.get('/sell/convert', convertTransfer);
-router.get("/eth/transfer/convert", convertTransferETH);
-router.get("/dodge/transfer/convert", convertTransferDodge);
-router.get("eth/convert/sale", convertSaleETH);
-router.get("doge/convert/sale", convertSaleDOGE);
+router.get('/eth/transfer/convert', convertTransferETH);
+router.get('/dodge/transfer/convert', convertTransferBCH);
+router.get('eth/convert/sale', convertSaleETH);
+router.get('bch/convert/sale', convertSaleBCH);
 
-router.get("/eth/sell/convert", convertTransferETH);
-router.get("/doge/sell/convert", convertTransferDodge);
+router.get('/eth/sell/convert', convertTransferETH);
+router.get('/bch/sell/convert', convertTransferBCH);
 router.get('/get/coin', coinPrice);
 router.get('/wallet/all', allWallet);
 router.get('/get/bank', getBank);

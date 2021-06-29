@@ -22,7 +22,7 @@ const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
 const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
-const cw = require("crypto-wallets");
+const cw = require('crypto-wallets');
 
 const { MyWallet } = require('blockchain.info');
 
@@ -111,7 +111,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -122,36 +121,31 @@ class UserController {
    */
   static async confirmPassword(req, res) {
     const { code } = req.body;
-  try {
-    const tokenUser = await TokenUsed.findOne({ token: code });
+    try {
+      const tokenUser = await TokenUsed.findOne({ token: code });
 
-    if (!tokenUser) {
-      return res.status(404).json(responses.error(404, 'Invalid Code'));
-    }
+      if (!tokenUser) {
+        return res.status(404).json(responses.error(404, 'Invalid Code'));
+      }
 
-    // Find a user from token
-    User.findOne({ email: tokenUser.oldEmail })
-      .then((user) => {
+      // Find a user from token
+      User.findOne({ email: tokenUser.oldEmail }).then((user) => {
         // Save the new password
 
         user.password = req.body.password;
-        user
-          .save((err) => {
-            if (err) {
-              return res
-                .status(500)
-                .send({ msg: 'Error in saving the password' });
-            }
-            return res.send({ message: 'Success', data: 'Password changed' });
-          })
-      })
-  } catch (error) {
-    return res
-                .status(500)
-                .send({ msg: 'Error in saving the password' });
+        user.save((err) => {
+          if (err) {
+            return res
+              .status(500)
+              .send({ msg: 'Error in saving the password' });
+          }
+          return res.send({ message: 'Success', data: 'Password changed' });
+        });
+      });
+    } catch (error) {
+      return res.status(500).send({ msg: 'Error in saving the password' });
+    }
   }
-  }
-
 
   /**
    *@description Creates a new wallet
@@ -172,7 +166,6 @@ class UserController {
       return res.send({ message: 'Success', data: 'Valid Code' });
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -263,18 +256,16 @@ class UserController {
             if (tokenRegistration) {
               return res
                 .status(201)
-                .json(responses.success(201, "Email sent successfully"));
+                .json(responses.success(201, 'Email sent successfully'));
             } else {
               return res
                 .status(500)
-                .json(responses.success(500, "Email not sent"));
+                .json(responses.success(500, 'Email not sent'));
             }
           })
           .catch((error) => {
             console.log(error);
-            return res
-              .status(500)
-              .json(responses.success(500, error));
+            return res.status(500).json(responses.success(500, error));
           });
       }
     } catch (error) {
@@ -306,7 +297,6 @@ class UserController {
       if (user === email) {
         return res.status(400).json(responses.error(400, 'User already exist'));
       }
-
 
       const code = randomstring.generate({
         length: 5,
@@ -627,15 +617,15 @@ class UserController {
     console.log('here');
     try {
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
-          start: "1",
-          limit: "1",
-          convert: "NGN",
+          start: '1',
+          limit: '1',
+          convert: 'NGN',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3",
+          'X-CMC_PRO_API_KEY': '2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3',
         },
         json: true,
         gzip: true,
@@ -663,13 +653,58 @@ class UserController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async completeSetUp(req, res) {
+    console.log('here');
+    const {
+      account_number, first_name, last_name, middle_name, bank_code, bvn,
+    } = req.body;
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer sk_test_32673719a34917f018d7b138ca9b5d8a4dec135b',
+      };
+      axios
+        .post(
+          'https://api.paystack.co/bvn/match',
+          {
+            bvn,
+            account_number,
+            bank_code,
+            first_name,
+            last_name,
+            middle_name,
+          },
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          return res.json(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data, 'Here');
+          return res.status(500).json(err.response.data);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async shortlist(req, res) {
     console.log('here');
     try {
       const requestOptions = {
         method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
           start: '1',
           limit: '6',
@@ -830,8 +865,7 @@ class UserController {
     try {
       const requestOptions = {
         method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
           start: '1',
           limit: '10',
@@ -933,7 +967,6 @@ class UserController {
     if (!tokenUser) {
       return res.status(404).json(responses.error(404, 'Invalid Code'));
     }
-
 
     // const user = await User.findOne({ email: tokenUser.oldEmail });
     const remail = tokenUser.newEmail;
@@ -1053,17 +1086,16 @@ class UserController {
             .then((rep) => {
               const address = rep;
               const tempt = privateKey;
-              const ethWallet = cw.generateWallet("ETH");
-              const dodgeWallet = cw.generateWallet("DOGE");
-
+              const ethWallet = cw.generateWallet('ETH');
+              const dodgeWallet = cw.generateWallet('BCH');
 
               const userNew = {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
                 eth_tempt: ethWallet.privateKey,
-                doge_address: dodgeWallet.address,
-                dodge_tempt: dodgeWallet.privateKey,
+                bch_address: dodgeWallet.address,
+                bch_tempt: dodgeWallet.privateKey,
                 guid: code,
                 regstatus: true,
               };
@@ -1087,7 +1119,6 @@ class UserController {
             .catch((error) => {
               console.log(error);
             });
-
 
           try {
             const willet = await Wallet.create(walletData);
