@@ -1,4 +1,5 @@
 import { Router } from 'express';
+// eslint-disable-next-line import/no-named-as-default
 import WalletController from '../controllers/WalletController';
 import verifyNumber from '../middlewares/verifyNumber';
 
