@@ -270,7 +270,7 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(404, 'User does not exist'));
+          .json(responses.error(404, 'Wallet does not exist'));
       }
 
       if (coin_type === 'DOGE' || coin_type === 'LIT') {
