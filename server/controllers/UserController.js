@@ -1087,15 +1087,15 @@ class UserController {
               const address = rep;
               const tempt = privateKey;
               const ethWallet = cw.generateWallet('ETH');
-              const dodgeWallet = cw.generateWallet('BCH');
+              const bchWallet = cw.generateWallet('BCH');
 
               const userNew = {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
                 eth_tempt: ethWallet.privateKey,
-                bch_address: dodgeWallet.address,
-                bch_tempt: dodgeWallet.privateKey,
+                bch_address: bchWallet.address,
+                bch_tempt: bchWallet.privateKey,
                 guid: code,
                 regstatus: true,
               };

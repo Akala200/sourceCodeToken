@@ -1299,7 +1299,7 @@ class WalletController {
    *@memberof UsersController
    */
   /*
-  static async sendDoge(req, res) {
+  static async sendbch(req, res) {
     try {
       const { amount, fee, address, coin, wallet, bitcoin, email, flatAmount } =
         req.body;
@@ -1316,7 +1316,7 @@ class WalletController {
         type: "debit",
         mode: "Transfer",
         to: address,
-        coinType: "Doge",
+        coinType: "bch",
         user: user._id,
         email: user.email,
         walletId: user._id,
@@ -1330,7 +1330,7 @@ class WalletController {
         mode: "Transfer",
         to: address,
         user: user._id,
-        coinType: "Doge",
+        coinType: "bch",
         email: user.email,
         walletId: user._id,
         status: "failed",
