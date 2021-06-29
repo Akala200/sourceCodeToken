@@ -541,7 +541,7 @@ class WalletController {
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD));
     } catch (error) {
       tracelogger(error);
     }
