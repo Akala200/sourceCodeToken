@@ -30,6 +30,7 @@ const {
   confirmPassword,
   checkCode,
   completeSetUp,
+  getBankCode,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -37,6 +38,8 @@ router.post('/login', login);
 router.post('/verify', verify);
 router.get('/lists', getlist);
 router.get('/mobile', bitcoinMobile);
+router.get('/get/bank', getBankCode);
+
 router.get('/coin/history', bitcoinMobileNgn);
 router.get('/coin/history/usd', bitcoinMobileUsd);
 router.get('/coin/market/btc', bitcoinMobileMarketBTC);

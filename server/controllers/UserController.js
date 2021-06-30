@@ -1028,6 +1028,33 @@ class UserController {
     }
   }
 
+  static async getBankCode(req, res) {
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8',
+      };
+      axios
+        .get(
+          'https://api.paystack.co/bank',
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          return res.json(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data, 'Here');
+          return res.status(500).json(err.response.data);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
   /**
    *@description Creates user user
    *@static
