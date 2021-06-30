@@ -655,7 +655,7 @@ class WalletController {
 
       const percent = 10;
       const discount = (percent / 100) * amount;
-      const realAmount = amount - discount - 800;
+      const realAmount = amount - discount;
       console.log(realAmount, 'realamount');
       console.log(discount, 'discount amount');
 
