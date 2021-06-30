@@ -664,7 +664,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: coin_type,
         },
         headers: {
@@ -756,7 +756,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'BTC',
         },
         headers: {
@@ -800,7 +800,7 @@ class WalletController {
         uri: 'https://pro-api.npm.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'ETH',
         },
         headers: {
@@ -845,7 +845,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'BCH',
         },
         headers: {
@@ -892,7 +892,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'BTC',
         },
         headers: {
@@ -938,7 +938,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'ETH',
         },
         headers: {
@@ -984,7 +984,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: '2819',
+          id: '2781',
           convert: 'DOGE',
         },
         headers: {
@@ -1027,7 +1027,7 @@ class WalletController {
         uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount,
-          id: '2819',
+          id: '2781',
           convert: 'BTC',
         },
         headers: {
