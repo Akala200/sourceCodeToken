@@ -31,6 +31,7 @@ const {
   checkCode,
   completeSetUp,
   getBankCode,
+  createOtherWallet,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -51,7 +52,7 @@ router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
 router.post('/update/web', changeEmail);
 router.post('/complete/account', completeSetUp);
-
+router.post('/create/other/wallet', createOtherWallet);
 
 router.post('/verify/new/email', verifyNew);
 router.get('/data', betokened);

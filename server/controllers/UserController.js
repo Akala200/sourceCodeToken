@@ -1036,12 +1036,9 @@ class UserController {
           'Bearer sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8',
       };
       axios
-        .get(
-          'https://api.paystack.co/bank',
-          {
-            headers,
-          }
-        )
+        .get('https://api.paystack.co/bank', {
+          headers,
+        })
         .then((response) => {
           console.log(response.data);
           return res.json(response.data);
@@ -1170,6 +1167,68 @@ class UserController {
             console.log(error);
             return res.status(500).json(responses.error(500, 'Whats up'));
           }
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json(responses.error(500, error));
+        }
+      } else {
+        return res
+          .status(404)
+          .json(
+            responses.error(404, 'Account verification Failed, Invalid token')
+          );
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(responses.error(500, error));
+    }
+
+    // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
+  }
+
+  /**
+   *@description Creates user user
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof userController
+   */
+
+  static async createOtherWallet(req, res) {
+    const { email } = req.body;
+
+
+    try {
+      const user = await User.findOne({ email });
+      //  Generate Token
+
+      if (user) {
+        try {
+          const ethWallet = cw.generateWallet('ETH');
+          const bcash = cw.generateWallet('BCH');
+
+          const userNew = {
+            eth_address: ethWallet.address,
+            eth_tempt: ethWallet.privateKey,
+            bch_address: bcash.address,
+            bch_tempt: bcash.privateKey,
+          };
+
+          User.findOneAndUpdate(
+            { email },
+            userNew,
+            {
+              new: true,
+            },
+            (err, doc) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json(responses.error(500, err));
+              }
+              res.status(200).json(responses.success(200, 'Account verified successfully'));
+            }
+          );
         } catch (error) {
           console.error(error);
           return res.status(500).json(responses.error(500, error));
