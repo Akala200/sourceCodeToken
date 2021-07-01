@@ -1111,22 +1111,38 @@ class UserController {
       if (user) {
         try {
           const privateKey = CryptoAccount.newPrivateKey();
+
+          const ethWallet = cw.generateWallet('ETH');
+          const bcash = cw.generateWallet('BCH');
+
+          const data1 = {
+            id: ethWallet.privateKey,
+          };
+          const data2 = {
+            id: bcash.privateKey,
+          };
+
+          const data3 = {
+            id: privateKey,
+          };
+
+          const eth_tempt = await signToken(data1);
+          const bch_tempt = await signToken(data2);
+          const tempt = await signToken(data3);
           const account = new CryptoAccount(privateKey);
           account
             .address('BTC')
             .then((rep) => {
               const address = rep;
-              const tempt = privateKey;
-              const ethWallet = cw.generateWallet('ETH');
-              const bcash = cw.generateWallet('BCH');
+
 
               const userNew = {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
-                eth_tempt: ethWallet.privateKey,
+                eth_tempt,
                 bch_address: bcash.address,
-                bch_tempt: bcash.privateKey,
+                bch_tempt,
                 guid: code,
                 regstatus: true,
               };
@@ -1208,11 +1224,22 @@ class UserController {
           const ethWallet = cw.generateWallet('ETH');
           const bcash = cw.generateWallet('BCH');
 
+          const data1 = {
+            id: ethWallet.privateKey,
+          };
+          const data2 = {
+            id: bcash.privateKey,
+          };
+
+          const eth_tempt = await signToken(data1);
+          const bch_tempt = await signToken(data2);
+
+
           const userNew = {
             eth_address: ethWallet.address,
-            eth_tempt: ethWallet.privateKey,
+            eth_tempt,
             bch_address: bcash.address,
-            bch_tempt: bcash.privateKey,
+            bch_tempt,
           };
 
           User.findOneAndUpdate(
@@ -1226,7 +1253,7 @@ class UserController {
                 console.log(err);
                 return res.status(500).json(responses.error(500, err));
               }
-              res.status(200).json(responses.success(200, 'Account verified successfully'));
+              res.status(200).json(responses.success(200, 'Accounts Created successfully'));
             }
           );
         } catch (error) {
