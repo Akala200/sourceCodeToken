@@ -1219,7 +1219,7 @@ class UserController {
       const user = await User.findOne({ email });
       //  Generate Token
 
-      if (user) {
+      if (user && !user.eth_address) {
         try {
           const ethWallet = cw.generateWallet('ETH');
           const bcash = cw.generateWallet('BCH');
@@ -1233,7 +1233,6 @@ class UserController {
 
           const eth_tempt = await signToken(data1);
           const bch_tempt = await signToken(data2);
-
 
           const userNew = {
             eth_address: ethWallet.address,
@@ -1253,7 +1252,9 @@ class UserController {
                 console.log(err);
                 return res.status(500).json(responses.error(500, err));
               }
-              res.status(200).json(responses.success(200, 'Accounts Created successfully'));
+              res
+                .status(200)
+                .json(responses.success(200, 'Accounts Created successfully'));
             }
           );
         } catch (error) {
@@ -1264,7 +1265,7 @@ class UserController {
         return res
           .status(404)
           .json(
-            responses.error(404, 'Account verification Failed, Invalid token')
+            responses.error(404, 'Account Already created')
           );
       }
     } catch (error) {
