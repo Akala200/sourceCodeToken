@@ -155,9 +155,9 @@ class WalletController {
   static async transactionHistory(req, res) {
     console.log('here');
     try {
-      const { user } = req.query;
+      const { user, coinType } = req.query;
 
-      const transaction = await Transaction.find({ user })
+      const transaction = await Transaction.find({ user, coinType })
         .sort({ _id: -1 })
         .limit(10);
 
