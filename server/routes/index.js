@@ -8,7 +8,7 @@ const app = express();
 
 app.use('/', walletRoutes);
 app.use('/', userRoutes);
-app.use('/admin', adminRoutes);
+app.use('/admin/', adminRoutes);
 
 
 export default app;
