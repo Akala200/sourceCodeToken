@@ -7,7 +7,6 @@
 /* eslint-disable require-jsdoc */
 import bcrypt from 'bcrypt';
 import randomstring from 'randomstring';
-import t from 'typy'; // ES6 style import
 import { sign, verify } from 'jsonwebtoken';
 import User from '../models/Users';
 import Token from '../models/Token';
