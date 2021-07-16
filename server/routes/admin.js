@@ -18,20 +18,20 @@ const {
 } = AdminController;
 
 router.post('/create/account', newUser);
-router.post('/login', login);
-router.post('/verify', verify);
+router.post('/admin/login', login);
+router.post('/admin/verify', verify);
 
-router.get('/user/address', getAddress);
-router.put('/update/password', changePassword);
+router.get('/admin/user/address', getAddress);
+router.put('/admin/update/password', changePassword);
 
-router.post('/forgot/password', forgetPassword);
-router.post('/new/password', confirmPassword);
-router.post('/web/password', confirmPassword);
+router.post('/admin/forgot/password', forgetPassword);
+router.post('/admin/new/password', confirmPassword);
+router.post('/admin/web/password', confirmPassword);
 
 // getAddress
 
-router.get('/get/user', getUser);
-router.put('/update/user', updateUser);
+router.get('/admin/get/user', getUser);
+router.put('/admin/update/user', updateUser);
 
 
 // bitcoin
