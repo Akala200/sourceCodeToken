@@ -605,6 +605,38 @@ class AdminController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async updateRate(req, res) {
+    try {
+      const getRate = await Rate.findOne({});
+
+      const rate = {
+        variable_rate: req.body.variable_rate,
+        fixed_rate: req.body.last_name,
+      };
+      const updatedRate = await Rate.findOneAndUpdate(
+        { variable_rate: getRate.variable_rate },
+        rate,
+        { new: true }
+      );
+      if (updatedRate) {
+        return res.send({ message: 'Success', data: updatedRate });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
   /**
    *@description Creates a new wallet
    *@static

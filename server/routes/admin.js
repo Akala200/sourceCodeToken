@@ -29,6 +29,7 @@ const {
   getFailedCreditTransactionCount,
   addRate,
   getRate,
+  updateRate,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -68,6 +69,8 @@ router.get(
 );
 
 router.put('/admin/update/password', changePassword);
+
+router.put('/admin/update/rate', updateRate);
 
 router.post('/admin/forgot/password', forgetPassword);
 router.post('/admin/new/password', confirmPassword);
