@@ -31,6 +31,7 @@ const {
   getRate,
   updateRate,
   getCustomers,
+  getOneCustomers,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -49,6 +50,7 @@ router.get('/admin/user/failed/transaction', getFailedTransactionCount);
 router.get('/admin/user/credit/transaction', getCreditTransactionCount);
 router.get('/admin/user/debit/transaction', getDebitTransactionCount);
 router.get('/admin/user/customers', getCustomers);
+router.get('/admin/user/customer', getOneCustomers);
 
 router.get(
   '/admin/user/successful/debit/transaction',

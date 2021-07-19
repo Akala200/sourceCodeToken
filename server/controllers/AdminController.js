@@ -659,6 +659,32 @@ class AdminController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getOneCustomers(req, res) {
+    const id = req.query.id;
+    try {
+      const getUser = await User.find({ _id: id });
+
+
+      if (getUser) {
+        return res.send({ message: 'Success', data: getUser });
+      } else {
+        return res.send({ message: 'Failed', data: getUser });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+
   /**
    *@description Creates a new wallet
    *@static
