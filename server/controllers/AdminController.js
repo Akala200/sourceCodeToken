@@ -520,6 +520,110 @@ class AdminController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async getSuccessfulDebitTransactionCount(req, res) {
+    const status = 'debit';
+    const transactionStatus = 'successful';
+    try {
+      const getTransaction = await Transaction.find({
+        type: status,
+        status: transactionStatus,
+      }).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getFailedDebitTransactionCount(req, res) {
+    const status = 'debit';
+    const transactionStatus = 'failed';
+    try {
+      const getTransaction = await Transaction.find({
+        type: status,
+        status: transactionStatus,
+      }).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getSuccessfulCreditTransactionCount(req, res) {
+    const status = 'credit';
+    const transactionStatus = 'successful';
+    try {
+      const getTransaction = await Transaction.find({
+        type: status,
+        status: transactionStatus,
+      }).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getFailedCreditTransactionCount(req, res) {
+    const status = 'credit';
+    const transactionStatus = 'failed';
+    try {
+      const getTransaction = await Transaction.find({
+        type: status,
+        status: transactionStatus,
+      }).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async getNoBVNUser(req, res) {
     const status = false;
     try {
