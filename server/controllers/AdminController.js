@@ -18,6 +18,7 @@ import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
+import User from '../models/Users';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
@@ -350,6 +351,27 @@ class AdminController {
   }
 
   /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getUserCount(req, res) {
+    try {
+      const updatedUser = await User.findOne({ }).count();
+      if (updatedUser) {
+        return res.send({ message: 'Success', data: updatedUser });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
    *@description Creates user user
    *@static
    *@param  {Object} req - request
@@ -407,7 +429,6 @@ class AdminController {
       .json(responses.success(200, 'Login successfully', userData));
   }
 
-
   /**
    *@description Creates user user
    *@static
@@ -420,7 +441,6 @@ class AdminController {
   static async verify(req, res) {
     const { code } = req.body;
     let tokenUser;
-
 
     try {
       const admin = await Admin.findOne({ email: tokenUser.user });
@@ -491,7 +511,11 @@ class AdminController {
           try {
             const wallet = await Wallet.create(walletData);
             console.log(wallet);
-            res.status(200).json(responses.success(200, 'Admin wallet created successfully'));
+            res
+              .status(200)
+              .json(
+                responses.success(200, 'Admin wallet created successfully')
+              );
           } catch (error) {
             console.log(error);
             return res.status(500).json(responses.error(500, 'Whats up'));

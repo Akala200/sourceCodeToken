@@ -15,6 +15,7 @@ const {
   changePassword,
   forgetPassword,
   confirmPassword,
+  getUserCount,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -22,6 +23,8 @@ router.post('/admin/login', login);
 router.post('/admin/verify', verify);
 
 router.get('/admin/user/address', getAddress);
+router.get('/admin/user/total', getUserCount);
+
 router.put('/admin/update/password', changePassword);
 
 router.post('/admin/forgot/password', forgetPassword);
