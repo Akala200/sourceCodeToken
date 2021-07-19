@@ -559,8 +559,9 @@ class AdminController {
 
     try {
       const admin = await Admin.findOne({ email });
+      console.log(admin);
 
-      if (admin.role === 'Super Admin') {
+      if (admin.role !== 'Super Admin') {
         return res
           .status(401)
           .json(responses.error(401, 'Sorry, you are unauthorized'));
@@ -593,7 +594,7 @@ class AdminController {
    */
   static async getRate(req, res) {
     try {
-      const getRate = await Rate.find({});
+      const getRate = await Rate.findOne({});
       if (getRate) {
         return res.send({ message: 'Success', data: getRate });
       } else {
