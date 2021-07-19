@@ -671,7 +671,7 @@ class AdminController {
   static async getOneCustomers(req, res) {
     const id = req.query.id;
     try {
-      const getUser = await User.find({ _id: id });
+      const getUser = await User.findOne({ _id: id });
 
 
       if (getUser) {
