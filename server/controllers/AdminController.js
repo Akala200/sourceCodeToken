@@ -620,7 +620,7 @@ class AdminController {
 
       const rate = {
         variable_rate: req.body.variable_rate,
-        fixed_rate: req.body.last_name,
+        fixed_rate: req.body.fixed_rate,
       };
       const updatedRate = await Rate.findOneAndUpdate(
         { variable_rate: getRate.variable_rate },
