@@ -382,7 +382,9 @@ class AdminController {
   static async getBVNUser(req, res) {
     const status = true;
     try {
-      const updatedUser = await User.find({ bvn_verified: status }).count();
+      const updatedUser = await User.find({
+        bvn_verified: status,
+      }).countDocuments();
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
       }
@@ -402,7 +404,9 @@ class AdminController {
   static async getNoBVNUser(req, res) {
     const status = false;
     try {
-      const updatedUser = await User.find({ bvn_verified: status }).count();
+      const updatedUser = await User.find({
+        bvn_verified: status,
+      }).countDocuments();
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
       }
