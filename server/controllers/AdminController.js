@@ -605,7 +605,6 @@ class AdminController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -631,6 +630,29 @@ class AdminController {
         return res.send({ message: 'Success', data: updatedRate });
       } else {
         return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getCustomers(req, res) {
+    try {
+      const getUser = await User.find({});
+
+
+      if (getUser) {
+        return res.send({ message: 'Success', data: getUser });
+      } else {
+        return res.send({ message: 'Failed', data: getUser });
       }
     } catch (error) {
       return res.status(500).send(error);

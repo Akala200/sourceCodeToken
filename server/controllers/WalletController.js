@@ -652,8 +652,8 @@ class WalletController {
   static async convert(req, res) {
     try {
       const { amount, coin_type } = req.query;
-
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
       console.log(realAmount, 'realamount');
@@ -747,7 +747,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 1;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
@@ -791,7 +792,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 2;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
@@ -836,7 +838,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 2;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
@@ -881,7 +884,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
       console.log(realAmount, 'aftersub');
@@ -927,7 +931,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
       console.log(realAmount, 'aftersub');
@@ -973,7 +978,8 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
       console.log(realAmount, 'aftersub');
