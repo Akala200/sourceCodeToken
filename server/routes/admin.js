@@ -20,6 +20,7 @@ const {
   getNoBVNUser,
   getTransactionCount,
   getSuccessfulTransactionCount,
+  getFailedTransactionCount,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -32,6 +33,7 @@ router.get('/admin/user/verified', getBVNUser);
 router.get('/admin/user/unverified', getNoBVNUser);
 router.get('/admin/user/transaction', getTransactionCount);
 router.get('/admin/user/successful/transaction', getSuccessfulTransactionCount);
+router.get('/admin/user/failed/transaction', getFailedTransactionCount);
 
 router.put('/admin/update/password', changePassword);
 
