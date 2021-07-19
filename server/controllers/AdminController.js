@@ -360,11 +360,11 @@ class AdminController {
    */
   static async getUserCount(req, res) {
     try {
-      const updatedUser = await User.find({}).count();
+      const updatedUser = await User.find({}).countDocuments();
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
       } else {
-        return res.send({ message: 'Failed' });
+        return res.send({ message: 'Failed', data: 0 });
       }
     } catch (error) {
       return res.status(500).send(error);
@@ -387,6 +387,30 @@ class AdminController {
       }).countDocuments();
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getTransactionCount(req, res) {
+    try {
+      const getTransaction = await Transaction.find({}).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
       }
     } catch (error) {
       return res.status(500).send(error);
