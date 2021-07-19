@@ -17,6 +17,7 @@ const {
   confirmPassword,
   getUserCount,
   getBVNUser,
+  getNoBVNUser,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -26,6 +27,7 @@ router.post('/admin/verify', verify);
 router.get('/admin/user/address', getAddress);
 router.get('/admin/user/total', getUserCount);
 router.get('/admin/user/verified', getBVNUser);
+router.get('/admin/user/unverified', getNoBVNUser);
 
 router.put('/admin/update/password', changePassword);
 
