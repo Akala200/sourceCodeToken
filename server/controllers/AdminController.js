@@ -360,7 +360,29 @@ class AdminController {
    */
   static async getUserCount(req, res) {
     try {
-      const updatedUser = await User.findOne({ }).count();
+      const updatedUser = await User.findOne({}).count();
+      if (updatedUser) {
+        return res.send({ message: 'Success', data: updatedUser });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getBVNUser(req, res) {
+    const status = true;
+    try {
+      const updatedUser = await User.findOne({ bvn_verified: status }).count();
       if (updatedUser) {
         return res.send({ message: 'Success', data: updatedUser });
       } else {
