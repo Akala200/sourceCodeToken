@@ -52,7 +52,7 @@ const AdminSchema = new Schema(
     },
     role: {
       type: String,
-      default: 'Super Admin',
+      default: 'Admin',
     },
     status: {
       type: Boolean,

@@ -27,11 +27,15 @@ const {
   getFailedDebitTransactionCount,
   getSuccessfulCreditTransactionCount,
   getFailedCreditTransactionCount,
+  addRate,
+  getRate,
 } = AdminController;
 
 router.post('/create/account', newUser);
 router.post('/admin/login', login);
 router.post('/admin/verify', verify);
+router.post('/admin/add/rate', addRate);
+router.get('/admin/get/rate', getRate);
 
 router.get('/admin/user/address', getAddress);
 router.get('/admin/user/total', getUserCount);

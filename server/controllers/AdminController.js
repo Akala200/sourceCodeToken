@@ -10,6 +10,8 @@ import bcrypt from 'bcrypt';
 import randomstring from 'randomstring';
 import { sign, verify } from 'jsonwebtoken';
 import Admin from '../models/Admin';
+import Rate from '../models/Rate';
+
 import Token from '../models/Token';
 import TokenUsed from '../models/Regular_Token';
 import AdminWallet from '../models/AdminWallet';
@@ -530,6 +532,70 @@ class AdminController {
       }).countDocuments();
       if (getTransaction) {
         return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new User
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created User
+   *@memberof UsersController
+   */
+  static async addRate(req, res) {
+    const { variable_rate, fixed_rate, email } = req.body;
+
+    if (!fixed_rate || !variable_rate) {
+      return res
+        .status(400)
+        .json(responses.error(400, 'Please fill in all details'));
+    }
+
+    try {
+      const admin = await Admin.findOne({ email });
+
+      if (admin.role === 'Super Admin') {
+        return res
+          .status(401)
+          .json(responses.error(401, 'Sorry, you are unauthorized'));
+      }
+      const rateObject = {
+        fixed_rate,
+        variable_rate,
+      };
+
+      const createdRate = await Rate.create(rateObject);
+      if (createdRate) {
+        return res
+          .status(201)
+          .json(responses.success(201, 'Rate created successfully'));
+      } else {
+        return res.status(500).json(responses.success(500, 'Rate not created'));
+      }
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getRate(req, res) {
+    try {
+      const getRate = await Rate.find({});
+      if (getRate) {
+        return res.send({ message: 'Success', data: getRate });
       } else {
         return res.send({ message: 'Failed', data: 0 });
       }
