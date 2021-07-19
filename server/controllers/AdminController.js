@@ -464,6 +464,32 @@ class AdminController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getCreditTransactionCount(req, res) {
+    const status = 'credit';
+    try {
+      const getTransaction = await Transaction.find({
+        type: status,
+      }).countDocuments();
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+
   /**
    *@description Creates a new wallet
    *@static
