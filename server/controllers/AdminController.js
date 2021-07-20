@@ -853,11 +853,10 @@ class AdminController {
    */
 
   static async verify(req, res) {
-    const { code } = req.body;
-    let tokenUser;
+    const { email } = req.body;
 
     try {
-      const admin = await Admin.findOne({ email: tokenUser.user });
+      const admin = await Admin.findOne({ email });
 
       const walletData = {
         phone: admin.phone,
@@ -871,20 +870,9 @@ class AdminController {
           const ethWallet = cw.generateWallet('ETH');
           const bcash = cw.generateWallet('BCH');
 
-          const data1 = {
-            id: ethWallet.privateKey,
-          };
-          const data2 = {
-            id: bcash.privateKey,
-          };
-
-          const data3 = {
-            id: privateKey,
-          };
-
-          const eth_tempt = await signToken(data1);
-          const bch_tempt = await signToken(data2);
-          const tempt = await signToken(data3);
+          const eth_tempt = ethWallet.privateKey;
+          const bch_tempt = bcash.privateKey;
+          const tempt = privateKey;
           const account = new CryptoAccount(privateKey);
           account
             .address('BTC')
@@ -898,7 +886,7 @@ class AdminController {
                 eth_tempt,
                 bch_address: bcash.address,
                 bch_tempt,
-                guid: code,
+                guid: 'fhffjfjfjfjfjfhfjfjfjfjfjfjfj',
                 regstatus: true,
               };
 
