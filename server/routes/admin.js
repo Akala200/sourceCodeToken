@@ -36,7 +36,7 @@ const {
 
 router.post('/create/account', newUser);
 router.post('/admin/login', login);
-router.post('/admin/verify', verify);
+router.post('/admin/create/wallet', verify);
 router.post('/admin/add/rate', addRate);
 router.get('/admin/get/rate', getRate);
 
