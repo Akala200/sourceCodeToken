@@ -790,11 +790,12 @@ class AdminController {
    *@memberof UsersController
    */
   static async getAdminWallet(req, res) {
-    const status = 'Super Admin';
+    const email = req.query.email;
     try {
       const updatedAdmin = await AdminWallet.findOne({
-        role: status,
-      }).countDocuments();
+        email,
+      });
+      console.log(updatedAdmin);
       if (updatedAdmin) {
         return res.send({ message: 'Success', data: updatedAdmin });
       }
@@ -930,7 +931,7 @@ class AdminController {
             });
 
           try {
-            const wallet = await Wallet.create(walletData);
+            const wallet = await AdminWallet.create(walletData);
             console.log(wallet);
             res
               .status(200)
