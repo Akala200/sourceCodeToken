@@ -648,7 +648,6 @@ class AdminController {
     try {
       const getUser = await User.find({});
 
-
       if (getUser) {
         return res.send({ message: 'Success', data: getUser });
       } else {
@@ -658,7 +657,6 @@ class AdminController {
       return res.status(500).send(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -673,7 +671,6 @@ class AdminController {
     try {
       const getUser = await User.findOne({ _id: id });
 
-
       if (getUser) {
         return res.send({ message: 'Success', data: getUser });
       } else {
@@ -683,7 +680,6 @@ class AdminController {
       return res.status(500).send(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -784,6 +780,29 @@ class AdminController {
       return res.status(500).send(error);
     }
   }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getAdminWallet(req, res) {
+    const status = 'Super Admin';
+    try {
+      const updatedAdmin = await AdminWallet.findOne({
+        role: status,
+      }).countDocuments();
+      if (updatedAdmin) {
+        return res.send({ message: 'Success', data: updatedAdmin });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
 
   /**
    *@description Creates user user

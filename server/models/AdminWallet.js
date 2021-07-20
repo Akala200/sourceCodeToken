@@ -5,8 +5,7 @@ const { Schema } = mongoose;
 const AdminWalletSchema = new Schema({
   email: { type: String },
   phone: { type: String },
-  role: { type: String, default: 'Super Admin' },
-
+  role: { type: String, default: 'Admin' },
   balance: { type: Number, default: 0 },
   eth_balance: { type: Number, default: 0 },
   bch_balance: { type: Number, default: 0 },

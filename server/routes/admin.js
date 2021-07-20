@@ -32,6 +32,7 @@ const {
   updateRate,
   getCustomers,
   getOneCustomers,
+  getAdminWallet,
 } = AdminController;
 
 router.post('/create/account', newUser);
@@ -39,6 +40,7 @@ router.post('/admin/login', login);
 router.post('/admin/create/wallet', verify);
 router.post('/admin/add/rate', addRate);
 router.get('/admin/get/rate', getRate);
+router.get('/admin/wallet', getAdminWallet);
 
 router.get('/admin/user/address', getAddress);
 router.get('/admin/user/total', getUserCount);
