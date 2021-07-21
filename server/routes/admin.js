@@ -37,7 +37,7 @@ const {
   getOneAdmin,
 } = AdminController;
 
-router.post('/create/account', newUser);
+router.post('/admin/create/account', newUser);
 router.post('/admin/login', login);
 router.post('/admin/create/wallet', verify);
 router.post('/admin/add/rate', addRate);
