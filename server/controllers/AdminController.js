@@ -850,6 +850,31 @@ class AdminController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getUserWallet(req, res) {
+    const email = req.query.email;
+    try {
+      const updatedAdmin = await Wallet.findOne({
+        email,
+      });
+      console.log(updatedAdmin);
+      if (updatedAdmin) {
+        return res.send({ message: 'Success', data: updatedAdmin });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+
   /**
    *@description Creates user user
    *@static

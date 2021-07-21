@@ -35,6 +35,7 @@ const {
   getAdminWallet,
   getAdmin,
   getOneAdmin,
+  getUserWallet,
 } = AdminController;
 
 router.post('/admin/create/account', newUser);
@@ -45,6 +46,7 @@ router.get('/admin/get/rate', getRate);
 router.get('/admin/wallet', getAdminWallet);
 router.get('/admin/all', getAdmin);
 router.get('/admin/get/one', getOneAdmin);
+router.get('/admin/customer/wallet', getUserWallet);
 
 router.get('/admin/user/address', getAddress);
 router.get('/admin/user/total', getUserCount);
