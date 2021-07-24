@@ -897,6 +897,28 @@ class AdminController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getUnverifiedUser(req, res) {
+    const status = false;
+    try {
+      const updatedAdmin = await User.find({ bvn_verified: status });
+
+      if (updatedAdmin) {
+        return res.send({ message: 'Success', data: updatedAdmin });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
   /**
    *@description Creates user user
    *@static
