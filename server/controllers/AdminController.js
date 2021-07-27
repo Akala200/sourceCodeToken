@@ -861,7 +861,7 @@ class AdminController {
   static async getOneTransaction(req, res) {
     const id = req.query.id;
     try {
-      const getTransaction = await Transaction.findOne({_id: id});
+      const getTransaction = await Transaction.findOne({ _id: id });
       console.log(getTransaction.length);
       if (getTransaction) {
         return res.send({ message: 'Success', data: getTransaction });
