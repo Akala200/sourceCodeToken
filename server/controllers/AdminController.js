@@ -828,7 +828,6 @@ class AdminController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -851,6 +850,28 @@ class AdminController {
     }
   }
 
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getOneTransaction(req, res) {
+    const id = req.query.id;
+    try {
+      const getTransaction = await Transaction.findOne({_id: id});
+      console.log(getTransaction.length);
+      if (getTransaction) {
+        return res.send({ message: 'Success', data: getTransaction });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
 
   /**
    *@description Creates a new wallet
@@ -919,7 +940,6 @@ class AdminController {
       return res.status(500).send(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
