@@ -15,6 +15,7 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 import Commission from '../models/Commission';
+import Rate from "../models/Rate";
 
 const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
