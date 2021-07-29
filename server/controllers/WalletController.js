@@ -154,14 +154,11 @@ class WalletController {
    *@memberof UsersController
    */
   static async transactionHistory(req, res) {
-    console.log('here');
     try {
       const { user, coinType } = req.query;
 
-      const transaction = await Transaction.find({ user, coinType })
-        .sort({ _id: -1 })
-        .limit(10);
-
+      const transaction = await Transaction.find({ user, coinType });
+      console.log(transaction);
       if (!transaction) {
         return res
           .status(404)
