@@ -284,7 +284,6 @@ class WalletController {
       await account
         .getBalance(coin_type)
         .then((balances) => {
-          console.log(wallet);
           Wallet.findOneAndUpdate(
             { email },
             { balance: balances },
