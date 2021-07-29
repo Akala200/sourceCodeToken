@@ -286,13 +286,13 @@ class WalletController {
       await account
         .getBalance(coin_type)
         .then((balances) => {
+          console.log(wallet);
           Wallet.findOneAndUpdate(
             { email },
             { balance: balances },
             { new: true }
           )
             .then((wallet) => {
-              console.log(wallet);
               if (balances === 0) {
                 const dataAge = 0.0;
                 console.log(dataAge);
@@ -655,10 +655,11 @@ class WalletController {
     try {
       const { amount, coin_type } = req.query;
       const getRate = await Rate.findOne({});
+      console.log(getRate);
       const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount, 'realamount');
+      console.log(percent, 'percent');
       console.log(discount, 'discount amount');
 
       const requestOptions = {
