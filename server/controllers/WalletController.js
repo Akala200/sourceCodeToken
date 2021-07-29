@@ -185,8 +185,10 @@ class WalletController {
     console.log('here');
     try {
       const { email } = req.query;
+      console.log(email);
 
       const wallet = await Wallet.findOne({ email });
+      console.log(wallet);
       if (!wallet) {
         return res
           .status(404)
