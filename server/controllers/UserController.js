@@ -905,6 +905,7 @@ class UserController {
       phone: user.phone,
       email: user.email,
       id: user._id,
+      bvn_status: user.bvn_verified,
       token,
     };
 
