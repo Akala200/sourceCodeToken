@@ -992,9 +992,9 @@ class UserController {
       first_name,
       last_name,
       middle_name,
-      bank_code,
+      account_bank,
       bvn,
-      email
+      email,
     } = req.body;
     try {
       const headers = {
@@ -1008,7 +1008,7 @@ class UserController {
           {
             bvn,
             account_number,
-            bank_code,
+            account_bank,
             first_name,
             last_name,
             middle_name,
@@ -1025,6 +1025,7 @@ class UserController {
           const uObject = {
             accountName: `${user.first_name} + ${user.last_name}`,
             accountNumber: account_number,
+            account_bank,
             email,
           };
 
