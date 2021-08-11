@@ -7,7 +7,6 @@
 /* eslint-disable require-jsdoc */
 import bcrypt from 'bcrypt';
 import randomstring from 'randomstring';
-import t from 'typy'; // ES6 style import
 import { sign, verify } from 'jsonwebtoken';
 import User from '../models/Users';
 import Token from '../models/Token';
@@ -22,7 +21,7 @@ const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
 const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
-const cw = require("crypto-wallets");
+const cw = require('crypto-wallets');
 
 const { MyWallet } = require('blockchain.info');
 
@@ -111,7 +110,6 @@ class UserController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -122,36 +120,31 @@ class UserController {
    */
   static async confirmPassword(req, res) {
     const { code } = req.body;
-  try {
-    const tokenUser = await TokenUsed.findOne({ token: code });
+    try {
+      const tokenUser = await TokenUsed.findOne({ token: code });
 
-    if (!tokenUser) {
-      return res.status(404).json(responses.error(404, 'Invalid Code'));
-    }
+      if (!tokenUser) {
+        return res.status(404).json(responses.error(404, 'Invalid Code'));
+      }
 
-    // Find a user from token
-    User.findOne({ email: tokenUser.oldEmail })
-      .then((user) => {
+      // Find a user from token
+      User.findOne({ email: tokenUser.oldEmail }).then((user) => {
         // Save the new password
 
         user.password = req.body.password;
-        user
-          .save((err) => {
-            if (err) {
-              return res
-                .status(500)
-                .send({ msg: 'Error in saving the password' });
-            }
-            return res.send({ message: 'Success', data: 'Password changed' });
-          })
-      })
-  } catch (error) {
-    return res
-                .status(500)
-                .send({ msg: 'Error in saving the password' });
+        user.save((err) => {
+          if (err) {
+            return res
+              .status(500)
+              .send({ msg: 'Error in saving the password' });
+          }
+          return res.send({ message: 'Success', data: 'Password changed' });
+        });
+      });
+    } catch (error) {
+      return res.status(500).send({ msg: 'Error in saving the password' });
+    }
   }
-  }
-
 
   /**
    *@description Creates a new wallet
@@ -172,7 +165,6 @@ class UserController {
       return res.send({ message: 'Success', data: 'Valid Code' });
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -263,18 +255,16 @@ class UserController {
             if (tokenRegistration) {
               return res
                 .status(201)
-                .json(responses.success(201, "Email sent successfully"));
+                .json(responses.success(201, 'Email sent successfully'));
             } else {
               return res
                 .status(500)
-                .json(responses.success(500, "Email not sent"));
+                .json(responses.success(500, 'Email not sent'));
             }
           })
           .catch((error) => {
             console.log(error);
-            return res
-              .status(500)
-              .json(responses.success(500, error));
+            return res.status(500).json(responses.success(500, error));
           });
       }
     } catch (error) {
@@ -306,7 +296,6 @@ class UserController {
       if (user === email) {
         return res.status(400).json(responses.error(400, 'User already exist'));
       }
-
 
       const code = randomstring.generate({
         length: 5,
@@ -357,7 +346,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=XRP,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=ETH&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -397,7 +386,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,USDT,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=XRP&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -437,7 +426,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,XRP,BTC,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=USDT&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -477,7 +466,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC,ADA,BSV,USDC,EOS,XMR,WBTC,TRX&interval=1d,30d&convert=BTC&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -516,7 +505,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=NGN&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -554,7 +543,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/ticker?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
+          'https://api.nomics.com/v1/currencies/ticker?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT,LINK,BCH,BNB,DOT,LTC&interval=1d,30d&convert=USD&per-page=100&page=1'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -595,7 +584,7 @@ class UserController {
       axios
         .get(
           // eslint-disable-next-line max-len
-          'https://api.nomics.com/v1/currencies/sparkline?key=2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3&ids=BTC,ETH,XRP,USDT&start=2020-01-01T00%3A00%3A00Z'
+          'https://api.nomics.com/v1/currencies/sparkline?key=fed5d93eaee5ca50e9b9e204626df97aa02a2dba&ids=BTC,ETH,XRP,USDT&start=2021-01-01T00%3A00%3A00Z'
         )
         .then((response) => {
           const dataGotten = response.data;
@@ -627,15 +616,15 @@ class UserController {
     console.log('here');
     try {
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
-          start: "1",
-          limit: "1",
-          convert: "NGN",
+          start: '1',
+          limit: '1',
+          convert: 'NGN',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3",
+          'X-CMC_PRO_API_KEY': '2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3',
         },
         json: true,
         gzip: true,
@@ -668,8 +657,7 @@ class UserController {
     try {
       const requestOptions = {
         method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
           start: '1',
           limit: '6',
@@ -738,7 +726,7 @@ class UserController {
    */
   static async getAddress(req, res) {
     try {
-      const { email } = req.query;
+      const { email, coin_type } = req.query;
 
       const updatedUser = await User.findOne({ email }).select([
         '-password',
@@ -746,9 +734,19 @@ class UserController {
         '-guid',
       ]);
       if (updatedUser) {
-        return res
-          .status(200)
-          .json(responses.success(200, updatedUser.address));
+        if (coin_type === 'BTC') {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.address));
+        } else if (coin_type === 'ETH') {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.eth_address));
+        } else {
+          return res
+            .status(200)
+            .json(responses.success(200, updatedUser.bch_address));
+        }
       } else {
         return res.send({ message: 'Failed' });
       }
@@ -830,8 +828,7 @@ class UserController {
     try {
       const requestOptions = {
         method: 'GET',
-        uri:
-          'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+        uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
         qs: {
           start: '1',
           limit: '10',
@@ -908,6 +905,7 @@ class UserController {
       phone: user.phone,
       email: user.email,
       id: user._id,
+      bvn_status: user.bvn_verified,
       token,
     };
 
@@ -933,7 +931,6 @@ class UserController {
     if (!tokenUser) {
       return res.status(404).json(responses.error(404, 'Invalid Code'));
     }
-
 
     // const user = await User.findOne({ email: tokenUser.oldEmail });
     const remail = tokenUser.newEmail;
@@ -987,6 +984,74 @@ class UserController {
     );
   }
 
+  static async completeSetUp(req, res) {
+    console.log('here');
+    const {
+      account_number,
+      first_name,
+      last_name,
+      middle_name,
+      bank_code,
+      bvn,
+    } = req.body;
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer sk_test_32673719a34917f018d7b138ca9b5d8a4dec135b',
+      };
+      axios
+        .post(
+          'https://api.paystack.co/bvn/match',
+          {
+            bvn,
+            account_number,
+            bank_code,
+            first_name,
+            last_name,
+            middle_name,
+          },
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          return res.json(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data, 'Here');
+          return res.status(500).json(err.response.data);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  static async getBankCode(req, res) {
+    try {
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization:
+          'Bearer sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8',
+      };
+      axios
+        .get('https://api.paystack.co/bank', {
+          headers,
+        })
+        .then((response) => {
+          console.log(response.data);
+          return res.json(response.data);
+        })
+        .catch((err) => {
+          console.log(err.response.data, 'Here');
+          return res.status(500).json(err.response.data);
+        });
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
   /**
    *@description Creates user user
    *@static
@@ -999,8 +1064,7 @@ class UserController {
   static async verify(req, res) {
     const { code } = req.body;
     let tokenUser;
-    let saveChanges;
-    let user;
+
     try {
       tokenUser = await Token.findOne({ token: code });
     } catch (error) {
@@ -1047,23 +1111,38 @@ class UserController {
       if (user) {
         try {
           const privateKey = CryptoAccount.newPrivateKey();
+
+          const ethWallet = cw.generateWallet('ETH');
+          const bcash = cw.generateWallet('BCH');
+
+          const data1 = {
+            id: ethWallet.privateKey,
+          };
+          const data2 = {
+            id: bcash.privateKey,
+          };
+
+          const data3 = {
+            id: privateKey,
+          };
+
+          const eth_tempt = await signToken(data1);
+          const bch_tempt = await signToken(data2);
+          const tempt = await signToken(data3);
           const account = new CryptoAccount(privateKey);
           account
             .address('BTC')
             .then((rep) => {
               const address = rep;
-              const tempt = privateKey;
-              const ethWallet = cw.generateWallet("ETH");
-              const dodgeWallet = cw.generateWallet("BCH");
 
 
               const userNew = {
                 address,
                 tempt,
                 eth_address: ethWallet.address,
-                eth_tempt: ethWallet.privateKey,
-                bch_address: dodgeWallet.address,
-                bch_tempt: dodgeWallet.privateKey,
+                eth_tempt,
+                bch_address: bcash.address,
+                bch_tempt,
                 guid: code,
                 regstatus: true,
               };
@@ -1087,7 +1166,6 @@ class UserController {
             .catch((error) => {
               console.log(error);
             });
-
 
           try {
             const willet = await Wallet.create(walletData);
@@ -1114,6 +1192,80 @@ class UserController {
           .status(404)
           .json(
             responses.error(404, 'Account verification Failed, Invalid token')
+          );
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(responses.error(500, error));
+    }
+
+    // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
+  }
+
+  /**
+   *@description Creates user user
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof userController
+   */
+
+  static async createOtherWallet(req, res) {
+    const { email } = req.body;
+
+
+    try {
+      const user = await User.findOne({ email });
+      //  Generate Token
+
+      if (user && !user.eth_address) {
+        try {
+          const ethWallet = cw.generateWallet('ETH');
+          const bcash = cw.generateWallet('BCH');
+
+          const data1 = {
+            id: ethWallet.privateKey,
+          };
+          const data2 = {
+            id: bcash.privateKey,
+          };
+
+          const eth_tempt = await signToken(data1);
+          const bch_tempt = await signToken(data2);
+
+          const userNew = {
+            eth_address: ethWallet.address,
+            eth_tempt,
+            bch_address: bcash.address,
+            bch_tempt,
+          };
+
+          User.findOneAndUpdate(
+            { email },
+            userNew,
+            {
+              new: true,
+            },
+            (err, doc) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json(responses.error(500, err));
+              }
+              res
+                .status(200)
+                .json(responses.success(200, 'Accounts Created successfully'));
+            }
+          );
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json(responses.error(500, error));
+        }
+      } else {
+        return res
+          .status(404)
+          .json(
+            responses.error(404, 'Account Already created')
           );
       }
     } catch (error) {

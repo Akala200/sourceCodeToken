@@ -29,6 +29,9 @@ const {
   forgetPassword,
   confirmPassword,
   checkCode,
+  completeSetUp,
+  getBankCode,
+  createOtherWallet,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -36,6 +39,8 @@ router.post('/login', login);
 router.post('/verify', verify);
 router.get('/lists', getlist);
 router.get('/mobile', bitcoinMobile);
+router.get('/get/bank', getBankCode);
+
 router.get('/coin/history', bitcoinMobileNgn);
 router.get('/coin/history/usd', bitcoinMobileUsd);
 router.get('/coin/market/btc', bitcoinMobileMarketBTC);
@@ -46,6 +51,8 @@ router.get('/user/address', getAddress);
 router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
 router.post('/update/web', changeEmail);
+router.post('/complete/account', completeSetUp);
+router.post('/create/other/wallet', createOtherWallet);
 
 router.post('/verify/new/email', verifyNew);
 router.get('/data', betokened);

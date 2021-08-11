@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable camelcase */
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
@@ -13,6 +15,7 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 import Commission from '../models/Commission';
+import Rate from '../models/Rate';
 
 const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
@@ -25,7 +28,6 @@ const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
 const axios = require('axios').default;
 const crypto = require('crypto');
 const CryptoAccount = require('send-crypto');
-
 
 /**
  * @description Defines the actions to for the users endpoints
@@ -41,7 +43,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async initiate(req, res) {
-    const currency = "NGN";
+    const currency = 'NGN';
     const { email, amount, bitcoin } = req.body;
     try {
       const user = await User.findOne({
@@ -50,13 +52,13 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(401, "Sorry, this user does not exist"));
+          .json(responses.error(401, 'Sorry, this user does not exist'));
       } else {
         const data = {
           amount: amount * 100,
           currency,
           email: user.email,
-          channel: "card",
+          channel: 'card',
           metadata: {
             email: user.email,
             coin: bitcoin,
@@ -64,7 +66,7 @@ class WalletController {
         };
 
         axios
-          .post("https://api.paystack.co/transaction/initialize", data, {
+          .post('https://api.paystack.co/transaction/initialize', data, {
             headers: {
               Authorization: `Bearer ${token}`, // the token is a variable which holds the token
             },
@@ -92,26 +94,26 @@ class WalletController {
    *@memberof UsersController
    */
   static async allWallet(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       const { email } = req.query;
       const wallet = await Wallet.find({ email }).limit(5);
       if (!wallet) {
         return res
           .status(404)
-          .json(responses.error(404, "Wallet does not exist"));
+          .json(responses.error(404, 'Wallet does not exist'));
       }
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: wallet.balance,
-          id: "1",
-          convert: "NGN",
+          id: '1',
+          convert: 'NGN',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -121,8 +123,8 @@ class WalletController {
         .then((response) => {
           if (response) {
             console.log(response);
-            const result = wallet.map((wall) => ({
-              currency: "BTC",
+            const result = wallet.map(wall => ({
+              currency: 'BTC',
               price: wall.balance,
               priceCurrency: response.data.quote.NGN,
             }));
@@ -131,8 +133,8 @@ class WalletController {
         })
         .catch((err) => {
           console.log(err.body);
-          const result = wallet.map((wall) => ({
-            currency: "BTC",
+          const result = wallet.map(wall => ({
+            currency: 'BTC',
             price: wall.balance,
             priceCurrency: 0,
           }));
@@ -152,18 +154,15 @@ class WalletController {
    *@memberof UsersController
    */
   static async transactionHistory(req, res) {
-    console.log("here");
     try {
-      const { user } = req.query;
+      const { user, coinType } = req.query;
 
-      const transaction = await Transaction.find({ user: user })
-        .sort({ _id: -1 })
-        .limit(10);
-
+      const transaction = await Transaction.find({ user, coinType });
+      console.log(transaction);
       if (!transaction) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
       return res.json(transaction);
@@ -180,11 +179,39 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async getWallet(req, res) {
+    console.log('here');
+    try {
+      const { email } = req.query;
+      console.log(email);
+
+      const wallet = await Wallet.findOne({ email });
+      console.log(wallet);
+      if (!wallet) {
+        return res
+          .status(404)
+          .json(responses.error(404, 'User does not exist'));
+      }
+
+      return res.json(wallet);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async createTest(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       walleted.getBalance().then((response) => {
-        console.log("My balance is %d!", response.balance);
+        console.log('My balance is %d!', response.balance);
       });
 
       if (!balance) {
@@ -206,18 +233,18 @@ class WalletController {
    *@memberof UsersController
    */
   static async transactionHistoryAll(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       const { user } = req.query;
 
-      const transaction = await Transaction.find({ user: user }).sort({
+      const transaction = await Transaction.find({ user }).sort({
         _id: -1,
       });
 
       if (!transaction) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
       return res.json(transaction);
@@ -225,6 +252,7 @@ class WalletController {
       tracelogger(error);
     }
   }
+
   /**
    *@description Creates a new wallet
    *@static
@@ -242,7 +270,14 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'Wallet does not exist'));
+      }
+
+      if (coin_type === 'DOGE' || coin_type === 'LIT') {
+        const dataAge = 0.0;
+        console.log(dataAge);
+        console.log(dataAge);
+        return res.status(200).json(responses.success(200, dataAge));
       }
       const privateKey = user.tempt;
       const account = new CryptoAccount(privateKey);
@@ -250,12 +285,11 @@ class WalletController {
         .getBalance(coin_type)
         .then((balances) => {
           Wallet.findOneAndUpdate(
-            { email: email },
+            { email },
             { balance: balances },
             { new: true }
           )
             .then((wallet) => {
-              console.log(wallet);
               if (balances === 0) {
                 const dataAge = 0.0;
                 console.log(dataAge);
@@ -317,7 +351,7 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
       const privateKey = user.eth_tempt;
       const account = new CryptoAccount(privateKey);
@@ -325,7 +359,7 @@ class WalletController {
         .getBalance(coin_type)
         .then((balances) => {
           Wallet.findOneAndUpdate(
-            { email: email },
+            { email },
             { eth_balance: balances },
             { new: true }
           )
@@ -373,9 +407,7 @@ class WalletController {
     }
   }
 
-
-
-    /**
+  /**
    *@description Creates a new wallet
    *@static
    *@param  {Object} req - request
@@ -383,7 +415,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async balancebch(req, res) {
+  static async balanceDoge(req, res) {
     try {
       const { email, coin_type } = req.query;
       let response;
@@ -392,7 +424,7 @@ class WalletController {
       if (!user) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
       const privateKey = user.dodge_tempt;
       const account = new CryptoAccount(privateKey);
@@ -400,7 +432,7 @@ class WalletController {
         .getBalance(coin_type)
         .then((balances) => {
           Wallet.findOneAndUpdate(
-            { email: email },
+            { email },
             { eth_balance: balances },
             { new: true }
           )
@@ -448,7 +480,6 @@ class WalletController {
     }
   }
 
-  
   /**
    *@description Creates a new wallet
    *@static
@@ -478,14 +509,14 @@ class WalletController {
    */
   static async nairaBalance(req, res) {
     try {
-      const { email } = req.query;
+      const { email, coinType } = req.query;
 
       const balance = await Wallet.findOne({ email });
 
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'Wallet does not exist'));
       }
       let dataBalance;
 
@@ -494,30 +525,26 @@ class WalletController {
         return res.status(200).json(responses.success(200, dataBalance));
       }
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.balance,
-          symbol: "BTC",
-          convert: "NGN",
+          symbol: coinType,
+          convert: 'USD',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then((response) =>
-        res.status(200).json(200, response.data.quote.NGN)
-      );
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD));
     } catch (error) {
       tracelogger(error);
     }
   }
-
-
 
   /**
    *@description Creates a new wallet
@@ -536,7 +563,7 @@ class WalletController {
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
       let dataBalance;
 
@@ -545,32 +572,26 @@ class WalletController {
         return res.status(200).json(responses.success(200, dataBalance));
       }
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.eth_balance,
-          symbol: "ETH",
-          convert: "NGN",
+          symbol: 'ETH',
+          convert: 'NGN',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then((response) =>
-        res.status(200).json(200, response.data.quote.NGN)
-      );
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
     } catch (error) {
       tracelogger(error);
     }
   }
-
-
-
-
 
   /**
    *@description Creates a new wallet
@@ -580,7 +601,7 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async nairaBalancebch(req, res) {
+  static async nairaBalanceDOGE(req, res) {
     try {
       const { email } = req.query;
 
@@ -589,7 +610,7 @@ class WalletController {
       if (!balance) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
       let dataBalance;
 
@@ -598,30 +619,26 @@ class WalletController {
         return res.status(200).json(responses.success(200, dataBalance));
       }
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: balance.dodge_balance,
-          symbol: "BCH",
-          convert: "NGN",
+          symbol: 'DOGE',
+          convert: 'NGN',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then((response) =>
-        res.status(200).json(200, response.data.quote.NGN)
-      );
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
     } catch (error) {
       tracelogger(error);
     }
   }
-
-
 
   /**
    *@description Creates a new wallet
@@ -634,55 +651,84 @@ class WalletController {
   static async convert(req, res) {
     try {
       const { amount, coin_type } = req.query;
-
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      console.log(getRate);
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
-      const realAmount = amount - discount - 800;
-      console.log(realAmount, "aftersub");
-      console.log(discount, "discount amount");
+      const realAmount = amount - discount;
+      console.log(percent, 'percent');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
+          id: '2781',
           convert: coin_type,
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
       };
 
-      if(coin_type == 'BTC') {
-         rp(requestOptions).then((response) => {
-           const dataRes = {
-             price: response.data.quote.BTC.price,
-             amountAfterFee: realAmount,
-             fee: discount,
-           };
-           res.json(dataRes);
-         });
-      } else if(coin_type == 'ETH') {
-         rp(requestOptions).then((response) => {
-           const dataRes = {
-             price: response.data.quote.ETH.price,
-             amountAfterFee: realAmount,
-             fee: discount,
-           };
-           res.json(dataRes);
-         });
+      if (coin_type == 'BTC') {
+        rp(requestOptions).then((response) => {
+          console.log(response);
+          const dataRes = {
+            price: response.data.quote.BTC.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'ETH') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.ETH.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'BCH') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.BCH.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'LIT') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.LIT.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'ZEC') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.ZEC.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
       } else {
-         rp(requestOptions).then((response) => {
-           const dataRes = {
-             price: response.data.quote.BCH.price,
-             amountAfterFee: realAmount,
-             fee: discount,
-           };
-           res.json(dataRes);
-         });
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.DOGE.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
       }
     } catch (error) {
       tracelogger(error);
@@ -701,20 +747,21 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 1;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "BTC",
+          id: '2781',
+          convert: 'BTC',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -745,20 +792,21 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 2;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.npm.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "ETH",
+          id: '2781',
+          convert: 'ETH',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -786,24 +834,25 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async convertTransferDodge(req, res) {
+  static async convertTransferBCH(req, res) {
     try {
       const { amount } = req.query;
 
-      const percent = 2;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount - 800;
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "BCH",
+          id: '2781',
+          convert: 'BCH',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -812,7 +861,7 @@ class WalletController {
       rp(requestOptions).then((response) => {
         console.log(response.data.quote);
         const dataRes = {
-          price: response.data.quote.bch.price,
+          price: response.data.quote.DOGE.price,
           amountAfterFee: realAmount,
           fee: discount,
         };
@@ -835,22 +884,23 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount, "aftersub");
-      console.log(discount, "discount amount");
+      console.log(realAmount, 'aftersub');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "BTC",
+          id: '2781',
+          convert: 'BTC',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -881,22 +931,23 @@ class WalletController {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount, "aftersub");
-      console.log(discount, "discount amount");
+      console.log(realAmount, 'aftersub');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "ETH",
+          id: '2781',
+          convert: 'ETH',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -923,26 +974,27 @@ class WalletController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
-  static async convertSalebch(req, res) {
+  static async convertSaleDOGE(req, res) {
     try {
       const { amount } = req.query;
 
-      const percent = 10;
+      const getRate = await Rate.findOne({});
+      const percent = getRate.variable_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
-      console.log(realAmount, "aftersub");
-      console.log(discount, "discount amount");
+      console.log(realAmount, 'aftersub');
+      console.log(discount, 'discount amount');
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount: realAmount,
-          id: "2819",
-          convert: "BCH",
+          id: '2781',
+          convert: 'DOGE',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -958,7 +1010,7 @@ class WalletController {
           };
           res.json(dataRes);
         })
-        .catch((err) => res.status(500).json(responses.error(500, err)));
+        .catch(err => res.status(500).json(responses.error(500, err)));
     } catch (error) {
       tracelogger(error);
     }
@@ -977,15 +1029,15 @@ class WalletController {
       const { amount } = req.query;
 
       const requestOptions = {
-        method: "GET",
-        uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+        method: 'GET',
+        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
         qs: {
           amount,
-          id: "2819",
-          convert: "BTC",
+          id: '2781',
+          convert: 'BTC',
         },
         headers: {
-          "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
         },
         json: true,
         gzip: true,
@@ -1012,7 +1064,7 @@ class WalletController {
    */
   static async getBank(req, res) {
     axios
-      .get("https://api.paystack.co/bank", {
+      .get('https://api.paystack.co/bank', {
         headers: {
           Authorization: `Bearer ${token}`, // the token is a variable which holds the token
         },
@@ -1034,7 +1086,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async getUserBank(req, res) {
-    console.log("here");
+    console.log('here');
     try {
       const { email } = req.query;
 
@@ -1043,7 +1095,7 @@ class WalletController {
       if (!datails) {
         return res
           .status(404)
-          .json(responses.error(404, "User does not exist"));
+          .json(responses.error(404, 'User does not exist'));
       }
 
       return res.json(datails);
@@ -1061,18 +1113,20 @@ class WalletController {
    *@memberof UsersController
    */
   static async addBank(req, res) {
-    const { accountNumber, accountName, code, email } = req.body;
+    const {
+      accountNumber, accountName, code, email
+    } = req.body;
     const data = {
-      type: "nuban",
+      type: 'nuban',
       name: accountName,
       account_number: accountNumber,
       bank_code: code,
-      currency: "NGN",
+      currency: 'NGN',
     };
 
     function saveBank(id1) {
       axios
-        .post("https://api.paystack.co/transferrecipient", data, {
+        .post('https://api.paystack.co/transferrecipient', data, {
           headers: {
             Authorization: `Bearer ${token}`, // the token is a variable which holds the token
           },
@@ -1141,34 +1195,34 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log(walletBalance.balance, "result");
+      console.log(walletBalance.balance, 'result');
 
-      console.log(walletBalance.balance, "result");
+      console.log(walletBalance.balance, 'result');
 
       const transactionObject = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Transfer",
+        type: 'debit',
+        mode: 'Transfer',
         to: address,
         user: user._id,
         coinType: coin_type,
         email: user.email,
         walletId: user._id,
-        status: "successful",
+        status: 'successful',
       };
 
       const transactionObjectF = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Transfer",
+        type: 'debit',
+        mode: 'Transfer',
         to: address,
         coinType: coin_type,
         user: user._id,
         email: user.email,
         walletId: user._id,
-        status: "failed",
+        status: 'failed',
       };
 
       const refinedBitcoin = flatAmount.toFixed(6);
@@ -1178,28 +1232,28 @@ class WalletController {
       console.log(newStuff);
       const account = new CryptoAccount(user.tempt);
       account
-        .sendSats(address, newStuff, "BTC")
+        .sendSats(address, newStuff, 'BTC')
         .then((rep) => {
-          console.log(rep, "result");
+          console.log(rep, 'result');
           Transaction.create(transactionObject)
             .then((respp) => {
-              console.log(respp, "created");
-              //Send transaction fee no
+              console.log(respp, 'created');
+              // Send transaction fee no
 
-              return res.status(200).json("Transaction sent");
+              return res.status(200).json('Transaction sent');
             })
-            .catch((err) => res.status(500).json(err));
+            .catch(err => res.status(500).json(err));
         })
         .catch((error) => {
           console.log(error);
           Transaction.create(transactionObjectF)
             .then((respp) => {
               console.log(respp);
-              return res.status(500).json("Insufficient balance");
+              return res.status(500).json('Insufficient balance');
             })
             .catch((err) => {
               console.log(err);
-              res.status(500).json("Insufficient balance");
+              res.status(500).json('Insufficient balance');
             });
         });
     } catch (error) {
@@ -1231,34 +1285,34 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log(walletBalance.balance, "result");
+      console.log(walletBalance.balance, 'result');
 
-      console.log(walletBalance.balance, "result");
+      console.log(walletBalance.balance, 'result');
 
       const transactionObject = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Transfer",
+        type: 'debit',
+        mode: 'Transfer',
         to: address,
         coinType: coin_type,
         user: user._id,
         email: user.email,
         walletId: user._id,
-        status: "successful",
+        status: 'successful',
       };
 
       const transactionObjectF = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Transfer",
+        type: 'debit',
+        mode: 'Transfer',
         to: address,
         user: user._id,
         coinType: coin_type,
         email: user.email,
         walletId: user._id,
-        status: "failed",
+        status: 'failed',
       };
 
       const refinedBitcoin = flatAmount.toFixed(6);
@@ -1268,28 +1322,28 @@ class WalletController {
       console.log(newStuff);
       const account = new CryptoAccount(user.eth_tempt);
       account
-        .sendSats(address, newStuff, "ETH")
+        .sendSats(address, newStuff, 'ETH')
         .then((rep) => {
-          console.log(rep, "result");
+          console.log(rep, 'result');
           Transaction.create(transactionObject)
             .then((respp) => {
-              console.log(respp, "created");
-              //Send transaction fee no
+              console.log(respp, 'created');
+              // Send transaction fee no
 
-              return res.status(200).json("Transaction sent");
+              return res.status(200).json('Transaction sent');
             })
-            .catch((err) => res.status(500).json(err));
+            .catch(err => res.status(500).json(err));
         })
         .catch((error) => {
           console.log(error);
           Transaction.create(transactionObjectF)
             .then((respp) => {
               console.log(respp);
-              return res.status(500).json("Insufficient balance");
+              return res.status(500).json('Insufficient balance');
             })
             .catch((err) => {
               console.log(err);
-              res.status(500).json("Insufficient balance");
+              res.status(500).json('Insufficient balance');
             });
         });
     } catch (error) {
@@ -1306,7 +1360,7 @@ class WalletController {
    *@memberof UsersController
    */
   /*
-  static async sendbch(req, res) {
+  static async sendDoge(req, res) {
     try {
       const { amount, fee, address, coin, wallet, bitcoin, email, flatAmount } =
         req.body;
@@ -1323,7 +1377,7 @@ class WalletController {
         type: "debit",
         mode: "Transfer",
         to: address,
-        coinType: "bch",
+        coinType: "Doge",
         user: user._id,
         email: user.email,
         walletId: user._id,
@@ -1337,7 +1391,7 @@ class WalletController {
         mode: "Transfer",
         to: address,
         user: user._id,
-        coinType: "bch",
+        coinType: "Doge",
         email: user.email,
         walletId: user._id,
         status: "failed",
@@ -1376,7 +1430,7 @@ class WalletController {
         });
     } catch (error) {
       tracelogger(error);
-    } 
+    }
   }  */
 
   /**
@@ -1407,32 +1461,32 @@ class WalletController {
         return res
           .status(400)
           .json(
-            responses.error(400, "Please link your bank account via settings")
+            responses.error(400, 'Please link your bank account via settings')
           );
       }
 
       const transactionObject = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Withdrawal",
+        type: 'debit',
+        mode: 'Withdrawal',
         coinType: coin_type,
         to: user.address,
         user: user._id,
         walletId: user._id,
-        status: "successful",
+        status: 'successful',
       };
 
       const transactionObjectF = {
         amount,
         coins: bitcoin,
-        type: "debit",
-        mode: "Withdrawal",
+        type: 'debit',
+        mode: 'Withdrawal',
         to: address,
         coinType: coin_type,
         user: user._id,
         walletId: user._id,
-        status: "Failed",
+        status: 'Failed',
       };
       const refinedBitcoin = flatAmount.toFixed(6);
       const satoshi = 100000000 * refinedBitcoin;
@@ -1440,22 +1494,22 @@ class WalletController {
       const refinedPaystackAmount = Math.ceil(amount);
       const account = new CryptoAccount(user.tempt);
       account
-        .sendSats("3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG", newStuff, coin_type)
+        .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
         .then((rep) => {
-          console.log(rep, "result");
+          console.log(rep, 'result');
           const newAmount = walletBalance.balance - flatAmount;
           Transaction.create(transactionObject)
             .then((respp) => {
               console.log(respp);
               const transferData = {
-                source: "balance",
+                source: 'balance',
                 amount: refinedPaystackAmount * 100,
                 recipient: user.bankref,
-                reason: "Selling Bitcoin",
+                reason: 'Selling Bitcoin',
               };
               console.log(transferData);
               axios
-                .post("https://api.paystack.co/transfer", transferData, {
+                .post('https://api.paystack.co/transfer', transferData, {
                   headers: {
                     Authorization: `Bearer ${token}`, // the token is a variable which holds the token
                   },
@@ -1469,15 +1523,15 @@ class WalletController {
                   res.status(200).json(err.response.data.message);
                 });
             })
-            .catch((err) => res.status(500).json(err));
+            .catch(err => res.status(500).json(err));
         })
         .catch((error) => {
           console.log(error);
           Transaction.create(transactionObjectF)
-            .then((respp) => res.status(500).json("Insufficient balance"))
+            .then(respp => res.status(500).json('Insufficient balance'))
             .catch((err) => {
               console.log(err);
-              res.status(500).json("Insufficient balance");
+              res.status(500).json('Insufficient balance');
             });
         });
     } catch (error) {
@@ -1486,16 +1540,16 @@ class WalletController {
   }
 
   static async webhook(req, res) {
-    const currency = "NGN";
-    var hash = crypto
-      .createHmac("sha512", token)
+    const currency = 'NGN';
+    const hash = crypto
+      .createHmac('sha512', token)
       .update(JSON.stringify(req.body))
-      .digest("hex");
-    if (hash == req.headers["x-paystack-signature"]) {
+      .digest('hex');
+    if (hash == req.headers['x-paystack-signature']) {
       console.log(req.body.data);
       const event = req.body;
       const { coin } = event.data.metadata;
-      const email = event.data.customer.email;
+      const { email } = event.data.customer;
 
       if (!coin) {
         res.send(200);
@@ -1509,21 +1563,21 @@ class WalletController {
         if (!user) {
           return res
             .status(404)
-            .json(responses.error(404, "Sorry, this user does not exist"));
+            .json(responses.error(404, 'Sorry, this user does not exist'));
         }
 
-        if (event.event === "charge.success") {
+        if (event.event === 'charge.success') {
           const transactionObject = {
             amount: event.data.amount / 100,
             coins: coin,
-            type: "credit",
-            mode: "Card",
+            type: 'credit',
+            mode: 'Card',
             user: user._id,
             lastFour: event.data.authorization.last4,
             cardType: event.data.authorization.card_type,
             ref: event.data.reference,
             walletId: wallet._id,
-            status: "successful",
+            status: 'successful',
           };
 
           const amountNew = coin + user.balance;
@@ -1531,8 +1585,8 @@ class WalletController {
           const refinedCoin = limited.toString();
           const priceReturned = event.data.amount / 100;
           const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=XBT&address=${user.address}`;
-          const uname = "est9nqyd6gn2r";
-          const pass = "LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4";
+          const uname = 'est9nqyd6gn2r';
+          const pass = 'LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4';
           axios
             .post(
               _url,
@@ -1555,10 +1609,10 @@ class WalletController {
                 { new: true },
                 (err, doc) => {
                   if (err) {
-                    console.log("Something wrong when updating data!");
+                    console.log('Something wrong when updating data!');
                   }
                   Transaction.create(transactionObject);
-                  return res.status(200).json("Transaction saved");
+                  return res.status(200).json('Transaction saved');
                 }
               );
             })

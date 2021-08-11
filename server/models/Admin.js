@@ -2,13 +2,11 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import { isEmail } from 'validator';
 
-
 const saltRounds = 10; // or another integer in that ballpark
 
 const { Schema } = mongoose;
 
-
-const UserSchema = new Schema(
+const AdminSchema = new Schema(
   {
     email: {
       type: String,
@@ -40,9 +38,6 @@ const UserSchema = new Schema(
     tempt: {
       type: String,
     },
-    label: {
-      type: String,
-    },
     eth_address: {
       type: String,
     },
@@ -55,32 +50,24 @@ const UserSchema = new Schema(
     bch_tempt: {
       type: String,
     },
-    bankref: {
+    role: {
       type: String,
-    },
-    bvn_verified: {
-      type: Boolean,
-      default: false,
+      default: 'Admin',
     },
     status: {
       type: Boolean,
       default: true,
-    },
-    regstatus: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }
 );
 
 // eslint-disable-next-line func-names
-UserSchema.pre('save', function (next) {
+AdminSchema.pre('save', function (next) {
   this.password = bcrypt.hashSync(this.password, saltRounds);
   next();
 });
 
+const Admin = mongoose.model('Admin', AdminSchema);
 
-const User = mongoose.model('User', UserSchema);
-
-export default User;
+export default Admin;

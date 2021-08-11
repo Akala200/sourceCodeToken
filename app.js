@@ -24,7 +24,8 @@ const mongoURL = 'mongodb+srv://coin:1234567890@cluster0.y5nwu.mongodb.net/coins
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true
 }, () => {
   process.stdout.write('connected to mongodb');
 });
