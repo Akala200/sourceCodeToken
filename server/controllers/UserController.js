@@ -1068,7 +1068,7 @@ class UserController {
                 regstatus: true,
               };
 
-              User.findOneAndUpdate(
+              User.findOneAndUpdate( 
                 { email: tokenUser.user },
                 userNew,
                 {
