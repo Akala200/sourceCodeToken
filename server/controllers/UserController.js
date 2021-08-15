@@ -999,12 +999,10 @@ class UserController {
     try {
       const headers = {
         'Content-Type': 'application/json',
-        Authorization:
-          'Bearer FLWSECK-109410c006fe8e09a4ad4dc0aff13f70-X',
       };
       axios
         .get(
-          `https://rave-api-v2.herokuapp.com/v3/kyc/bvns/${bvn}`,
+          `https://api.ravepay.co/v2/kyc/bvn/${bvn}?seckey=FLWSECK-109410c006fe8e09a4ad4dc0aff13f70-X`,
           {
             headers,
           }
