@@ -1019,19 +1019,7 @@ class UserController {
         )
         .then((response) => {
           console.log(response.data);
-
-          const user = User.findOne({ email });
-
-          const uObject = {
-            accountName: `${user.first_name} + ${user.last_name}`,
-            accountNumber: account_number,
-            account_bank,
-            email,
-          };
-
-          const createdUser = Bank.create(uObject);
-
-          if (createdUser) return res.json(response.data);
+          return res.json(response.data);
         })
         .catch((err) => {
           console.log(err.response.data, 'Here');
