@@ -1013,7 +1013,7 @@ class UserController {
         })
         .catch((err) => {
           console.log(err.response.data, 'Here');
-          return res.status(500).json(err.response.data.message);
+          return res.status(500).json(err);
         });
     } catch (error) {
       tracelogger(error);
