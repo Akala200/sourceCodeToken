@@ -1003,16 +1003,8 @@ class UserController {
           'Bearer FLWSECK-109410c006fe8e09a4ad4dc0aff13f70-X',
       };
       axios
-        .post(
+        .get(
           `https://rave-api-v2.herokuapp.com/v3/kyc/bvns/${bvn}`,
-          {
-            bvn,
-            account_number,
-            account_bank,
-            first_name,
-            last_name,
-            middle_name,
-          },
           {
             headers,
           }
