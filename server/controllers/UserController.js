@@ -998,11 +998,11 @@ class UserController {
       const headers = {
         'Content-Type': 'application/json',
         Authorization:
-          'Bearer sk_test_32673719a34917f018d7b138ca9b5d8a4dec135b',
+          'Bearer FLWSECK-109410c006fe8e09a4ad4dc0aff13f70-X',
       };
       axios
         .post(
-          'https://api.paystack.co/bvn/match',
+          `https://rave-api-v2.herokuapp.com/v3/kyc/bvns/${bvn}`,
           {
             bvn,
             account_number,
