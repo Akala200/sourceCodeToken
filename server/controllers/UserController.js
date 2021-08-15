@@ -10,6 +10,7 @@ import randomstring from 'randomstring';
 import { sign, verify } from 'jsonwebtoken';
 import User from '../models/Users';
 import Token from '../models/Token';
+import Bank from '../models/Bank';
 import TokenUsed from '../models/Regular_Token';
 import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
@@ -991,8 +992,9 @@ class UserController {
       first_name,
       last_name,
       middle_name,
-      bank_code,
+      account_bank,
       bvn,
+      email,
     } = req.body;
     try {
       const headers = {
@@ -1006,7 +1008,7 @@ class UserController {
           {
             bvn,
             account_number,
-            bank_code,
+            account_bank,
             first_name,
             last_name,
             middle_name,
@@ -1017,7 +1019,19 @@ class UserController {
         )
         .then((response) => {
           console.log(response.data);
-          return res.json(response.data);
+
+          const user = User.findOne({ email });
+
+          const uObject = {
+            accountName: `${user.first_name} + ${user.last_name}`,
+            accountNumber: account_number,
+            account_bank,
+            email,
+          };
+
+          const createdUser = Bank.create(uObject);
+
+          if (createdUser) return res.json(response.data);
         })
         .catch((err) => {
           console.log(err.response.data, 'Here');
@@ -1098,6 +1112,7 @@ class UserController {
         phone: user.phone,
         email: user.email,
         id: user._id,
+        bvn_status: user.bvn_verified,
         tokenize,
       };
 

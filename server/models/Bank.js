@@ -6,6 +6,7 @@ const BankSchema = new Schema({
   accountName: { type: String },
   accountNumber: { type: String },
   email: { type: String },
+  account_bank: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 
