@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+/* eslint-disable max-len */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-shadow */
 /* eslint-disable no-console */
@@ -989,32 +991,37 @@ class UserController {
     console.log('here');
     const {
       account_number,
-      first_name,
-      last_name,
-      middle_name,
+      account_name,
       account_bank,
       bvn,
       email,
     } = req.body;
     try {
-      const headers = {
-        'Content-Type': 'application/json',
+      const user = await User.findOne({ email });
+
+      const data = {
+        accountNumber: account_number,
+        accountName: account_name,
+        account_bank,
+        id: user._id,
       };
-      axios
-        .get(
-          `https://api.ravepay.co/v2/kyc/bvn/${bvn}?seckey=FLWSECK-109410c006fe8e09a4ad4dc0aff13f70-X`,
-          {
-            headers,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-          return res.json(response.data);
-        })
-        .catch((err) => {
-          console.log(err.response.data, 'Here');
-          return res.status(500).json(err);
-        });
+
+      const bank = await Bank.create(data);
+      if (bank) {
+        res
+          .status(200)
+          .json(
+            responses.success(
+              200,
+              'Account added successfully',
+              bank
+            )
+          );
+      } else {
+        return res
+          .status(500)
+          .json(responses.error(500, 'Server error'));
+      }
     } catch (error) {
       tracelogger(error);
     }
@@ -1022,23 +1029,7 @@ class UserController {
 
   static async getBankCode(req, res) {
     try {
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization:
-          'Bearer sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8',
-      };
-      axios
-        .get('https://api.paystack.co/bank', {
-          headers,
-        })
-        .then((response) => {
-          console.log(response.data);
-          return res.json(response.data);
-        })
-        .catch((err) => {
-          console.log(err.response.data, 'Here');
-          return res.status(500).json(err.response.data);
-        });
+
     } catch (error) {
       tracelogger(error);
     }
@@ -1140,7 +1131,7 @@ class UserController {
                 regstatus: true,
               };
 
-              User.findOneAndUpdate( 
+              User.findOneAndUpdate(
                 { email: tokenUser.user },
                 userNew,
                 {

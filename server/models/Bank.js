@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const BankSchema = new Schema({
   accountName: { type: String },
   accountNumber: { type: String },
-  email: { type: String },
+  id: { type: String },
   account_bank: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
