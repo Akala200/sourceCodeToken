@@ -1008,15 +1008,13 @@ class UserController {
 
       const bank = await Bank.create(data);
       if (bank) {
-        res
-          .status(200)
-          .json(
-            responses.success(
-              200,
-              'Account added successfully',
-              bank
-            )
-          );
+        user.bvn_verified = true;
+        user.save().then((resp) => {
+          console.log(resp);
+          res
+            .status(200)
+            .json(responses.success(200, 'Account added successfully', bank));
+        }).catch(err => res.status(500).json(responses.error(500, 'Server error', err)));
       } else {
         return res
           .status(500)
