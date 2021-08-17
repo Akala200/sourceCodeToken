@@ -15,11 +15,14 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 import Commission from '../models/Commission';
+import WalletWallet from '../models/Withdraw';
+
 import Rate from '../models/Rate';
 
 const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
 const bitcoinTransaction = require('bitcoin-transaction');
+const convert = require('ether-converter');
 
 const token = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
 // const token = 'sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e';
@@ -702,24 +705,6 @@ class WalletController {
           };
           res.json(dataRes);
         });
-      } else if (coin_type == 'LIT') {
-        rp(requestOptions).then((response) => {
-          const dataRes = {
-            price: response.data.quote.LIT.price,
-            amountAfterFee: realAmount,
-            fee: discount,
-          };
-          res.json(dataRes);
-        });
-      } else if (coin_type == 'ZEC') {
-        rp(requestOptions).then((response) => {
-          const dataRes = {
-            price: response.data.quote.ZEC.price,
-            amountAfterFee: realAmount,
-            fee: discount,
-          };
-          res.json(dataRes);
-        });
       } else {
         rp(requestOptions).then((response) => {
           const dataRes = {
@@ -1195,9 +1180,7 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
-      console.log(walletBalance.balance, 'result');
 
-      console.log(walletBalance.balance, 'result');
 
       const transactionObject = {
         amount,
@@ -1445,10 +1428,8 @@ class WalletController {
     try {
       const {
         amount,
-        fee,
         address,
         coin_type,
-        wallet,
         bitcoin,
         email,
         flatAmount,
@@ -1456,6 +1437,7 @@ class WalletController {
 
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
+      const bank = await Bank.findOne({ id: user._id });
 
       if (!user.bankref) {
         return res
@@ -1467,73 +1449,108 @@ class WalletController {
 
       const transactionObject = {
         amount,
-        coins: bitcoin,
-        type: 'debit',
-        mode: 'Withdrawal',
-        coinType: coin_type,
-        to: user.address,
+        coin_value: bitcoin,
+        fullName: bank.accountName,
+        phone: user.phone,
+        email: user.email,
+        coin_type,
+        account_bank: bank.account_bank,
+        account_number: bank.accountNumber,
         user: user._id,
-        walletId: user._id,
-        status: 'successful',
+        status: 'Pending',
       };
 
       const transactionObjectF = {
         amount,
-        coins: bitcoin,
-        type: 'debit',
-        mode: 'Withdrawal',
-        to: address,
-        coinType: coin_type,
+        coin_value: bitcoin,
+        fullName: bank.accountName,
+        phone: user.phone,
+        email: user.email,
+        coin_type,
+        account_bank: bank.account_bank,
+        account_number: bank.accountNumber,
         user: user._id,
-        walletId: user._id,
         status: 'Failed',
       };
       const refinedBitcoin = flatAmount.toFixed(6);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
       const refinedPaystackAmount = Math.ceil(amount);
-      const account = new CryptoAccount(user.tempt);
-      account
-        .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
-        .then((rep) => {
-          console.log(rep, 'result');
-          const newAmount = walletBalance.balance - flatAmount;
-          Transaction.create(transactionObject)
-            .then((respp) => {
-              console.log(respp);
-              const transferData = {
-                source: 'balance',
-                amount: refinedPaystackAmount * 100,
-                recipient: user.bankref,
-                reason: 'Selling Bitcoin',
-              };
-              console.log(transferData);
-              axios
-                .post('https://api.paystack.co/transfer', transferData, {
-                  headers: {
-                    Authorization: `Bearer ${token}`, // the token is a variable which holds the token
-                  },
-                })
-                .then((response) => {
-                  console.log(response.data);
-                  return res.status(200).json(response.data);
-                })
-                .catch((err) => {
-                  console.log(err.response.data);
-                  res.status(200).json(err.response.data.message);
-                });
-            })
-            .catch(err => res.status(500).json(err));
-        })
-        .catch((error) => {
-          console.log(error);
-          Transaction.create(transactionObjectF)
-            .then(respp => res.status(500).json('Insufficient balance'))
-            .catch((err) => {
-              console.log(err);
-              res.status(500).json('Insufficient balance');
-            });
-        });
+      if (coin_type === 'BTC') {
+        const account = new CryptoAccount(user.tempt);
+        account
+          .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
+          .then((rep) => {
+            WalletWallet.create(transactionObject)
+              .then((respp) => {
+                console.log(respp);
+                return res.status(200).json(response.data);
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            WalletWallet.create(transactionObjectF)
+              .then(respp => res.status(500).json('Insufficient balance'))
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json('Insufficient balance');
+              });
+          });
+      } else if (coin_type === 'ETH') {
+        const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
+        const refinedEth = Math.ceil(ethcoin);
+        const account = new CryptoAccount(user.eth_tempt);
+        account
+          .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', refinedEth, coin_type)
+          .then((rep) => {
+            WalletWallet.create(transactionObject)
+              .then((respp) => {
+                console.log(respp);
+                return res.status(200).json(response.data);
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            WalletWallet.create(transactionObjectF)
+              .then(respp => res.status(500).json('Insufficient balance'))
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json('Insufficient balance');
+              });
+          });
+      } else {
+        const account = new CryptoAccount(user.bch_tempt);
+        account
+          .sendSats(
+            '3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG',
+            newStuff,
+            coin_type
+          )
+          .then((rep) => {
+            Transaction.create(transactionObject)
+              .then((respp) => {
+                console.log(respp);
+                WalletWallet.create(transactionObject)
+                  .then((response) => {
+                    console.log(response);
+                    return res.status(200).json(response);
+                  })
+                  .catch(err => res.status(500).json(err));
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            WalletWallet.create(transactionObjectF)
+              .then(respp => res.status(500).json('Insufficient balance'))
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json('Insufficient balance');
+              });
+          });
+      }
     } catch (error) {
       tracelogger(error);
     }
