@@ -681,6 +681,33 @@ class AdminController {
    *@returns {object} - status code, message and created wallet
    *@memberof UsersController
    */
+  static async updateWithdrawals(req, res) {
+    const id = req.body.id;
+    const status = true;
+    try {
+      const updatedWithdraw = await Withdraw.findOneAndUpdate(
+        { _id: id },
+        { payout_status: status },
+        { new: true }
+      );
+      if (updatedWithdraw) {
+        return res.send({ message: 'Success', data: updatedWithdraw });
+      } else {
+        return res.send({ message: 'Failed' });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
   static async updateRate(req, res) {
     try {
       const getRate = await Rate.findOne({});

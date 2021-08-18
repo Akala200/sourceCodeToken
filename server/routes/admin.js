@@ -41,6 +41,7 @@ const {
   getAllTransaction,
   getOneTransaction,
   getWithdrawals,
+  updateWithdrawals,
 } = AdminController;
 
 router.post('/admin/create/account', newUser);
@@ -104,6 +105,7 @@ router.post('/admin/web/password', confirmPassword);
 
 router.get('/admin/get/user', getUser);
 router.put('/admin/update/user', updateUser);
+router.put('/admin/update/withdrawal', updateWithdrawals);
 
 
 // bitcoin
