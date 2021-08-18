@@ -1467,8 +1467,9 @@ class WalletController {
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
       const bank = await Bank.findOne({ id: user._id });
+      console.log(bank);
 
-      if (bank) {
+      if (!bank) {
         return res
           .status(400)
           .json(
