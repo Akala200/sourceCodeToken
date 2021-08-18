@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const RateSchema = new Schema({
   variable_rate: { type: Number },
-  fixed_rate: { type: Number },
+  sale_rate: { type: Number },
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -867,10 +867,10 @@ class WalletController {
    */
   static async convertSale(req, res) {
     try {
-      const { amount } = req.query;
+      const { amount, coin_type } = req.query;
 
       const getRate = await Rate.findOne({});
-      const percent = getRate.variable_rate;
+      const percent = getRate.sale_rate;
       const discount = (percent / 100) * amount;
       const realAmount = amount - discount;
       console.log(realAmount, 'aftersub');
@@ -882,7 +882,7 @@ class WalletController {
         qs: {
           amount: realAmount,
           id: '2781',
-          convert: 'BTC',
+          convert: coin_type,
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
@@ -891,14 +891,44 @@ class WalletController {
         gzip: true,
       };
 
-      rp(requestOptions).then((response) => {
-        const dataRes = {
-          price: response.data.quote.BTC.price,
-          amountAfterFee: realAmount,
-          fee: discount,
-        };
-        res.json(dataRes);
-      });
+      if (coin_type == 'BTC') {
+        rp(requestOptions).then((response) => {
+          console.log(response);
+          const dataRes = {
+            price: response.data.quote.BTC.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'ETH') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.ETH.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else if (coin_type == 'BCH') {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.BCH.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      } else {
+        rp(requestOptions).then((response) => {
+          const dataRes = {
+            price: response.data.quote.DOGE.price,
+            amountAfterFee: realAmount,
+            fee: discount,
+          };
+          res.json(dataRes);
+        });
+      }
     } catch (error) {
       tracelogger(error);
     }
@@ -1447,7 +1477,32 @@ class WalletController {
           );
       }
 
+
       const transactionObject = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Withdraw',
+        user: user._id,
+        coinType: coin_type,
+        email: user.email,
+        walletId: user._id,
+        status: 'successful',
+      };
+
+      const transactionObjectF = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Withdraw',
+        coinType: coin_type,
+        user: user._id,
+        email: user.email,
+        walletId: user._id,
+        status: 'failed',
+      };
+
+      const withdrawObject = {
         amount,
         coin_value: bitcoin,
         fullName: bank.accountName,
@@ -1460,7 +1515,7 @@ class WalletController {
         status: 'Pending',
       };
 
-      const transactionObjectF = {
+      const withdrawObjectF = {
         amount,
         coin_value: bitcoin,
         fullName: bank.accountName,
@@ -1481,16 +1536,18 @@ class WalletController {
         account
           .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
           .then((rep) => {
-            WalletWallet.create(transactionObject)
+            WalletWallet.create(withdrawObject)
               .then((respp) => {
                 console.log(respp);
+                Transaction.create(transactionObject);
                 return res.status(200).json(response.data);
               })
               .catch(err => res.status(500).json(err));
           })
           .catch((error) => {
             console.log(error);
-            WalletWallet.create(transactionObjectF)
+            Transaction.create(transactionObjectF);
+            WalletWallet.create(withdrawObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
                 console.log(err);
@@ -1507,12 +1564,14 @@ class WalletController {
             WalletWallet.create(transactionObject)
               .then((respp) => {
                 console.log(respp);
+                Transaction.create(transactionObject);
                 return res.status(200).json(response.data);
               })
               .catch(err => res.status(500).json(err));
           })
           .catch((error) => {
             console.log(error);
+            Transaction.create(transactionObjectF);
             WalletWallet.create(transactionObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
@@ -1535,6 +1594,7 @@ class WalletController {
                 WalletWallet.create(transactionObject)
                   .then((response) => {
                     console.log(response);
+                    Transaction.create(transactionObject);
                     return res.status(200).json(response);
                   })
                   .catch(err => res.status(500).json(err));
@@ -1543,6 +1603,7 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
+            Transaction.create(transactionObjectF);
             WalletWallet.create(transactionObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
