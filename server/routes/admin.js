@@ -40,6 +40,7 @@ const {
   getUnverifiedUser,
   getAllTransaction,
   getOneTransaction,
+  getWithdrawals,
 } = AdminController;
 
 router.post('/admin/create/account', newUser);
@@ -57,6 +58,8 @@ router.get('/admin/transaction', getAllTransaction);
 router.get('/admin/single/transaction', getOneTransaction);
 
 router.get('/admin/customer/unverified', getUnverifiedUser);
+router.get('/admin/customer/withdrawals', getWithdrawals);
+
 router.get('/admin/user/total', getUserCount);
 router.get('/admin/user/verified', getBVNUser);
 router.get('/admin/user/unverified', getNoBVNUser);

@@ -21,6 +21,7 @@ import { signToken } from '../utils/storeToken';
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
 import User from '../models/Users';
+import Withdraw from '../models/Withdraw';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
@@ -648,6 +649,29 @@ class AdminController {
       return res.status(500).send(error);
     }
   }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getWithdrawals(req, res) {
+    try {
+      const withdraw = await Withdraw.find({});
+      if (withdraw) {
+        return res.send({ message: 'Success', data: withdraw });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
 
   /**
    *@description Creates a new wallet
