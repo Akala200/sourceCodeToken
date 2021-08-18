@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const WalletWalletSchema = new Schema({
+const WithdrawSchema = new Schema({
   fullName: { type: String },
   phone: { type: String },
   email: { type: String },
@@ -16,6 +16,6 @@ const WalletWalletSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const WalletWallet = mongoose.model('WalletWallet', WalletWalletSchema);
+const Withdraw = mongoose.model('Withdraw', WithdrawSchema);
 
-export default WalletWallet;
+export default Withdraw;

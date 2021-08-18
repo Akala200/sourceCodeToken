@@ -15,7 +15,7 @@ import responses from '../utils/responses';
 import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 import Commission from '../models/Commission';
-import WalletWallet from '../models/Withdraw';
+import Withdraw from '../models/Withdraw';
 
 import Rate from '../models/Rate';
 
@@ -1536,7 +1536,7 @@ class WalletController {
         account
           .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
           .then((rep) => {
-            WalletWallet.create(withdrawObject)
+            Withdraw.create(withdrawObject)
               .then((respp) => {
                 console.log(respp);
                 Transaction.create(transactionObject);
@@ -1547,7 +1547,7 @@ class WalletController {
           .catch((error) => {
             console.log(error);
             Transaction.create(transactionObjectF);
-            WalletWallet.create(withdrawObjectF)
+            Withdraw.create(withdrawObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
                 console.log(err);
@@ -1561,7 +1561,7 @@ class WalletController {
         account
           .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', refinedEth, coin_type)
           .then((rep) => {
-            WalletWallet.create(transactionObject)
+            Withdraw.create(transactionObject)
               .then((respp) => {
                 console.log(respp);
                 Transaction.create(transactionObject);
@@ -1572,7 +1572,7 @@ class WalletController {
           .catch((error) => {
             console.log(error);
             Transaction.create(transactionObjectF);
-            WalletWallet.create(transactionObjectF)
+            Withdraw.create(transactionObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
                 console.log(err);
@@ -1591,7 +1591,7 @@ class WalletController {
             Transaction.create(transactionObject)
               .then((respp) => {
                 console.log(respp);
-                WalletWallet.create(transactionObject)
+                Withdraw.create(transactionObject)
                   .then((response) => {
                     console.log(response);
                     Transaction.create(transactionObject);
@@ -1604,7 +1604,7 @@ class WalletController {
           .catch((error) => {
             console.log(error);
             Transaction.create(transactionObjectF);
-            WalletWallet.create(transactionObjectF)
+            Withdraw.create(transactionObjectF)
               .then(respp => res.status(500).json('Insufficient balance'))
               .catch((err) => {
                 console.log(err);
