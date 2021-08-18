@@ -1458,7 +1458,6 @@ class WalletController {
     try {
       const {
         amount,
-        address,
         coin_type,
         bitcoin,
         email,
@@ -1469,11 +1468,11 @@ class WalletController {
       const walletBalance = await Wallet.findOne({ email });
       const bank = await Bank.findOne({ id: user._id });
 
-      if (!user.bankref) {
+      if (bank) {
         return res
           .status(400)
           .json(
-            responses.error(400, 'Please link your bank account via settings')
+            responses.error(400, 'Please complete account setup')
           );
       }
 

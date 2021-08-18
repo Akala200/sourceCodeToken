@@ -12,7 +12,7 @@ const WalletWalletSchema = new Schema({
   amount: { type: Number },
   coin_value: { type: Number },
   coin_type: { type: String },
-
+  payout_status: { type: String, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 
