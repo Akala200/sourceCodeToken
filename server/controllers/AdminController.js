@@ -663,17 +663,27 @@ class AdminController {
 
       const rate = {
         variable_rate: req.body.variable_rate,
-        fixed_rate: req.body.fixed_rate,
+        sale_rate: req.body.sale_rate,
       };
-      const updatedRate = await Rate.findOneAndUpdate(
-        { variable_rate: getRate.variable_rate },
-        rate,
-        { new: true }
-      );
-      if (updatedRate) {
-        return res.send({ message: 'Success', data: updatedRate });
+
+      if (getRate) {
+        const updatedRate = await Rate.findOneAndUpdate(
+          { variable_rate: getRate.variable_rate },
+          rate,
+          { new: true }
+        );
+        if (updatedRate) {
+          return res.send({ message: 'Success', data: updatedRate });
+        } else {
+          return res.send({ message: 'Failed' });
+        }
       } else {
-        return res.send({ message: 'Failed' });
+        Rate.create(rate)
+          .then((respp) => {
+            console.log(respp);
+            return res.send({ message: 'Success', });
+          })
+          .catch(err => res.send({ message: 'Failed' }));
       }
     } catch (error) {
       return res.status(500).send(error);
