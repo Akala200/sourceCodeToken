@@ -19,6 +19,7 @@ import tracelogger from '../logger/tracelogger';
 import { signToken } from '../utils/storeToken';
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
+import Admin from '../models/Admin';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
@@ -148,6 +149,7 @@ class UserController {
       return res.status(500).send({ msg: 'Error in saving the password' });
     }
   }
+
 
   /**
    *@description Creates a new wallet
@@ -1108,9 +1110,6 @@ class UserController {
             id: privateKey,
           };
 
-          const eth_tempt = await signToken(data1);
-          const bch_tempt = await signToken(data2);
-          const tempt = await signToken(data3);
           const account = new CryptoAccount(privateKey);
           account
             .address('BTC')
@@ -1120,11 +1119,11 @@ class UserController {
 
               const userNew = {
                 address,
-                tempt,
+                tempt: privateKey,
                 eth_address: ethWallet.address,
-                eth_tempt,
+                eth_tempt: ethWallet.privateKey,
                 bch_address: bcash.address,
-                bch_tempt,
+                bch_tempt: bcash.privateKey,
                 guid: code,
                 regstatus: true,
               };
@@ -1201,26 +1200,17 @@ class UserController {
       const user = await User.findOne({ email });
       //  Generate Token
 
-      if (user && !user.eth_address) {
+      if (user) {
         try {
           const ethWallet = cw.generateWallet('ETH');
           const bcash = cw.generateWallet('BCH');
 
-          const data1 = {
-            id: ethWallet.privateKey,
-          };
-          const data2 = {
-            id: bcash.privateKey,
-          };
-
-          const eth_tempt = await signToken(data1);
-          const bch_tempt = await signToken(data2);
 
           const userNew = {
             eth_address: ethWallet.address,
-            eth_tempt,
+            eth_tempt: ethWallet.privateKey,
             bch_address: bcash.address,
-            bch_tempt,
+            bch_tempt: bcash.privateKey,
           };
 
           User.findOneAndUpdate(
@@ -1236,7 +1226,7 @@ class UserController {
               }
               res
                 .status(200)
-                .json(responses.success(200, 'Accounts Created successfully'));
+                .json(responses.success(200, 'Accounts Created successfully', user));
             }
           );
         } catch (error) {
@@ -1254,8 +1244,6 @@ class UserController {
       console.log(error);
       return res.status(500).json(responses.error(500, error));
     }
-
-    // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
   }
 }
 

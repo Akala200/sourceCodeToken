@@ -1464,9 +1464,12 @@ class WalletController {
         flatAmount,
       } = req.body;
 
+      const role = 'Super Admin';
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
       const bank = await Bank.findOne({ id: user._id });
+      const admin = await Admin.findOne({ role });
+
       console.log(bank);
 
       if (!bank) {
@@ -1534,7 +1537,7 @@ class WalletController {
       if (coin_type === 'BTC') {
         const account = new CryptoAccount(user.tempt);
         account
-          .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', newStuff, coin_type)
+          .sendSats(admin.address, newStuff, coin_type)
           .then((rep) => {
             Withdraw.create(withdrawObject)
               .then((respp) => {
@@ -1559,7 +1562,7 @@ class WalletController {
         const refinedEth = Math.ceil(ethcoin);
         const account = new CryptoAccount(user.eth_tempt);
         account
-          .sendSats('3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG', refinedEth, coin_type)
+          .sendSats(admin.eth_address, refinedEth, coin_type)
           .then((rep) => {
             Withdraw.create(transactionObject)
               .then((respp) => {
@@ -1582,11 +1585,7 @@ class WalletController {
       } else {
         const account = new CryptoAccount(user.bch_tempt);
         account
-          .sendSats(
-            '3F4oQiBGmUTUyNduWsEKRGhpejBmXE8fVG',
-            newStuff,
-            coin_type
-          )
+          .sendSats(admin.bch_address, newStuff, coin_type)
           .then((rep) => {
             Transaction.create(transactionObject)
               .then((respp) => {
@@ -1617,93 +1616,36 @@ class WalletController {
     }
   }
 
+
   static async webhook(req, res) {
-    const currency = 'NGN';
-    const hash = crypto
-      .createHmac('sha512', token)
-      .update(JSON.stringify(req.body))
-      .digest('hex');
-    if (hash == req.headers['x-paystack-signature']) {
-      console.log(req.body.data);
-      const event = req.body;
-      const { coin } = event.data.metadata;
-      const { email } = event.data.customer;
+    /* It is a good idea to log all events received. Add code *
+     * here to log the signature and body to db or file       */
 
-      if (!coin) {
-        res.send(200);
-      }
-      try {
-        const wallet = await Wallet.findOne({
-          email,
-        });
-        const user = await User.findOne({ email });
+    // retrieve the signature from the header
+    const hash = req.headers['verif-hash'];
 
-        if (!user) {
-          return res
-            .status(404)
-            .json(responses.error(404, 'Sorry, this user does not exist'));
-        }
-
-        if (event.event === 'charge.success') {
-          const transactionObject = {
-            amount: event.data.amount / 100,
-            coins: coin,
-            type: 'credit',
-            mode: 'Card',
-            user: user._id,
-            lastFour: event.data.authorization.last4,
-            cardType: event.data.authorization.card_type,
-            ref: event.data.reference,
-            walletId: wallet._id,
-            status: 'successful',
-          };
-
-          const amountNew = coin + user.balance;
-          const limited = parseFloat(coin).toFixed(6);
-          const refinedCoin = limited.toString();
-          const priceReturned = event.data.amount / 100;
-          const _url = `https://api.luno.com/api/1/send?amount=${refinedCoin}&currency=XBT&address=${user.address}`;
-          const uname = 'est9nqyd6gn2r';
-          const pass = 'LARIYDcyb8f6hjRb6cL2MYOQmXiUpfCZj5sN1FAFtp4';
-          axios
-            .post(
-              _url,
-              {},
-              {
-                auth: {
-                  username: uname,
-                  password: pass,
-                },
-              }
-            )
-            // eslint-disable-next-line no-shadow
-            .then((response) => {
-              console.log(response);
-              Wallet.findOneAndUpdate(
-                { email },
-                {
-                  $set: { balance: amountNew },
-                },
-                { new: true },
-                (err, doc) => {
-                  if (err) {
-                    console.log('Something wrong when updating data!');
-                  }
-                  Transaction.create(transactionObject);
-                  return res.status(200).json('Transaction saved');
-                }
-              );
-            })
-            .catch((error) => {
-              console.log(error.response.data);
-              console.log(error.data);
-              return res.status(500).json(error.response.data);
-            });
-        }
-      } catch (error) {
-        res.send(200);
-      }
+    if (!hash) {
+      // discard the request,only a post with rave signature header gets our attention
     }
+
+    // Get signature stored as env variable on your server
+    const secret_hash = process.env.MY_HASH;
+
+    // check if signatures match
+
+    if (hash !== secret_hash) {
+      // silently exit, or check that you are passing the write hash on your server.
+    }
+
+    // Retrieve the request's body
+    const request_json = JSON.parse(request.body);
+    console.log(request_json);
+
+    // Give value to your customer but don't give any output
+    // Remember that this is a call from rave's servers and
+    // Your customer is not seeing the response here at all
+
+    response.send(200);
   }
 }
 export default WalletController;
