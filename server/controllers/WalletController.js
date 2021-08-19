@@ -1638,14 +1638,102 @@ class WalletController {
       // silently exit, or check that you are passing the write hash on your server.
     }
 
+    try {
     // Retrieve the request's body
-    console.log(req.body);
+      console.log(req.body);
 
-    // Give value to your customer but don't give any output
-    // Remember that this is a call from rave's servers and
-    // Your customer is not seeing the response here at all
+      const user = await User.findOne({ email: req.body.data.customer.email });
+      const walletBalance = await Wallet.findOne({ email: req.body.data.customer.email });
+      const admin = await Admin.findOne({ role });
+      const coin_type = user.payment_coin_type;
+      const bitcoin = user.payment_bitcoin;
 
-    response.send(200);
+      const transactionObject = {
+        amount,
+        coins: bitcoin,
+        type: 'credit',
+        mode: 'Deposit',
+        to: address,
+        user: user._id,
+        coinType: coin_type,
+        email: user.email,
+        walletId: user._id,
+        status: 'successful',
+      };
+
+      const transactionObjectF = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Deposit',
+        to: address,
+        coinType: coin_type,
+        user: user._id,
+        email: user.email,
+        walletId: user._id,
+        status: 'pending',
+      };
+
+      const refinedBitcoin = bitcoin.toFixed(6);
+      console.log(refinedBitcoin);
+      const satoshi = 100000000 * refinedBitcoin;
+      const newStuff = Math.ceil(satoshi);
+      console.log(newStuff);
+
+      if (coin_type === 'BTC') {
+        const account = new CryptoAccount(admin.tempt);
+        account
+          .sendSats(user.address, newStuff, 'BTC')
+          .then((rep) => {
+            console.log(rep, 'result');
+            Transaction.create(transactionObject)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                res.sendStatus(200);
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            Transaction.create(transactionObjectF);
+            res.status(500).json('Insufficient balance');
+          });
+      } else if (coin_type === 'ETH') {
+        const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
+        const refinedEth = Math.ceil(ethcoin);
+        const account = new CryptoAccount(admin.eth_tempt);
+        account
+          .sendSats(user.eth_address, refinedEth, coin_type)
+          .then((rep) => {
+            Transaction.create(transactionObject);
+            res.sendStatus(200);
+          }).catch((error) => {
+            console.log(error);
+            Transaction.create(transactionObjectF);
+            res.status(500).json('Insufficient balance');
+          });
+      } else {
+        const account = new CryptoAccount(admin.bch_tempt);
+        account
+          .sendSats(user.bch_address, newStuff, coin_type)
+          .then((rep) => {
+            Transaction.create(transactionObject)
+              .then((respp) => {
+                res.sendStatus(200);
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            Transaction.create(transactionObjectF);
+            res.status(500).json('Insufficient balance');
+          });
+      }
+    } catch (error) {
+      tracelogger(error);
+    }
   }
 }
 export default WalletController;
