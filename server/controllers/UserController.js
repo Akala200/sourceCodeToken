@@ -1323,46 +1323,25 @@ class UserController {
   static async initiatePayment(req, res) {
     const { email, coin_type, bitcoin } = req.body;
 
-    try {
-      const user = await User.findOne({ email });
-      //  Generate Token
-
-      const dataSet = {
-        payment_coin_type: coin_type,
-        payment_bitcoin: bitcoin,
-      };
-
-      if (user) {
-        try {
-          User.findOneAndUpdate(
-            { email },
-            dataSet,
-            {
-              new: true,
-            },
-            (err, doc) => {
-              if (err) {
-                console.log(err);
-                return res.status(500).json(responses.error(500, err));
-              }
-              res
-                .status(200)
-                .json(
-                  responses.success(200, 'Accounts Created successfully', user)
-                );
-            }
-          );
-        } catch (error) {
-          console.error(error);
-          return res.status(500).json(responses.error(500, error));
-        }
-      } else {
-        return res.status(404).json(responses.error(404, 'Initiation failed'));
-      }
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json(responses.error(500, error));
-    }
+    User.findOne({ email })
+      .then((resp) => {
+        resp.payment_coin_type = coin_type;
+        resp.payment_bitcoin = bitcoin;
+        resp
+          .save()
+          .then(res => res
+            .status(200)
+            .json(responses.success(200, 'Login successfully', res)))
+          .catch(err => res
+            .status(401)
+            .json(responses.error(500, err)));
+      })
+      .catch((err) => {
+        res
+          .status(401)
+          .json(responses.error(500, err));
+      });
+    //  Generate Toke
   }
 
   /**
