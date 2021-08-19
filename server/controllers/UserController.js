@@ -178,6 +178,7 @@ class UserController {
     }
   }
 
+  // sales@sourcecodexchange.com
   /**
    *@description Creates a new wallet
    *@static
@@ -213,7 +214,6 @@ class UserController {
       return res.status(500).send({ msg: 'Error in saving the password' });
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -285,11 +285,10 @@ class UserController {
         user: 'adeiyiakala91@gmail.com',
         clientId: 'CLIENT_ID_HERE',
         clientSecret: 'CLIENT_SECRET_HERE',
-        refreshToken: 'REFRESH_TOKEN_HERE'
+        refreshToken: 'REFRESH_TOKEN_HERE',
       },
       secure: true,
     });
-
 
     try {
       const user = await User.findOne({ email });
@@ -1125,11 +1124,7 @@ class UserController {
   static async completeSetUp(req, res) {
     console.log('here');
     const {
-      account_number,
-      account_name,
-      account_bank,
-      bvn,
-      email,
+      account_number, account_name, account_bank, bvn, email
     } = req.body;
     try {
       const user = await User.findOne({ email });
@@ -1144,16 +1139,17 @@ class UserController {
       const bank = await Bank.create(data);
       if (bank) {
         user.bvn_verified = true;
-        user.save().then((resp) => {
-          console.log(resp);
-          res
-            .status(200)
-            .json(responses.success(200, 'Account added successfully', bank));
-        }).catch(err => res.status(500).json(responses.error(500, 'Server error', err)));
+        user
+          .save()
+          .then((resp) => {
+            console.log(resp);
+            res
+              .status(200)
+              .json(responses.success(200, 'Account added successfully', bank));
+          })
+          .catch(err => res.status(500).json(responses.error(500, 'Server error', err)));
       } else {
-        return res
-          .status(500)
-          .json(responses.error(500, 'Server error'));
+        return res.status(500).json(responses.error(500, 'Server error'));
       }
     } catch (error) {
       tracelogger(error);
@@ -1162,7 +1158,6 @@ class UserController {
 
   static async getBankCode(req, res) {
     try {
-
     } catch (error) {
       tracelogger(error);
     }
@@ -1250,7 +1245,6 @@ class UserController {
             .then((rep) => {
               const address = rep;
 
-
               const userNew = {
                 address,
                 tempt: privateKey,
@@ -1317,7 +1311,6 @@ class UserController {
     // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
   }
 
-
   /**
    *@description Creates user user
    *@static
@@ -1330,7 +1323,6 @@ class UserController {
   static async initiatePayment(req, res) {
     const { email, coin_type, bitcoin } = req.body;
 
-
     try {
       const user = await User.findOne({ email });
       //  Generate Token
@@ -1339,30 +1331,28 @@ class UserController {
         try {
           user.payment_coin_type = coin_type;
           user.bitcoin = bitcoin;
-          user.save().then((resp) => {
-            res
-              .status(200)
-              .json(
-                responses.success(200, 'payment initiated successfully', resp)
-              );
-          }).catch(err => res.status(500).json(responses.error(500, err)));
+          user
+            .save()
+            .then((resp) => {
+              res
+                .status(200)
+                .json(
+                  responses.success(200, 'payment initiated successfully', resp)
+                );
+            })
+            .catch(err => res.status(500).json(responses.error(500, err)));
         } catch (error) {
           console.error(error);
           return res.status(500).json(responses.error(500, error));
         }
       } else {
-        return res
-          .status(404)
-          .json(
-            responses.error(404, 'Initiation failed')
-          );
+        return res.status(404).json(responses.error(404, 'Initiation failed'));
       }
     } catch (error) {
       console.log(error);
       return res.status(500).json(responses.error(500, error));
     }
   }
-
 
   /**
    *@description Creates user user
@@ -1376,7 +1366,6 @@ class UserController {
   static async createOtherWallet(req, res) {
     const { email } = req.body;
 
-
     try {
       const user = await User.findOne({ email });
       //  Generate Token
@@ -1385,7 +1374,6 @@ class UserController {
         try {
           const ethWallet = cw.generateWallet('ETH');
           const bcash = cw.generateWallet('BCH');
-
 
           const userNew = {
             eth_address: ethWallet.address,
@@ -1407,7 +1395,9 @@ class UserController {
               }
               res
                 .status(200)
-                .json(responses.success(200, 'Accounts Created successfully', user));
+                .json(
+                  responses.success(200, 'Accounts Created successfully', user)
+                );
             }
           );
         } catch (error) {
@@ -1417,9 +1407,7 @@ class UserController {
       } else {
         return res
           .status(404)
-          .json(
-            responses.error(404, 'Account Already created')
-          );
+          .json(responses.error(404, 'Account Already created'));
       }
     } catch (error) {
       console.log(error);

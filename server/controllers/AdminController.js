@@ -28,7 +28,10 @@ const rp = require('request-promise');
 const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
 const cw = require('crypto-wallets');
-
+const mailjet = require('node-mailjet').connect(
+  'bd1dcb75346beb0635e30c1fb11452ec',
+  '94d87e8ca6102f4c2bcb9e1ff032117c'
+);
 const { MyWallet } = require('blockchain.info');
 
 
@@ -105,6 +108,38 @@ class AdminController {
           text: `Kindly use this email (${email}) and password (${password} to login into your account`,
         };
 
+        const request = mailjet.post('send', { version: 'v3.1' }).request({
+          Messages: [
+            {
+              From: {
+                Email: 'lolaaka6@gmail.com',
+                Name: 'Sourcecode Exchange',
+              },
+              To: [
+                {
+                  Email: email,
+                  Name: `${createdUser.first_name}  ${createdUser.last_name}`,
+                },
+              ],
+              Subject: 'Account Verification',
+              TextPart: 'Verify your account',
+              HTMLPart: `Kindly use this email (${email}) and password (${password} to login into your account`,
+              CustomID: 'AppGettingStartedTest',
+            },
+          ],
+        });
+        request
+          .then((result) => {
+            console.log(result.body);
+            return res
+              .status(201)
+              .json(responses.success(201, 'Email sent successfully'));
+          })
+          .catch((err) => {
+            console.log(err.statusCode);
+            return res.status(500).json(responses.success(500, err));
+          });
+        /**
         sgMail
           .send(msg)
           .then((resp) => {
@@ -123,6 +158,7 @@ class AdminController {
             console.log(error);
             return res.status(500).json(responses.success(500, error));
           });
+          */
       }
     } catch (error) {
       tracelogger(error);
