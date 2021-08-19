@@ -1639,7 +1639,7 @@ class WalletController {
     }
 
     // Retrieve the request's body
-    const request_json = JSON.parse(request.body);
+    const request_json = JSON.parse(req.body);
     console.log(request_json);
 
     // Give value to your customer but don't give any output
