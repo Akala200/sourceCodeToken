@@ -20,7 +20,7 @@ app.use(logger('dev'));
 
 // connect to mongodb
 // eslint-disable-next-line max-len
-const mongoURL = 'mongodb+srv://coin:1234567890@cluster0.y5nwu.mongodb.net/coins?retryWrites=true&w=majority';
+const mongoURL = 'mongodb+srv://coin:coin@cluster0.y5nwu.mongodb.net/coins?retryWrites=true&w=majority';
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   useCreateIndex: true,
