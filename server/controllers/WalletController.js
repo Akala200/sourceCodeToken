@@ -454,6 +454,7 @@ class WalletController {
         .catch((err) => {
           console.log(err);
         });
+
       /**
         response = await axios.post(
           // eslint-disable-next-line max-len
@@ -1629,7 +1630,7 @@ class WalletController {
     }
 
     // Get signature stored as env variable on your server
-    const secret_hash = process.env.MY_HASH;
+    const secret_hash = 'fishrice';
 
     // check if signatures match
 
