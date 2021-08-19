@@ -51,6 +51,7 @@
     "napa": "^3.0.0",
     "nock": "^10.0.1",
     "node-cron": "^2.0.3",
+    "node-mailjet": "^3.3.4",
     "nodemailer": "^6.6.3",
     "nodemailer-smtp-transport": "^2.7.4",
     "randomstring": "^1.1.5",

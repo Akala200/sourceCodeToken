@@ -28,7 +28,10 @@ const CryptoAccount = require('send-crypto');
 const cw = require('crypto-wallets');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-
+const mailjet = require('node-mailjet').connect(
+  'bd1dcb75346beb0635e30c1fb11452ec',
+  '94d87e8ca6102f4c2bcb9e1ff032117c'
+);
 const { MyWallet } = require('blockchain.info');
 
 const options = {
@@ -124,7 +127,7 @@ class UserController {
       } else {
         return res.status(500).json(responses.success(500, 'Email not sent'));
       }
-      */
+
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -137,6 +140,40 @@ class UserController {
             .json(responses.success(201, 'Email sent successfully'));
         }
       });
+       */
+
+      const request = mailjet.post('send', { version: 'v3.1' }).request({
+        Messages: [
+          {
+            From: {
+              Email: 'lolaaka6@gmail.com',
+              Name: 'Ade',
+            },
+            To: [
+              {
+                Email: 'lolaaka6@gmail.com',
+                Name: 'Ade',
+              },
+            ],
+            Subject: 'Greetings from Mailjet.',
+            TextPart: 'My first Mailjet email',
+            HTMLPart:
+        `<h3>Kindly use this OTP code - ${code} to verify your account`,
+            CustomID: 'AppGettingStartedTest',
+          },
+        ],
+      });
+      request
+        .then((result) => {
+          console.log(result.body);
+          return res
+            .status(201)
+            .json(responses.success(201, 'Email sent successfully'));
+        })
+        .catch((err) => {
+          console.log(err.statusCode);
+          return res.status(500).json(responses.success(500, err));
+        });
     } catch (error) {
       tracelogger(error);
     }
@@ -245,8 +282,11 @@ class UserController {
       port: 465, // true for 465, false for other ports
       host: 'smtp.gmail.com',
       auth: {
+        type: 'OAuth2',
         user: 'adeiyiakala91@gmail.com',
-        pass: process.env.PASSWORD,
+        clientId: 'CLIENT_ID_HERE',
+        clientSecret: 'CLIENT_SECRET_HERE',
+        refreshToken: 'REFRESH_TOKEN_HERE'
       },
       secure: true,
     });
