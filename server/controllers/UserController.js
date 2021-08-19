@@ -1203,27 +1203,15 @@ class UserController {
 
       if (user) {
         try {
-          const userNew = {
-            payment_coin_type: coin_type,
-            payment_bitcoin: bitcoin,
-          };
-
-          User.findOneAndUpdate(
-            { email },
-            userNew,
-            {
-              new: true,
-            },
-            (err, doc) => {
-              if (err) {
-                console.log(err);
-                return res.status(500).json(responses.error(500, err));
-              }
-              res
-                .status(200)
-                .json(responses.success(200, 'Initiated successfully', user));
-            }
-          );
+          user.payment_coin_type = coin_type;
+          user.bitcoin = bitcoin;
+          user.save().then((resp) => {
+            res
+              .status(200)
+              .json(
+                responses.success(200, 'payment initiated successfully', resp)
+              );
+          }).catch(err => res.status(500).json(responses.error(500, err)));
         } catch (error) {
           console.error(error);
           return res.status(500).json(responses.error(500, error));
