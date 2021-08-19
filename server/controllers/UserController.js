@@ -1329,7 +1329,7 @@ class UserController {
 
       const dataSet = {
         payment_coin_type: coin_type,
-        bitcoin
+        payment_bitcoin: bitcoin,
       };
 
       if (user) {
