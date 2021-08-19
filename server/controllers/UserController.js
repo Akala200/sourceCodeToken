@@ -337,7 +337,41 @@ class UserController {
           user: createdUser.email,
         };
 
-        const tokenRegistration = await Token.create(tokenObject);
+        await Token.create(tokenObject);
+
+        const request = mailjet.post('send', { version: 'v3.1' }).request({
+          Messages: [
+            {
+              From: {
+                Email: 'lolaaka6@gmail.com',
+                Name: 'Ade',
+              },
+              To: [
+                {
+                  Email: 'lolaaka6@gmail.com',
+                  Name: 'Ade',
+                },
+              ],
+              Subject: 'Account Verification',
+              TextPart: 'Verify your account',
+              HTMLPart: `<h3>Kindly use this OTP code - ${code} to verify your account`,
+              CustomID: 'AppGettingStartedTest',
+            },
+          ],
+        });
+        request
+          .then((result) => {
+            console.log(result.body);
+            return res
+              .status(201)
+              .json(responses.success(201, 'Email sent successfully'));
+          })
+          .catch((err) => {
+            console.log(err.statusCode);
+            return res.status(500).json(responses.success(500, err));
+          });
+
+        /**
         if (tokenRegistration) {
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -351,7 +385,7 @@ class UserController {
             }
           });
         }
-        /**   sgMail
+        sgMail
           .send(msg)
           .then((resp) => {
             console.log(resp);
