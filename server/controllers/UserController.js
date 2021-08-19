@@ -27,6 +27,7 @@ const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
 const cw = require('crypto-wallets');
 const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 
 const { MyWallet } = require('blockchain.info');
 
@@ -241,11 +242,13 @@ class UserController {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      port: 465, // true for 465, false for other ports
+      host: 'smtp.gmail.com',
       auth: {
-        user: 'adeiyiakala91@@gmail.com',
+        user: 'adeiyiakala91@gmail.com',
         pass: process.env.PASSWORD,
       },
+      secure: true,
     });
 
 
