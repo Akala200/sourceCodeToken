@@ -151,14 +151,13 @@ class UserController {
             },
             To: [
               {
-                Email: 'lolaaka6@gmail.com',
-                Name: 'Ade',
+                Email: email,
+                Name: `${user.first_name}  ${user.last_name}`,
               },
             ],
-            Subject: 'Greetings from Mailjet.',
-            TextPart: 'My first Mailjet email',
-            HTMLPart:
-        `<h3>Kindly use this OTP code - ${code} to verify your account`,
+            Subject: 'Account Verification',
+            TextPart: 'Verify your account',
+            HTMLPart: `<h3>Kindly use this OTP code - ${code} to verify your account`,
             CustomID: 'AppGettingStartedTest',
           },
         ],
