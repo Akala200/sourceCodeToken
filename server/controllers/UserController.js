@@ -1204,6 +1204,7 @@ class UserController {
       const walletData = {
         phone: user.phone,
         email: user.email,
+        user: user._id,
       };
 
       const tokenize = await signToken(TokenData);
