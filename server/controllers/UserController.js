@@ -147,7 +147,7 @@ class UserController {
           {
             From: {
               Email: 'lolaaka6@gmail.com',
-              Name: 'Ade',
+              Name: 'Sourcecode Exchange',
             },
             To: [
               {
@@ -343,7 +343,7 @@ class UserController {
             {
               From: {
                 Email: 'lolaaka6@gmail.com',
-                Name: 'Ade',
+                Name: 'Sourcecode Exchange',
               },
               To: [
                 {
