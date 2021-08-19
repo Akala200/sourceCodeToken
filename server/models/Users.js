@@ -28,6 +28,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    payment_coin_type: {
+      type: String,
+    },
+    payment_bitcoin: {
+      type: String,
+    },
     password: {
       type: String,
     },

@@ -32,6 +32,7 @@ const {
   completeSetUp,
   getBankCode,
   createOtherWallet,
+  initiatePayment,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -67,6 +68,7 @@ router.post('/web/password', confirmPassword);
 
 router.get('/get/user', getUser);
 router.put('/update/user', updateUser);
+router.put('/initiated/payment', initiatePayment);
 router.get('/bitcoin', bitcoin);
 router.get('/shortlist', shortlist);
 

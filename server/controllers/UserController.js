@@ -1183,6 +1183,65 @@ class UserController {
     // MmFmM2UzZTk1OWM1NGZiM2E3MzAyNjkwODY5NDUwZGI
   }
 
+
+  /**
+   *@description Creates user user
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof userController
+   */
+
+  static async initiatePayment(req, res) {
+    const { email, coin_type, bitcoin } = req.body;
+
+
+    try {
+      const user = await User.findOne({ email });
+      //  Generate Token
+
+      if (user) {
+        try {
+          const userNew = {
+            payment_coin_type: coin_type,
+            payment_bitcoin: bitcoin,
+          };
+
+          User.findOneAndUpdate(
+            { email },
+            userNew,
+            {
+              new: true,
+            },
+            (err, doc) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json(responses.error(500, err));
+              }
+              res
+                .status(200)
+                .json(responses.success(200, 'Initiated successfully', user));
+            }
+          );
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json(responses.error(500, error));
+        }
+      } else {
+        return res
+          .status(404)
+          .json(
+            responses.error(404, 'Initiation failed')
+          );
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(responses.error(500, error));
+    }
+  }
+
+
   /**
    *@description Creates user user
    *@static
