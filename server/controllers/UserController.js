@@ -348,8 +348,8 @@ class UserController {
               },
               To: [
                 {
-                  Email: 'lolaaka6@gmail.com',
-                  Name: 'Ade',
+                  Email: email,
+                  Name: `${first_name}  ${last_name}`,
                 },
               ],
               Subject: 'Account Verification',
