@@ -1327,20 +1327,31 @@ class UserController {
       const user = await User.findOne({ email });
       //  Generate Token
 
+      const dataSet = {
+        payment_coin_type: coin_type,
+        bitcoin
+      };
+
       if (user) {
         try {
-          user.payment_coin_type = coin_type;
-          user.bitcoin = bitcoin;
-          user
-            .save()
-            .then((resp) => {
+          User.findOneAndUpdate(
+            { email },
+            dataSet,
+            {
+              new: true,
+            },
+            (err, doc) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).json(responses.error(500, err));
+              }
               res
                 .status(200)
                 .json(
-                  responses.success(200, 'payment initiated successfully', resp)
+                  responses.success(200, 'Accounts Created successfully', user)
                 );
-            })
-            .catch(err => res.status(500).json(responses.error(500, err)));
+            }
+          );
         } catch (error) {
           console.error(error);
           return res.status(500).json(responses.error(500, error));
