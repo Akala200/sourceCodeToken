@@ -1639,8 +1639,7 @@ class WalletController {
     }
 
     // Retrieve the request's body
-    const request_json = JSON.parse(req.body);
-    console.log(request_json);
+    console.log(req.body);
 
     // Give value to your customer but don't give any output
     // Remember that this is a call from rave's servers and
