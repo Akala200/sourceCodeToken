@@ -26,6 +26,7 @@ const rp = require('request-promise');
 const axios = require('axios').default;
 const CryptoAccount = require('send-crypto');
 const cw = require('crypto-wallets');
+const nodemailer = require('nodemailer');
 
 const { MyWallet } = require('blockchain.info');
 
@@ -66,7 +67,13 @@ class UserController {
    */
   static async forgetPassword(req, res) {
     const { email } = req.body;
-
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'adeiyiakala91@@gmail.com',
+        pass: process.env.PASSWORD,
+      },
+    });
     if (!email) {
       return res
         .status(400)
@@ -100,7 +107,14 @@ class UserController {
         text: `Kindly use this ${code} to verify your account`,
       };
 
-      sgMail.send(msg);
+      const mailOptions = {
+        from: 'adeiyiakala91@@gmail.com',
+        to: email,
+        subject: 'Forgot Password',
+        text: `Kindly use this ${code} to verify your account`,
+      };
+
+      /**  sgMail.send(msg);
 
       if (createdUser) {
         return res
@@ -109,6 +123,19 @@ class UserController {
       } else {
         return res.status(500).json(responses.success(500, 'Email not sent'));
       }
+      */
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json(responses.success(500, error));
+        } else {
+          console.log(`Email sent: ${info.response}`);
+          return res
+            .status(201)
+            .json(responses.success(201, 'Email sent successfully'));
+        }
+      });
     } catch (error) {
       tracelogger(error);
     }
@@ -213,6 +240,15 @@ class UserController {
         .json(responses.error(400, 'Please fill in all details'));
     }
 
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'adeiyiakala91@@gmail.com',
+        pass: process.env.PASSWORD,
+      },
+    });
+
+
     try {
       const user = await User.findOne({ email });
 
@@ -239,6 +275,13 @@ class UserController {
 
         const createdUser = await User.create(userObject);
 
+        const mailOptions = {
+          from: 'adeiyiakala91@@gmail.com',
+          to: email,
+          subject: 'Account Verification',
+          text: `Kindly use this ${code} to verify your account`,
+        };
+
         const msg = {
           to: createdUser.email,
           from: 'support@ningotv.com',
@@ -252,12 +295,25 @@ class UserController {
         };
 
         const tokenRegistration = await Token.create(tokenObject);
-
-        sgMail
+        if (tokenRegistration) {
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log(error);
+              return res.status(500).json(responses.success(500, error));
+            } else {
+              console.log(`Email sent: ${info.response}`);
+              return res
+                .status(201)
+                .json(responses.success(201, 'Email sent successfully'));
+            }
+          });
+        }
+        /**   sgMail
           .send(msg)
           .then((resp) => {
             console.log(resp);
             if (tokenRegistration) {
+
               return res
                 .status(201)
                 .json(responses.success(201, 'Email sent successfully'));
@@ -271,6 +327,7 @@ class UserController {
             console.log(error);
             return res.status(500).json(responses.success(500, error));
           });
+          */
       }
     } catch (error) {
       tracelogger(error);

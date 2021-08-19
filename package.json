@@ -51,6 +51,7 @@
     "napa": "^3.0.0",
     "nock": "^10.0.1",
     "node-cron": "^2.0.3",
+    "nodemailer": "^6.6.3",
     "randomstring": "^1.1.5",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
