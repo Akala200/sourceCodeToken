@@ -1677,6 +1677,32 @@ class WalletController {
         status: 'pending',
       };
 
+      const transactionObjectAdmin = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Transfer',
+        to: address,
+        user: admin._id,
+        coinType: coin_type,
+        email: user.email,
+        walletId: user._id,
+        status: 'successful',
+      };
+
+      const transactionObjectFAdmin = {
+        amount,
+        coins: bitcoin,
+        type: 'debit',
+        mode: 'Transfer',
+        to: address,
+        coinType: coin_type,
+        user: admin._id,
+        email: user.email,
+        walletId: user._id,
+        status: 'failed',
+      };
+
       const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
@@ -1690,6 +1716,8 @@ class WalletController {
           .then((rep) => {
             console.log(rep, 'result');
             transactionObject.to = user.address;
+            transactionObjectAdmin.to = user.address;
+            Transaction.create(transactionObjectAdmin);
             Transaction.create(transactionObject)
               .then((respp) => {
                 console.log(respp, 'created');
@@ -1702,8 +1730,16 @@ class WalletController {
           .catch((error) => {
             console.log(error);
             transactionObjectF.to = user.address;
-            Transaction.create(transactionObjectF);
-            res.status(500).json('Insufficient balance');
+            transactionObjectFAdmin.to = user.address;
+            Transaction.create(transactionObjectFAdmin);
+            Transaction.create(transactionObjectF)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                res.status(500).json('Insufficient balance');
+              })
+              .catch(err => res.status(500).json(err));
           });
       } else if (coin_type === 'ETH') {
         const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
@@ -1713,13 +1749,24 @@ class WalletController {
           .sendSats(user.eth_address, refinedEth, coin_type)
           .then((rep) => {
             transactionObject.to = user.eth_address;
+            transactionObjectAdmin.to = user.eth_address;
+            Transaction.create(transactionObjectAdmin);
             Transaction.create(transactionObject);
             res.sendStatus(200);
-          }).catch((error) => {
+          })
+          .catch((error) => {
             console.log(error);
             transactionObjectF.to = user.eth_address;
-            Transaction.create(transactionObjectF);
-            res.status(500).json('Insufficient balance');
+            transactionObjectFAdmin.to = user.eth_address;
+            Transaction.create(transactionObjectFAdmin);
+            Transaction.create(transactionObjectF)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                res.status(500).json('Insufficient balance');
+              })
+              .catch(err => res.status(500).json(err));
           });
       } else {
         const account = new CryptoAccount(admin.bch_tempt);
@@ -1727,6 +1774,8 @@ class WalletController {
           .sendSats(user.bch_address, newStuff, coin_type)
           .then((rep) => {
             transactionObject.to = user.bch_address;
+            transactionObjectAdmin.to = user.bch_address;
+            Transaction.create(transactionObjectAdmin);
             Transaction.create(transactionObject)
               .then((respp) => {
                 res.sendStatus(200);
@@ -1736,8 +1785,16 @@ class WalletController {
           .catch((error) => {
             console.log(error);
             transactionObjectF.to = user.bch_address;
-            Transaction.create(transactionObjectF);
-            res.status(500).json('Insufficient balance');
+            transactionObjectFAdmin.to = user.bch_address;
+            Transaction.create(transactionObjectFAdmin);
+            Transaction.create(transactionObjectF)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                res.status(500).json('Insufficient balance');
+              })
+              .catch(err => res.status(500).json(err));
           });
       }
     } catch (error) {
