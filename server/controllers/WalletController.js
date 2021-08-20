@@ -1650,8 +1650,7 @@ class WalletController {
       console.log(user);
       const admin = await Admin.findOne({ role });
       const coin_type = user.payment_coin_type;
-      const bitcoin = user.payment_bitcoin;
-
+      const bitcoin = Number(user.payment_bitcoin);
       const transactionObject = {
         amount,
         coins: bitcoin,
@@ -1667,7 +1666,7 @@ class WalletController {
 
       const transactionObjectF = {
         amount,
-        coins: user.payment_bitcoin,
+        coins: bitcoin,
         type: 'debit',
         mode: 'Deposit',
         to: 'null',
@@ -1678,7 +1677,7 @@ class WalletController {
         status: 'pending',
       };
 
-      const refinedBitcoin = user.payment_bitcoin.toFixed(6);
+      const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
