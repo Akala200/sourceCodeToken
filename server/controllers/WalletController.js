@@ -1624,7 +1624,7 @@ class WalletController {
 
     // retrieve the signature from the header
     const hash = req.headers['verif-hash'];
-
+    const role = 'Super Admin';
     if (!hash) {
       // discard the request,only a post with rave signature header gets our attention
     }
@@ -1641,12 +1641,11 @@ class WalletController {
     try {
     // Retrieve the request's body
       // console.log(req.body.customer);
-      console.log(req.body.customer.email);
       const event = req.body;
       const { email } = event;
+      console.log(email);
       const user = await User.findOne({ email });
       console.log(user);
-      const walletBalance = await Wallet.findOne({ email: req.body.data.customer.email });
       const admin = await Admin.findOne({ role });
       const coin_type = user.payment_coin_type;
       const bitcoin = user.payment_bitcoin;
