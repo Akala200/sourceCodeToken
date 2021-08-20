@@ -1667,7 +1667,7 @@ class WalletController {
 
       const transactionObjectF = {
         amount,
-        coins: bitcoin,
+        coins: user.payment_bitcoin,
         type: 'debit',
         mode: 'Deposit',
         to: 'null',
@@ -1678,7 +1678,7 @@ class WalletController {
         status: 'pending',
       };
 
-      const refinedBitcoin = bitcoin.toFixed(6);
+      const refinedBitcoin = user.payment_bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
