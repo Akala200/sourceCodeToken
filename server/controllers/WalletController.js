@@ -1657,7 +1657,7 @@ class WalletController {
         coins: bitcoin,
         type: 'credit',
         mode: 'Deposit',
-        to: address,
+        to: 'null',
         user: user._id,
         coinType: coin_type,
         email: user.email,
@@ -1670,7 +1670,7 @@ class WalletController {
         coins: bitcoin,
         type: 'debit',
         mode: 'Deposit',
-        to: address,
+        to: 'null',
         coinType: coin_type,
         user: user._id,
         email: user.email,
@@ -1690,6 +1690,7 @@ class WalletController {
           .sendSats(user.address, newStuff, 'BTC')
           .then((rep) => {
             console.log(rep, 'result');
+            transactionObject.to = user.address;
             Transaction.create(transactionObject)
               .then((respp) => {
                 console.log(respp, 'created');
@@ -1701,6 +1702,7 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
+            transactionObjectF.to = user.address;
             Transaction.create(transactionObjectF);
             res.status(500).json('Insufficient balance');
           });
@@ -1711,10 +1713,12 @@ class WalletController {
         account
           .sendSats(user.eth_address, refinedEth, coin_type)
           .then((rep) => {
+            transactionObject.to = user.eth_address;
             Transaction.create(transactionObject);
             res.sendStatus(200);
           }).catch((error) => {
             console.log(error);
+            transactionObjectF.to = user.eth_address;
             Transaction.create(transactionObjectF);
             res.status(500).json('Insufficient balance');
           });
@@ -1723,6 +1727,7 @@ class WalletController {
         account
           .sendSats(user.bch_address, newStuff, coin_type)
           .then((rep) => {
+            transactionObject.to = user.bch_address;
             Transaction.create(transactionObject)
               .then((respp) => {
                 res.sendStatus(200);
@@ -1731,6 +1736,7 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
+            transactionObjectF.to = user.bch_address;
             Transaction.create(transactionObjectF);
             res.status(500).json('Insufficient balance');
           });
