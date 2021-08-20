@@ -1642,8 +1642,8 @@ class WalletController {
     // Retrieve the request's body
       // console.log(req.body.customer);
       const event = req.body;
-      const { email } = event;
-      console.log(email);
+      console.log(req.body.customer.email);
+      const { email } = req.body.customer;
       const user = await User.findOne({ email });
       console.log(user);
       const admin = await Admin.findOne({ role });
