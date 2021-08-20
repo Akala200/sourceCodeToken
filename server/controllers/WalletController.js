@@ -1667,7 +1667,7 @@ class WalletController {
       const transactionObjectF = {
         amount,
         coins: bitcoin,
-        type: 'debit',
+        type: 'credit',
         mode: 'Deposit',
         to: 'null',
         coinType: coin_type,
