@@ -16,6 +16,7 @@ import tracelogger from '../logger/tracelogger';
 import User from '../models/Users';
 import Commission from '../models/Commission';
 import Withdraw from '../models/Withdraw';
+import Admin from '../models/Admin';
 
 import Rate from '../models/Rate';
 
@@ -1644,6 +1645,7 @@ class WalletController {
       const event = req.body;
       console.log(req.body.customer.email);
       const { email } = req.body.customer;
+      const { amount } = req.body;
       const user = await User.findOne({ email });
       console.log(user);
       const admin = await Admin.findOne({ role });
