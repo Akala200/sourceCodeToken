@@ -106,7 +106,7 @@ class UserController {
 
       const msg = {
         to: email,
-        from: 'support@ningotv.com',
+        from: 'lolaaka6@gmail.com',
         subject: 'Email Verification',
         text: `Kindly use this ${code} to verify your account`,
       };
@@ -325,7 +325,7 @@ class UserController {
 
         const msg = {
           to: createdUser.email,
-          from: 'support@ningotv.com',
+          from: 'lolaaka6@gmail.com',
           subject: 'Email Verification',
           text: `Kindly use this ${code} to verify your account`,
         };
@@ -449,7 +449,7 @@ class UserController {
 
       const msg = {
         to: email,
-        from: 'support@ningotv.com',
+        from: 'lolaaka6@gmail.com',
         subject: 'Email Verification',
         text: `Kindly use this ${code} to verify your account`,
       };
