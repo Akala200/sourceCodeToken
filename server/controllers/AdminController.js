@@ -1006,7 +1006,10 @@ class AdminController {
       const updatedAdmin = await AdminWallet.findOne({
         email,
       });
-      console.log(updatedAdmin);
+
+      const user = await Admin.findOne({
+        email,
+      });
       let eth;
       let btc;
       let bch;
@@ -1020,18 +1023,11 @@ class AdminController {
         await account
           .getBalance(btcSelect)
           .then((balances) => {
-            console.log(balances)
-            Wallet.findOneAndUpdate(
+            AdminWallet.findOneAndUpdate(
               { email },
               { balance: balances },
               { new: true }
             )
-              .then((wallet) => {
-               console.log(wallet);
-              })
-              .catch((err) => {
-                res.send(err);
-              });
           })
           .catch((err) => {
             console.log(err);
@@ -1042,47 +1038,24 @@ class AdminController {
         await account
           .getBalance(ethSelect)
           .then((balances) => {
-            console.log(balances)
-            Wallet.findOneAndUpdate(
+            AdminWallet.findOneAndUpdate(
               { email },
               { eth_balance: balances },
               { new: true }
-            )
-              .then((wallet) => {
-               console.log(wallet);
-              })
-              .catch((err) => {
-                res.send(err);
-              });
+            ).then((wallet) => {
+              console.log(wallet);
+               res.send({ message: 'Success', data: wallet });
+             })
+             .catch((err) => {
+               res.send(err);
+               console.log(err)
+             });
           })
           .catch((err) => {
             console.log(err);
           });
       } 
-       if (bchSelect == 'BCH') {
-        const privateKey = user.bch_tempt;
-        const account = new CryptoAccount(privateKey);
-        await account
-          .getBalance(bchSelect)
-          .then((balances) => {
-            console.log(balances)
-            Wallet.findOneAndUpdate(
-              { email },
-              { bch_balance: balances },
-              { new: true }
-            )
-              .then((wallet) => {
-               console.log(wallet);
-              })
-              .catch((err) => {
-                res.send(err);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      return res.send({ message: 'Success', data: updatedAdmin });
+
 
     } catch (error) {
       return res.status(500).send(error);
