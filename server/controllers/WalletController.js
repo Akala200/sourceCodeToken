@@ -527,27 +527,76 @@ class WalletController {
       }
       let dataBalance;
 
-      if (balance.balance === 0) {
-        dataBalance = 0;
-        return res.status(200).json(responses.success(200, dataBalance));
-      }
-      const requestOptions = {
-        method: 'GET',
-        uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
-        qs: {
-          amount: balance.balance,
-          symbol: coinType,
-          convert: 'USD',
-        },
-        headers: {
-          'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
-        },
-        json: true,
-        gzip: true,
-      };
+      if (coinType === 'BTC') {
+        const requestOptions = {
+          method: 'GET',
+          uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+          qs: {
+            amount: balance.balance,
+            symbol: coinType,
+            convert: 'USD',
+          },
+          headers: {
+            'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          },
+          json: true,
+          gzip: true,
+        };
 
-      // eslint-disable-next-line max-len
-      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD));
+        // eslint-disable-next-line max-len
+        rp(requestOptions)
+          .then(response => res.status(200).json(200, response.data.quote.USD))
+          .catch((err) => {
+            dataBalance = 0;
+            return res.status(200).json(responses.success(200, dataBalance));
+          });
+      } else if (coinType === 'ETH') {
+        const requestOptions = {
+          method: 'GET',
+          uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+          qs: {
+            amount: balance.eth_balance,
+            symbol: coinType,
+            convert: 'USD',
+          },
+          headers: {
+            'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+          },
+          json: true,
+          gzip: true,
+        };
+
+        // eslint-disable-next-line max-len
+        rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD)).catch((err) => {
+          dataBalance = 0;
+          return res.status(200).json(responses.success(200, dataBalance));
+        });
+      } else {
+        {
+          const requestOptions = {
+            method: 'GET',
+            uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+            qs: {
+              amount: balance.bch_balance,
+              symbol: coinType,
+              convert: 'USD',
+            },
+            headers: {
+              'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+            },
+            json: true,
+            gzip: true,
+          };
+
+          // eslint-disable-next-line max-len
+          rp(requestOptions)
+            .then(response => res.status(200).json(200, response.data.quote.USD))
+            .catch((err) => {
+              dataBalance = 0;
+              return res.status(200).json(responses.success(200, dataBalance));
+            });
+        }
+      }
     } catch (error) {
       tracelogger(error);
     }
