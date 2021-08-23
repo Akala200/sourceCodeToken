@@ -1721,13 +1721,32 @@ class WalletController {
             console.log(rep, 'result');
             transactionObject.to = user.address;
             transactionObjectAdmin.to = user.address;
-            Transaction.create(transactionObjectAdmin);
+
+            function createTrans() {
+              Transaction.create(transactionObjectAdmin)
+                .then((respp) => {
+                  console.log(respp, 'created');
+                  // Send transaction fee no
+
+                  res.sendStatus(200);
+                })
+                .catch(err => res.status(500).json(err));
+            }
+
+            function createTransF() {
+              Transaction.create(transactionObjectFAdmin)
+                .then((respp) => {
+                  console.log(respp, 'created');
+                  // Send transaction fee no
+
+                  res.status(500).json('Insufficient balance');
+                })
+                .catch(err => res.status(500).json(err));
+            }
             Transaction.create(transactionObject)
               .then((respp) => {
-                console.log(respp, 'created');
-                // Send transaction fee no
-
-                res.sendStatus(200);
+                console.log(respp);
+                createTrans();
               })
               .catch(err => res.status(500).json(err));
           })
@@ -1735,13 +1754,10 @@ class WalletController {
             console.log(error);
             transactionObjectF.to = user.address;
             transactionObjectFAdmin.to = user.address;
-            Transaction.create(transactionObjectFAdmin);
             Transaction.create(transactionObjectF)
               .then((respp) => {
-                console.log(respp, 'created');
-                // Send transaction fee no
-
-                res.status(500).json('Insufficient balance');
+                console.log(respp);
+                createTransF();
               })
               .catch(err => res.status(500).json(err));
           });
