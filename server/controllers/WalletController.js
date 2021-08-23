@@ -162,7 +162,7 @@ class WalletController {
       const { user, coinType } = req.query;
 
       const transaction = await Transaction.find({ user }).sort({
-        $natural: 1,
+        $natural: -1,
       });
       console.log(transaction);
       if (!transaction) {
