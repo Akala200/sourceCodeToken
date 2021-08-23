@@ -1017,7 +1017,7 @@ class AdminController {
       const ethSelect = 'ETH';
       const bchSelect = 'BCH';
 
-      if (btcSelect == 'BTC') {
+      if (btcSelect === 'BTC') {
         const privateKey = user.tempt;
         const account = new CryptoAccount(privateKey);
         await account
@@ -1027,12 +1027,12 @@ class AdminController {
               { email },
               { balance: balances },
               { new: true }
-            )
+            );
           })
           .catch((err) => {
             console.log(err);
           });
-      }  if (ethSelect == 'ETH') {
+      } if (ethSelect === 'ETH') {
         const privateKey = user.eth_tempt;
         const account = new CryptoAccount(privateKey);
         await account
@@ -1044,19 +1044,17 @@ class AdminController {
               { new: true }
             ).then((wallet) => {
               console.log(wallet);
-               res.send({ message: 'Success', data: wallet });
-             })
-             .catch((err) => {
-               res.send(err);
-               console.log(err)
-             });
+              res.send({ message: 'Success', data: wallet });
+            })
+              .catch((err) => {
+                res.send(err);
+                console.log(err);
+              });
           })
           .catch((err) => {
             console.log(err);
           });
-      } 
-
-
+      }
     } catch (error) {
       return res.status(500).send(error);
     }
