@@ -1650,7 +1650,11 @@ class WalletController {
       console.log(user);
       const admin = await Admin.findOne({ role });
       const coin_type = user.payment_coin_type;
+      console.log(admin);
+      console.log(coin_type);
+
       const bitcoin = Number(user.payment_bitcoin);
+      console.log(bitcoin);
       const transactionObject = {
         amount,
         coins: bitcoin,
@@ -1709,7 +1713,7 @@ class WalletController {
       const newStuff = Math.ceil(satoshi);
       console.log(newStuff);
 
-      if (coin_type === 'BTC') {
+      if (coin_type == 'BTC') {
         const account = new CryptoAccount(admin.tempt);
         account
           .sendSats(user.address, newStuff, 'BTC')
