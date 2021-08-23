@@ -1790,7 +1790,7 @@ class WalletController {
                   console.log(respp, 'created');
                   // Send transaction fee no
 
-                  res.status(500).json('Insufficient balance');
+                    res.sendStatus(200);
                 })
                 .catch(err => res.status(500).json(err));
             }
@@ -1835,7 +1835,7 @@ class WalletController {
                 console.log(respp, 'created');
                 // Send transaction fee no
 
-                res.status(500).json('Insufficient balance');
+                  res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           });
@@ -1863,7 +1863,7 @@ class WalletController {
                 console.log(respp, 'created');
                 // Send transaction fee no
 
-                res.status(500).json('Insufficient balance');
+                  res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           });
