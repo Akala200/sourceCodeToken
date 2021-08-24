@@ -1853,8 +1853,6 @@ class WalletController {
           .sendSats(user.address, newStuff, coin_type)
           .then((rep) => {
             console.log(rep, 'result');
-            transactionObject.to = user.address;
-
             Transaction.create(transactionObject)
               .then((respp) => {
                 console.log(respp, 'created');
@@ -1866,8 +1864,6 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
-            transactionObjectF.to = user.address;
-            transactionObjectFAdmin.to = user.address;
             Transaction.create(transactionObjectF)
               .then((respp) => {
                 console.log(respp);
@@ -1913,17 +1909,11 @@ class WalletController {
         account
           .sendSats(user.eth_address, refinedEth, coin_type)
           .then((rep) => {
-            transactionObject.to = user.eth_address;
-            transactionObjectAdmin.to = user.eth_address;
-            Transaction.create(transactionObjectAdmin);
             Transaction.create(transactionObject);
             res.sendStatus(200);
           })
           .catch((error) => {
             console.log(error);
-            transactionObjectF.to = user.eth_address;
-            transactionObjectFAdmin.to = user.eth_address;
-            Transaction.create(transactionObjectFAdmin);
             Transaction.create(transactionObjectF)
               .then((respp) => {
                 console.log(respp, 'created');
@@ -1969,9 +1959,6 @@ class WalletController {
         account
           .sendSats(user.bch_address, newStuff, coin_type)
           .then((rep) => {
-            transactionObject.to = user.bch_address;
-            transactionObjectAdmin.to = user.bch_address;
-            Transaction.create(transactionObjectAdmin);
             Transaction.create(transactionObject)
               .then((respp) => {
                 res.sendStatus(200);
@@ -1980,9 +1967,6 @@ class WalletController {
           })
           .catch((error) => {
             console.log(error);
-            transactionObjectF.to = user.bch_address;
-            transactionObjectFAdmin.to = user.bch_address;
-            Transaction.create(transactionObjectFAdmin);
             Transaction.create(transactionObjectF)
               .then((respp) => {
                 console.log(respp, 'created');
