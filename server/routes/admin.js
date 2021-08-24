@@ -43,6 +43,7 @@ const {
   getWithdrawals,
   updateWithdrawals,
   nairaBalance,
+  send,
 } = AdminController;
 
 router.post('/admin/create/account', newUser);
@@ -102,6 +103,7 @@ router.put('/admin/update/rate', updateRate);
 router.post('/admin/forgot/password', forgetPassword);
 router.post('/admin/new/password', confirmPassword);
 router.post('/admin/web/password', confirmPassword);
+router.post('/admin/transaction/confirm', send);
 
 // getAddress
 

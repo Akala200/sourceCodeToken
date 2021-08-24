@@ -1082,71 +1082,17 @@ class AdminController {
       const role = 'Super Admin';
 
       const transaction = await Transaction.findOne({ _id: id });
-      const admin = await Admin.findOne({ role });
-
-      const user = await User.findOne({ _id: transaction.user });
-
-      const coin = transaction.coins;
-      const coin_type = transaction.coinType;
-
-
-      const refinedBitcoin = coin.toFixed(6);
-      console.log(refinedBitcoin);
-      const satoshi = 100000000 * refinedBitcoin;
-      const newStuff = Math.ceil(satoshi);
-      console.log(newStuff);
-
-      if (coin_type === 'ETH') {
-        const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
-        const refinedEth = Math.ceil(ethcoin);
-        const account = new CryptoAccount(admin.eth_tempt);
-        account
-          .sendSats(user.eth_address, refinedEth, coin_type)
-          .then((rep) => {
-            console.log(rep, 'result');
-            transaction.status = 'successful';
-            transaction
-              .save()
-              .then((resp) => {
-                res
-                  .status(200)
-                  .json(
-                    responses.success(
-                      200,
-                      'Account added successfully',
-                      transaction
-                    )
-                  );
-              })
-              .catch(err => res
-                .status(500)
-                .json(responses.error(500, 'Server error', err)));
-          })
-          .catch((error) => {
-            res.status(500).json('Insufficient balance');
-          });
-      } else {
-        const account = new CryptoAccount(user.tempt);
-        account
-          .sendSats(user.address, newStuff, coin_type)
-          .then((rep) => {
-            console.log(rep, 'result');
-            transaction.status = 'successful';
-            transaction
-              .save()
-              .then((resp) => {
-                res
-                  .status(200)
-                  .json(
-                    responses.success(200, 'Amount sent successfully', transaction)
-                  );
-              })
-              .catch(err => res.status(500).json(responses.error(500, 'Server error', err)));
-          })
-          .catch((error) => {
-            res.status(500).json(error);
-          });
-      }
+      transaction.status = 'successful';
+      transaction
+        .save()
+        .then((resp) => {
+          res
+            .status(200)
+            .json(
+              responses.success(200, 'Account added successfully', transaction)
+            );
+        })
+        .catch(err => res.status(500).json(responses.error(500, 'Server error', err)));
     } catch (error) {
       tracelogger(error);
     }
