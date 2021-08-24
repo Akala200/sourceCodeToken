@@ -798,7 +798,7 @@ class UserController {
         qs: {
           start: '1',
           limit: '6',
-          convert: 'NGN',
+          convert: 'USD',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '2ff45ac7-1d0b-4027-8d13-0fdfc1b7f2c3',
