@@ -936,7 +936,9 @@ class AdminController {
    */
   static async getAllTransaction(req, res) {
     try {
-      const getTransaction = await Transaction.find({});
+      const getTransaction = await Transaction.find({}).sort({
+        $natural: -1,
+      });
       console.log(getTransaction.length);
       if (getTransaction) {
         return res.send({ message: 'Success', data: getTransaction });
