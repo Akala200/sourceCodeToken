@@ -818,6 +818,27 @@ class WalletController {
     }
   }
 
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getRate(req, res) {
+    try {
+      const { amount } = req.query;
+
+      const getRate = await Rate.findOne({});
+      res.json(dataRes);
+    } catch (error) {
+      tracelogger(error);
+    }
+  }
+
+
   /**
    *@description Creates a new wallet
    *@static
@@ -1790,7 +1811,7 @@ class WalletController {
                   console.log(respp, 'created');
                   // Send transaction fee no
 
-                    res.sendStatus(200);
+                  res.sendStatus(200);
                 })
                 .catch(err => res.status(500).json(err));
             }
@@ -1835,7 +1856,7 @@ class WalletController {
                 console.log(respp, 'created');
                 // Send transaction fee no
 
-                  res.sendStatus(200);
+                res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           });
@@ -1863,7 +1884,7 @@ class WalletController {
                 console.log(respp, 'created');
                 // Send transaction fee no
 
-                  res.sendStatus(200);
+                res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           });
