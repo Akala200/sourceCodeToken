@@ -47,7 +47,7 @@ class WalletController {
    *@memberof UsersController
    */
   static async initiate(req, res) {
-    const currency = 'NGN';
+    const currency = 'USD';
     const { email, amount, bitcoin } = req.body;
     try {
       const user = await User.findOne({
@@ -114,7 +114,7 @@ class WalletController {
         qs: {
           amount: wallet.balance,
           id: '1',
-          convert: 'NGN',
+          convert: 'USD',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
@@ -130,7 +130,7 @@ class WalletController {
             const result = wallet.map(wall => ({
               currency: 'BTC',
               price: wall.balance,
-              priceCurrency: response.data.quote.NGN,
+              priceCurrency: response.data.quote.USD,
             }));
             return res.status(200).json(responses.success(200, result));
           }
@@ -633,7 +633,7 @@ class WalletController {
         qs: {
           amount: balance.eth_balance,
           symbol: 'ETH',
-          convert: 'NGN',
+          convert: 'USD',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
@@ -643,7 +643,7 @@ class WalletController {
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD));
     } catch (error) {
       tracelogger(error);
     }
@@ -680,7 +680,7 @@ class WalletController {
         qs: {
           amount: balance.dodge_balance,
           symbol: 'DOGE',
-          convert: 'NGN',
+          convert: 'USD',
         },
         headers: {
           'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
@@ -690,7 +690,7 @@ class WalletController {
       };
 
       // eslint-disable-next-line max-len
-      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.NGN));
+      rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD));
     } catch (error) {
       tracelogger(error);
     }
@@ -965,33 +965,103 @@ class WalletController {
         gzip: true,
       };
 
+
       if (coin_type == 'BTC') {
         rp(requestOptions).then((response) => {
           console.log(response);
-          const dataRes = {
-            price: response.data.quote.BTC.price,
-            amountAfterFee: realAmount,
-            fee: discount,
-          };
-          res.json(dataRes);
+          function getFee() {
+            const requestOptionsFee = {
+              method: 'GET',
+              uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+              qs: {
+                amount: discount,
+                id: '2781',
+                convert: coin_type,
+              },
+              headers: {
+                'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+              },
+              json: true,
+              gzip: true,
+            };
+
+            rp(requestOptionsFee).then((reps) => {
+              console.log(response);
+              const dataRes = {
+                price: response.data.quote.BTC.price,
+                amountAfterFee: realAmount,
+                fee: reps.data.quote.BTC.price,
+              };
+
+              res.json(dataRes);
+            });
+          }
+          getFee();
         });
       } else if (coin_type == 'ETH') {
         rp(requestOptions).then((response) => {
-          const dataRes = {
-            price: response.data.quote.ETH.price,
-            amountAfterFee: realAmount,
-            fee: discount,
-          };
-          res.json(dataRes);
+          console.log(response);
+          function getFee() {
+            const requestOptionsFee = {
+              method: 'GET',
+              uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+              qs: {
+                amount: discount,
+                id: '2781',
+                convert: coin_type,
+              },
+              headers: {
+                'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+              },
+              json: true,
+              gzip: true,
+            };
+
+            rp(requestOptionsFee).then((reps) => {
+              console.log(response);
+              const dataRes = {
+                price: response.data.quote.ETH.price,
+                amountAfterFee: realAmount,
+                fee: reps.data.quote.ETH.price,
+              };
+
+              res.json(dataRes);
+            });
+          }
+          getFee();
         });
       } else if (coin_type == 'BCH') {
         rp(requestOptions).then((response) => {
-          const dataRes = {
-            price: response.data.quote.BCH.price,
-            amountAfterFee: realAmount,
-            fee: discount,
-          };
-          res.json(dataRes);
+          console.log(response);
+          function getFee() {
+            const requestOptionsFee = {
+              method: 'GET',
+              uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
+              qs: {
+                amount: discount,
+                id: '2781',
+                convert: coin_type,
+              },
+              headers: {
+                'X-CMC_PRO_API_KEY':
+                         '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+              },
+              json: true,
+              gzip: true,
+            };
+
+            rp(requestOptionsFee).then((reps) => {
+              console.log(response);
+              const dataRes = {
+                price: response.data.quote.BCH.price,
+                amountAfterFee: realAmount,
+                fee: reps.data.quote.BCH.price,
+              };
+
+              res.json(dataRes);
+            });
+          }
+          getFee();
         });
       } else {
         rp(requestOptions).then((response) => {
@@ -1210,7 +1280,7 @@ class WalletController {
       name: accountName,
       account_number: accountNumber,
       bank_code: code,
-      currency: 'NGN',
+      currency: 'USD',
     };
 
     function saveBank(id1) {
