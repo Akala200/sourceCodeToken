@@ -42,6 +42,7 @@ const {
   getOneTransaction,
   getWithdrawals,
   updateWithdrawals,
+  nairaBalance,
 } = AdminController;
 
 router.post('/admin/create/account', newUser);
@@ -57,6 +58,7 @@ router.get('/admin/customer/transaction', getTransaction);
 router.get('/admin/user/address', getAddress);
 router.get('/admin/transaction', getAllTransaction);
 router.get('/admin/single/transaction', getOneTransaction);
+router.get('/admin/balance/naira', nairaBalance);
 
 router.get('/admin/customer/unverified', getUnverifiedUser);
 router.get('/admin/customer/withdrawals', getWithdrawals);
