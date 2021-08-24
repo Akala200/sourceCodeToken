@@ -1905,31 +1905,10 @@ class WalletController {
             transactionObject.to = user.address;
             transactionObjectAdmin.to = user.address;
 
-            function createTrans() {
-              Transaction.create(transactionObjectAdmin)
-                .then((respp) => {
-                  console.log(respp, 'created');
-                  // Send transaction fee no
-
-                  res.sendStatus(200);
-                })
-                .catch(err => res.status(500).json(err));
-            }
-
-            function createTransF() {
-              Transaction.create(transactionObjectFAdmin)
-                .then((respp) => {
-                  console.log(respp, 'created');
-                  // Send transaction fee no
-
-                  res.sendStatus(200);
-                })
-                .catch(err => res.status(500).json(err));
-            }
             Transaction.create(transactionObject)
               .then((respp) => {
                 console.log(respp);
-                createTrans();
+                res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           })
@@ -1940,7 +1919,7 @@ class WalletController {
             Transaction.create(transactionObjectF)
               .then((respp) => {
                 console.log(respp);
-                createTransF();
+                res.sendStatus(200);
               })
               .catch(err => res.status(500).json(err));
           });
