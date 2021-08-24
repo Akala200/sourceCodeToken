@@ -1330,6 +1330,7 @@ class WalletController {
       });
   }
 
+
   /**
    *@description Creates a new wallet
    *@static
@@ -1783,6 +1784,7 @@ class WalletController {
     }
   }
 
+
   static async webhook(req, res) {
     /* It is a good idea to log all events received. Add code *
      * here to log the signature and body to db or file       */
@@ -1866,7 +1868,7 @@ class WalletController {
         status: 'failed',
       };
 
-      const refinedBitcoin = bitcoin.toFixed(4);
+      const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
