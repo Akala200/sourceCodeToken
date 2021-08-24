@@ -569,10 +569,12 @@ class WalletController {
         };
 
         // eslint-disable-next-line max-len
-        rp(requestOptions).then(response => res.status(200).json(200, response.data.quote.USD)).catch((err) => {
-          dataBalance = 0;
-          return res.status(200).json(responses.success(200, dataBalance));
-        });
+        rp(requestOptions)
+          .then(response => res.status(200).json(200, response.data.quote.USD))
+          .catch((err) => {
+            dataBalance = 0;
+            return res.status(200).json(responses.success(200, dataBalance));
+          });
       } else {
         {
           const requestOptions = {
@@ -820,7 +822,6 @@ class WalletController {
     }
   }
 
-
   /**
    *@description Creates a new wallet
    *@static
@@ -839,7 +840,6 @@ class WalletController {
       tracelogger(error);
     }
   }
-
 
   /**
    *@description Creates a new wallet
@@ -967,7 +967,6 @@ class WalletController {
         gzip: true,
       };
 
-
       if (coin_type == 'BTC') {
         rp(requestOptions).then((response) => {
           console.log(response);
@@ -1045,8 +1044,7 @@ class WalletController {
                 convert: coin_type,
               },
               headers: {
-                'X-CMC_PRO_API_KEY':
-                         '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
+                'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
               },
               json: true,
               gzip: true,
@@ -1357,7 +1355,6 @@ class WalletController {
       const user = await User.findOne({ email });
       const walletBalance = await Wallet.findOne({ email });
 
-
       const transactionObject = {
         amount,
         coins: bitcoin,
@@ -1635,11 +1632,7 @@ class WalletController {
   static async withdraw(req, res) {
     try {
       const {
-        amount,
-        coin_type,
-        bitcoin,
-        email,
-        flatAmount,
+        amount, coin_type, bitcoin, email, flatAmount
       } = req.body;
 
       const role = 'Super Admin';
@@ -1653,11 +1646,8 @@ class WalletController {
       if (!bank) {
         return res
           .status(400)
-          .json(
-            responses.error(400, 'Please complete account setup')
-          );
+          .json(responses.error(400, 'Please complete account setup'));
       }
-
 
       const transactionObject = {
         amount,
@@ -1793,29 +1783,14 @@ class WalletController {
     }
   }
 
-
   static async webhook(req, res) {
     /* It is a good idea to log all events received. Add code *
      * here to log the signature and body to db or file       */
 
-    // retrieve the signature from the header
-    const hash = req.headers['verif-hash'];
     const role = 'Super Admin';
-    if (!hash) {
-      // discard the request,only a post with rave signature header gets our attention
-    }
-
-    // Get signature stored as env variable on your server
-    const secret_hash = 'fishrice';
-
-    // check if signatures match
-
-    if (hash !== secret_hash) {
-      // silently exit, or check that you are passing the write hash on your server.
-    }
 
     try {
-    // Retrieve the request's body
+      // Retrieve the request's body
       // console.log(req.body.customer);
       const event = req.body;
       console.log(req.body.customer.email);
@@ -1891,18 +1866,17 @@ class WalletController {
         status: 'failed',
       };
 
-      const refinedBitcoin = flatAmount.toFixed(6);
+      const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
-
 
       if (coin_type == 'BTC') {
         console.log(newStuff);
         console.log(coin_type);
         const account = new CryptoAccount(admin.tempt);
         account
-          .sendSats(address, refinedEth, coin_type)
+          .sendSats(user.address, newStuff, coin_type)
           .then((rep) => {
             console.log(rep, 'result');
             transactionObject.to = user.address;
