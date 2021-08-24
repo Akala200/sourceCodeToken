@@ -751,6 +751,7 @@ class AdminController {
       const rate = {
         variable_rate: req.body.variable_rate,
         sale_rate: req.body.sale_rate,
+        transfer_rate: req.body.transfer_rate
       };
 
       if (getRate) {
