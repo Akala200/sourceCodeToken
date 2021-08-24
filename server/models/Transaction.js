@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const transactionSchema = mongoose.Schema({
   amount: { type: Number },
   coins: { type: Number },
-  type: { type: String, enum: ["credit", "debit"] },
+  type: { type: String, enum: ['credit', 'debit'] },
   mode: { type: String },
   coinType: { type: String },
   user: { type: String },
@@ -12,10 +12,10 @@ const transactionSchema = mongoose.Schema({
   cardType: { type: String },
   lastFour: { type: String },
   ref: { type: String },
-  walletId: { type: mongoose.Schema.ObjectId, ref: "Wallet" },
+  walletId: { type: mongoose.Schema.ObjectId, ref: 'Wallet' },
   status: {
     type: String,
-    enum: ["pending", "successful", "failed"],
+    enum: ['pending', 'successful', 'failed'],
   },
   createdAt: { type: Date, default: Date.now },
   deletedAt: { type: Date, default: null },
