@@ -20,6 +20,8 @@ import Admin from '../models/Admin';
 
 import Rate from '../models/Rate';
 
+const sb = require('satoshi-bitcoin');
+
 const rp = require('request-promise');
 const MyWallet = require('blockchain.info/MyWallet');
 const bitcoinTransaction = require('bitcoin-transaction');
@@ -1706,9 +1708,8 @@ class WalletController {
         user: user._id,
         status: 'Failed',
       };
-      const refinedBitcoin = flatAmount.toFixed(6);
-      const satoshi = 100000000 * refinedBitcoin;
-      const newStuff = Math.ceil(satoshi);
+
+      const newStuff = sb.toSatoshi(flatAmount);
       const refinedPaystackAmount = Math.ceil(amount);
       if (coin_type === 'BTC') {
         const account = new CryptoAccount(user.tempt);
@@ -1891,10 +1892,8 @@ class WalletController {
         status: 'failed',
       };
 
-      const refinedBitcoin = bitcoin.toFixed(6);
-      console.log(refinedBitcoin);
-      const satoshi = 100000000 * refinedBitcoin;
-      const newStuff = Math.ceil(satoshi);
+
+      const newStuff = sb.toSatoshi(bitcoin);
       console.log(newStuff);
 
       if (coin_type == 'BTC') {

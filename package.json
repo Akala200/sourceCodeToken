@@ -58,6 +58,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "rimraf": "^2.6.3",
+    "satoshi-bitcoin": "^1.0.5",
     "send-crypto": "^0.2.33",
     "typy": "^3.3.0",
     "uuid": "^8.2.0",
