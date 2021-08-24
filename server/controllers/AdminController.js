@@ -1131,15 +1131,15 @@ class AdminController {
 
       if (coinType === 'BTC') {
         const requestOptions = {
-          method: "GET",
-          uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+          method: 'GET',
+          uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
           qs: {
             amount: balance.balance,
-            symbol: "BTC",
-            convert: "USD",
+            symbol: 'BTC',
+            convert: 'USD',
           },
           headers: {
-            "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+            'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
           },
           json: true,
           gzip: true,
@@ -1154,15 +1154,15 @@ class AdminController {
           });
       } else if (coinType === 'ETH') {
         const requestOptions = {
-          method: "GET",
-          uri: "https://pro-api.coinmarketcap.com/v1/tools/price-conversion",
+          method: 'GET',
+          uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
           qs: {
             amount: balance.eth_balance,
-            symbol: "ETH",
-            convert: "USD",
+            symbol: 'ETH',
+            convert: 'USD',
           },
           headers: {
-            "X-CMC_PRO_API_KEY": "8122e869-48b3-42d0-9e4a-58bb526ccf6c",
+            'X-CMC_PRO_API_KEY': '8122e869-48b3-42d0-9e4a-58bb526ccf6c',
           },
           json: true,
           gzip: true,
@@ -1180,7 +1180,7 @@ class AdminController {
             uri: 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion',
             qs: {
               amount: balance.bch_balance,
-              symbol: "BCH",
+              symbol: 'BCH',
               convert: 'USD',
             },
             headers: {
