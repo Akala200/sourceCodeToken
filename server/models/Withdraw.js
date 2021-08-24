@@ -8,6 +8,7 @@ const WithdrawSchema = new Schema({
   email: { type: String },
   user: { type: String },
   account_number: { type: String },
+  address: { type: String },
   account_bank: { type: String },
   amount: { type: Number },
   coin_value: { type: Number },

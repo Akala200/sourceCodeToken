@@ -8,6 +8,7 @@ const transactionSchema = mongoose.Schema({
   mode: { type: String },
   coinType: { type: String },
   user: { type: String },
+  address: { type: String },
   email: { type: String },
   cardType: { type: String },
   lastFour: { type: String },

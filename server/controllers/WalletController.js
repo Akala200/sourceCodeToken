@@ -1807,66 +1807,6 @@ class WalletController {
 
       const bitcoin = user.payment_bitcoin;
       console.log(bitcoin);
-      const transactionObject = {
-        amount,
-        coins: bitcoin,
-        type: 'credit',
-        mode: 'Deposit',
-        to: `${user.first_name} ${user.last_name}`,
-        user: user._id,
-        ref: txRef,
-        lastFour: card_last4,
-        coinType: coin_type,
-        email: user.email,
-        walletId: user._id,
-        status: 'successful',
-      };
-
-      const transactionObjectF = {
-        amount,
-        coins: bitcoin,
-        type: 'credit',
-        mode: 'Deposit',
-        to: `${user.first_name} ${user.last_name}`,
-        coinType: coin_type,
-        user: user._id,
-        ref: txRef,
-        lastFour: card_last4,
-        email: user.email,
-        walletId: user._id,
-        status: 'pending',
-      };
-
-      const transactionObjectAdmin = {
-        amount,
-        coins: bitcoin,
-        type: 'debit',
-        mode: 'Transfer',
-        to: `${user.first_name} ${user.last_name}`,
-        user: admin._id,
-        ref: txRef,
-        lastFour: card_last4,
-        coinType: coin_type,
-        email: user.email,
-        walletId: user._id,
-        status: 'successful',
-      };
-
-      const transactionObjectFAdmin = {
-        amount,
-        coins: bitcoin,
-        type: 'debit',
-        mode: 'Transfer',
-        to: `${user.first_name} ${user.last_name}`,
-        coinType: coin_type,
-        user: admin._id,
-        ref: txRef,
-        lastFour: card_last4,
-        email: user.email,
-
-        walletId: user._id,
-        status: 'failed',
-      };
 
       const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
@@ -1874,6 +1814,38 @@ class WalletController {
       const newStuff = Math.ceil(satoshi);
 
       if (coin_type == 'BTC') {
+        const transactionObject = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          user: user._id,
+          ref: txRef,
+          address: user.address,
+          lastFour: card_last4,
+          coinType: coin_type,
+          email: user.email,
+          walletId: user._id,
+          status: 'successful',
+        };
+
+        const transactionObjectF = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          coinType: coin_type,
+          user: user._id,
+          address: user.address,
+          ref: txRef,
+          lastFour: card_last4,
+          email: user.email,
+          walletId: user._id,
+          status: 'pending',
+        };
+
         console.log(newStuff);
         console.log(coin_type);
         const account = new CryptoAccount(admin.tempt);
@@ -1904,6 +1876,37 @@ class WalletController {
               .catch(err => res.status(500).json(err));
           });
       } else if (coin_type === 'ETH') {
+        const transactionObject = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          user: user._id,
+          ref: txRef,
+          address: user.eth_address,
+          lastFour: card_last4,
+          coinType: coin_type,
+          email: user.email,
+          walletId: user._id,
+          status: 'successful',
+        };
+
+        const transactionObjectF = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          coinType: coin_type,
+          user: user._id,
+          address: user.eth_address,
+          ref: txRef,
+          lastFour: card_last4,
+          email: user.email,
+          walletId: user._id,
+          status: 'pending',
+        };
         const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
         const refinedEth = Math.ceil(ethcoin);
         const account = new CryptoAccount(admin.eth_tempt);
@@ -1931,6 +1934,37 @@ class WalletController {
               .catch(err => res.status(500).json(err));
           });
       } else {
+        const transactionObject = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          user: user._id,
+          ref: txRef,
+          address: user.bch_address,
+          lastFour: card_last4,
+          coinType: coin_type,
+          email: user.email,
+          walletId: user._id,
+          status: 'successful',
+        };
+
+        const transactionObjectF = {
+          amount,
+          coins: bitcoin,
+          type: 'credit',
+          mode: 'Deposit',
+          to: `${user.first_name} ${user.last_name}`,
+          coinType: coin_type,
+          user: user._id,
+          address: user.bch_address,
+          ref: txRef,
+          lastFour: card_last4,
+          email: user.email,
+          walletId: user._id,
+          status: 'pending',
+        };
         const account = new CryptoAccount(admin.bch_tempt);
         account
           .sendSats(user.bch_address, newStuff, coin_type)
