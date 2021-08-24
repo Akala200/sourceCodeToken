@@ -832,7 +832,7 @@ class WalletController {
       const { amount } = req.query;
 
       const getRate = await Rate.findOne({});
-      res.json(dataRes);
+      res.json(getRate);
     } catch (error) {
       tracelogger(error);
     }
