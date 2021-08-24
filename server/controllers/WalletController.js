@@ -1901,7 +1901,7 @@ class WalletController {
       if (coin_type == 'BTC') {
         const account = new CryptoAccount(admin.tempt);
         account
-          .sendSats(user.address, bitcoin, 'BTC')
+          .sendSats(user.address, newStuff, 'BTC')
           .then((rep) => {
             console.log(rep, 'result');
             transactionObject.to = user.address;
