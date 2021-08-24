@@ -1866,7 +1866,7 @@ class WalletController {
         status: 'failed',
       };
 
-      const refinedBitcoin = bitcoin.toFixed(6);
+      const refinedBitcoin = bitcoin.toFixed(4);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
