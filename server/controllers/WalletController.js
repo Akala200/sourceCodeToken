@@ -1823,13 +1823,12 @@ class WalletController {
       const { amount, txRef } = req.body;
       const { card6, card_last4 } = req.body.entity;
       const user = await User.findOne({ email });
-      console.log(user);
+      console.log(req.body);
       const admin = await Admin.findOne({ role });
       const coin_type = user.payment_coin_type;
-      console.log(admin);
       console.log(coin_type);
 
-      const bitcoin = Number(user.payment_bitcoin)
+      const bitcoin = user.payment_bitcoin;
       console.log(bitcoin);
       const transactionObject = {
         amount,
