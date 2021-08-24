@@ -1892,25 +1892,28 @@ class WalletController {
         status: 'failed',
       };
 
-
-      const satoshi = sb.toSatoshi(bitcoin);
+      const refinedBitcoin = flatAmount.toFixed(6);
+      console.log(refinedBitcoin);
+      const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
 
-      console.log(newStuff);
 
       if (coin_type == 'BTC') {
+        console.log(newStuff);
+        console.log(coin_type);
         const account = new CryptoAccount(admin.tempt);
         account
-          .sendSats(user.address, newStuff, 'BTC')
+          .sendSats(address, refinedEth, coin_type)
           .then((rep) => {
             console.log(rep, 'result');
             transactionObject.to = user.address;
-            transactionObjectAdmin.to = user.address;
 
             Transaction.create(transactionObject)
               .then((respp) => {
-                console.log(respp);
-                res.sendStatus(200);
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                return res.status(200).json('Transaction sent');
               })
               .catch(err => res.status(500).json(err));
           })
