@@ -945,7 +945,7 @@ class WalletController {
 
       const getRate = await Rate.findOne({});
       const percent = getRate.sale_rate;
-      const discount = (percent / 100) * amount;
+      const discount = amount - getRate.transfer_rate;
       const realAmount = amount - discount;
       console.log(realAmount, 'aftersub');
       console.log(discount, 'discount amount');
