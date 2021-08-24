@@ -33,8 +33,8 @@ const UserSchema = new Schema(
       default: 'not set',
     },
     payment_bitcoin: {
-      type: String,
-      default: 'null',
+      type: Number,
+      default: 0,
     },
     password: {
       type: String,
