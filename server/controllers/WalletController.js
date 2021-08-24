@@ -1893,7 +1893,9 @@ class WalletController {
       };
 
 
-      const newStuff = sb.toSatoshi(bitcoin);
+      const satoshi = sb.toSatoshi(bitcoin);
+      const newStuff = Math.ceil(satoshi);
+
       console.log(newStuff);
 
       if (coin_type == 'BTC') {
