@@ -1387,32 +1387,64 @@ class WalletController {
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
       console.log(newStuff);
-      const account = new CryptoAccount(user.tempt);
-      account
-        .sendSats(address, newStuff, 'BTC')
-        .then((rep) => {
-          console.log(rep, 'result');
-          Transaction.create(transactionObject)
-            .then((respp) => {
-              console.log(respp, 'created');
-              // Send transaction fee no
 
-              return res.status(200).json('Transaction sent');
-            })
-            .catch(err => res.status(500).json(err));
-        })
-        .catch((error) => {
-          console.log(error);
-          Transaction.create(transactionObjectF)
-            .then((respp) => {
-              console.log(respp);
-              return res.status(500).json('Insufficient balance');
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(500).json('Insufficient balance');
-            });
-        });
+      if (coin_type === 'ETH') {
+        const ethcoin = convert(refinedBitcoin, 'ether', 'wei');
+        const refinedEth = Math.ceil(ethcoin);
+        const account = new CryptoAccount(user.eth_tempt);
+        account
+          .sendSats(address, refinedEth, coin_type)
+          .then((rep) => {
+            console.log(rep, 'result');
+            Transaction.create(transactionObject)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                return res.status(200).json('Transaction sent');
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            Transaction.create(transactionObjectF)
+              .then((respp) => {
+                console.log(respp);
+                return res.status(500).json('Insufficient balance');
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json('Insufficient balance');
+              });
+          });
+      } else {
+        const account = new CryptoAccount(user.tempt);
+        account
+          .sendSats(address, newStuff, coin_type)
+          .then((rep) => {
+            console.log(rep, 'result');
+            Transaction.create(transactionObject)
+              .then((respp) => {
+                console.log(respp, 'created');
+                // Send transaction fee no
+
+                return res.status(200).json('Transaction sent');
+              })
+              .catch(err => res.status(500).json(err));
+          })
+          .catch((error) => {
+            console.log(error);
+            Transaction.create(transactionObjectF)
+              .then((respp) => {
+                console.log(respp);
+                return res.status(500).json('Insufficient balance');
+              })
+              .catch((err) => {
+                console.log(err);
+                res.status(500).json('Insufficient balance');
+              });
+          });
+      }
     } catch (error) {
       tracelogger(error);
     }
