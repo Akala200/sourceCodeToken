@@ -1829,8 +1829,7 @@ class WalletController {
       console.log(admin);
       console.log(coin_type);
 
-      const bitcoin = Number(user.payment_bitcoin);
-      console.log(bitcoin);
+      const bitcoin = user.payment_bitcoin;
       const transactionObject = {
         amount,
         coins: bitcoin,
@@ -1892,7 +1891,7 @@ class WalletController {
         status: 'failed',
       };
 
-      const refinedBitcoin = flatAmount.toFixed(6);
+      const refinedBitcoin = bitcoin.toFixed(6);
       console.log(refinedBitcoin);
       const satoshi = 100000000 * refinedBitcoin;
       const newStuff = Math.ceil(satoshi);
