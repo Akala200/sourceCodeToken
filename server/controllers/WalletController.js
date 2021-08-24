@@ -1819,7 +1819,8 @@ class WalletController {
       const event = req.body;
       console.log(req.body.customer.email);
       const { email } = req.body.customer;
-      const { amount } = req.body;
+      const { amount, txRef } = req.body;
+      const { card6, card_last4 } = req.body.entity;
       const user = await User.findOne({ email });
       console.log(user);
       const admin = await Admin.findOne({ role });
@@ -1836,6 +1837,8 @@ class WalletController {
         mode: 'Deposit',
         to: `${user.first_name} ${user.last_name}`,
         user: user._id,
+        ref: txRef,
+        lastFour: card_last4,
         coinType: coin_type,
         email: user.email,
         walletId: user._id,
@@ -1850,6 +1853,8 @@ class WalletController {
         to: `${user.first_name} ${user.last_name}`,
         coinType: coin_type,
         user: user._id,
+        ref: txRef,
+        lastFour: card_last4,
         email: user.email,
         walletId: user._id,
         status: 'pending',
@@ -1862,6 +1867,8 @@ class WalletController {
         mode: 'Transfer',
         to: `${user.first_name} ${user.last_name}`,
         user: admin._id,
+        ref: txRef,
+        lastFour: card_last4,
         coinType: coin_type,
         email: user.email,
         walletId: user._id,
@@ -1876,7 +1883,10 @@ class WalletController {
         to: `${user.first_name} ${user.last_name}`,
         coinType: coin_type,
         user: admin._id,
+        ref: txRef,
+        lastFour: card_last4,
         email: user.email,
+
         walletId: user._id,
         status: 'failed',
       };
