@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 app.use('/api', routes);
 
 app.use('*', notFound);
+
 app.use(errorHandler);
 
 process.on('unhandledRejection', (reason) => {
@@ -47,6 +48,7 @@ process.on('unhandledRejection', (reason) => {
 process.on('uncaughtException', (reason) => {
   traceLogger(reason);
 });
+
 
 const PORT = process.env.PORT || 5678;
 app.listen(PORT, () => {
