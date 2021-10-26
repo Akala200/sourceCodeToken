@@ -74,7 +74,7 @@ class UserController {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'adeiyiakala91@@gmail.com',
+        user: 'swoxcrypto@gmail.com',
         pass: process.env.PASSWORD,
       },
     });
@@ -106,7 +106,7 @@ class UserController {
 
       const msg = {
         to: email,
-        from: 'lolaaka6@gmail.com',
+        from: 'swoxcrypto@gmail.com',
         subject: 'Email Verification',
         text: `Kindly use this ${code} to verify your account`,
       };
@@ -146,7 +146,7 @@ class UserController {
         Messages: [
           {
             From: {
-              Email: 'lolaaka6@gmail.com',
+              Email: 'swoxcrypto@gmail.com',
               Name: 'Sourcecode Exchange',
             },
             To: [
@@ -282,7 +282,7 @@ class UserController {
       host: 'smtp.gmail.com',
       auth: {
         type: 'OAuth2',
-        user: 'adeiyiakala91@gmail.com',
+        user: 'swoxcrypto@gmail.com',
         clientId: 'CLIENT_ID_HERE',
         clientSecret: 'CLIENT_SECRET_HERE',
         refreshToken: 'REFRESH_TOKEN_HERE',
@@ -317,7 +317,7 @@ class UserController {
         const createdUser = await User.create(userObject);
 
         const mailOptions = {
-          from: 'adeiyiakala91@@gmail.com',
+          from: 'swoxcrypto@gmail.com',
           to: email,
           subject: 'Account Verification',
           text: `Kindly use this ${code} to verify your account`,
@@ -325,7 +325,7 @@ class UserController {
 
         const msg = {
           to: createdUser.email,
-          from: 'lolaaka6@gmail.com',
+          from: 'swoxcrypto@gmail.com',
           subject: 'Email Verification',
           text: `Kindly use this ${code} to verify your account`,
         };
@@ -341,7 +341,7 @@ class UserController {
           Messages: [
             {
               From: {
-                Email: 'lolaaka6@gmail.com',
+                Email: 'swoxcrypto@gmail.com',
                 Name: 'Sourcecode Exchange',
               },
               To: [
@@ -449,7 +449,7 @@ class UserController {
 
       const msg = {
         to: email,
-        from: 'lolaaka6@gmail.com',
+        from: 'swoxcrypto@gmail.com',
         subject: 'Email Verification',
         text: `Kindly use this ${code} to verify your account`,
       };
