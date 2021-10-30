@@ -33,6 +33,7 @@ const {
   getBankCode,
   createOtherWallet,
   initiatePayment,
+  getRate,
 } = UserController;
 
 router.post('/create/account', newUser);
@@ -50,6 +51,8 @@ router.get('/coin/market/xrp', bitcoinMobileMarketXRP);
 router.get('/coin/market/sudt', bitcoinMobileMarketUSDT);
 router.get('/coin/market/eth', bitcoinMobileMarketETH);
 router.get('/user/address', getAddress);
+router.get('/get/rate', getRate);
+
 router.put('/update/password', changePassword);
 router.post('/update/email', changeEmail);
 router.post('/update/web', changeEmail);

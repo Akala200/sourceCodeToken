@@ -20,6 +20,7 @@ import { signToken } from '../utils/storeToken';
 import Wallet from '../models/Wallet';
 import Transaction from '../models/Transaction';
 import Admin from '../models/Admin';
+import Rate from '../models/Rate';
 
 const sgMail = require('@sendgrid/mail');
 const rp = require('request-promise');
@@ -820,6 +821,29 @@ class UserController {
       tracelogger(error);
     }
   }
+
+
+  /**
+   *@description Creates a new wallet
+   *@static
+   *@param  {Object} req - request
+   *@param  {object} res - response
+   *@returns {object} - status code, message and created wallet
+   *@memberof UsersController
+   */
+  static async getRate(req, res) {
+    try {
+      const getRate = await Rate.findOne({});
+      if (getRate) {
+        return res.send({ message: 'Success', data: getRate });
+      } else {
+        return res.send({ message: 'Failed', data: 0 });
+      }
+    } catch (error) {
+      return res.status(500).send(error);
+    }
+  }
+
 
   /**
    *@description Creates a new wallet
