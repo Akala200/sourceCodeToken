@@ -1249,7 +1249,7 @@ class WalletController {
     try {
       const { email } = req.query;
 
-      const datails = await Bank.findOne({ email }).limit(5);
+      const datails = await Bank.findOne({ id: email });
 
       if (!datails) {
         return res

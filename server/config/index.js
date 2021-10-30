@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import dotenv from 'dotenv';
 
 dotenv.config();
