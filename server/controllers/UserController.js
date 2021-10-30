@@ -156,7 +156,7 @@ class UserController {
                 Name: `${user.first_name}  ${user.last_name}`,
               },
             ],
-            Subject: 'Account Verification',
+            Subject: 'Forgot Password',
             TextPart: 'Verify your account',
             HTMLPart: `<h3>Kindly use this OTP code - ${code} to verify your account`,
             CustomID: 'AppGettingStartedTest',
