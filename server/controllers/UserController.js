@@ -29,10 +29,10 @@ const CryptoAccount = require('send-crypto');
 const cw = require('crypto-wallets');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-const mailjet = require('node-mailjet').connect(
-  'bd1dcb75346beb0635e30c1fb11452ec',
-  '94d87e8ca6102f4c2bcb9e1ff032117c'
-);
+
+const mailjet = require('node-mailjet')
+  .connect('acb15f6ba3f5163faa7eda63b49538ec', '04f6cd2f6facba7695ccf98afeefece6');
+
 const { MyWallet } = require('blockchain.info');
 
 const options = {
