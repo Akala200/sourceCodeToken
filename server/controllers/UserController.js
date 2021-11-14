@@ -1034,7 +1034,7 @@ class UserController {
     } catch (error) {
       return res
         .status(500)
-        .json(responses.error(500, { msg: 'Server error' }));
+        .json(responses.error(500, { message: 'Server error' }));
     }
 
     if (!user) {
