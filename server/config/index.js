@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-  MONGODB_DATABASE: process.env.DB_URL_DEV || 'mongodb://wallet:wallet123@ds351455.mlab.com:51455/lotto-naija',
-  DB_TEST: process.env.DB_URL_TEST || 'mongodb://wallet:wallet123@ds351455.mlab.com:51455/lotto-naija'
+  MONGODB_DATABASE: process.env.DB_URL_DEV || 'mongodb+srv://coin20:123456789@@@cluster0.y5nwu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  DB_TEST: process.env.DB_URL_TEST || 'mongodb+srv://coin20:123456789@@@cluster0.y5nwu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 };
 
 export default config;
