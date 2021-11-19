@@ -1026,16 +1026,11 @@ class UserController {
    */
 
   static async login(req, res) {
-    let user;
     const { email, password } = req.body;
 
-    try {
-      user = await User.findOne({ email });
-    } catch (error) {
-      return res
-        .status(500)
-        .json(responses.error(500, { message: 'Server error' }));
-    }
+    const user = await User.findOne({ email });
+    console.log(user);
+
 
     if (!user) {
       return res.status(401).json(responses.error(401, 'Unable to login'));
